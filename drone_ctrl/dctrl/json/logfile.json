@@ -1,0 +1,6 @@
+{
+    "logfile":{
+        "path":"../log/",
+        "level":"DEBUG"
+    }
+}

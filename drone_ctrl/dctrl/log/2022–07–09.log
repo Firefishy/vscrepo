@@ -1,0 +1,5 @@
+<INFO> 2022–07–09_13:43:21 [__init__] ardctrl_cls init
+<DEBUG> 2022–07–09_13:43:21 [connect_vehicle] START
+<DEBUG> 2022–07–09_13:43:21 [connect_vehicle] Connect to vehicle object:/home/sayz/drone_ctrl/ardctrl/json/setting.json
+<DEBUG> 2022–07–09_13:43:21 [connect_vehicle] /home/sayz/drone_ctrl/ardctrl/json/setting.json
+<DEBUG> 2022–07–09_13:43:21 [connect_vehicle] Connecting to vehicle on: udp:127.0.0.1:145551
