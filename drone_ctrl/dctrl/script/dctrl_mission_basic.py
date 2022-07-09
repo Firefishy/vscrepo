@@ -15,15 +15,6 @@ import time
 import dctrl_cls as dccls
 import dlogger as dlog
 
-# The tkinter root object
-global root
-
-# var
-NED_VELOCITY = 11
-YAW_CW = 1
-YAW_CCW = -1
-GROUND_SPEED = 5
-
 # read path
 base_path = os.path.dirname(os.path.abspath(__file__))
 json_path = os.path.normpath(os.path.join(base_path, '../json/setting.json'))
