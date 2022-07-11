@@ -13,6 +13,7 @@ import os
 import time
 
 import dctrl_cls as dccls
+import mqtt_cls as mqttcls
 import dlogger as dlog
 
 # The tkinter root object
@@ -38,12 +39,32 @@ if __name__ == '__main__':
 
     # Get instance of DroneController(by Dronekit)
     dCtrlClass = dccls.DrnCtrl.get_instance()
+    mqttClass = mqttcls.MqttCtrl.get_instance()
     print("instance1", dCtrlClass)
 
     dCtrlClass.connect_vehicle(SETTING_JSON)
     time.sleep(5)
 
     try:
+        dlog.LOG("INFO", "START MQTT")
+        # 接続時のコールバック関数を登録
+        mqttClass.client.on_connect = mqttClass.on_connect              
+        # 切断時のコールバックを登録
+        mqttClass.client.on_disconnect = mqttClass.on_disconnect        
+        # メッセージ送信時のコールバック
+        mqttClass.client.on_publish = mqttClass.on_publish              
+        # 接続先は自分自身
+        mqttClass.client.connect(mqttClass.host, mqttClass.port, 60)     
+        # メッセージ到着時のコールバック        
+        mqttClass.client.on_message = mqttClass.on_message              
+
+        # 通信処理スタート
+
+        # subはloop_forever()だが，pubはloop_start()で起動だけさせる
+        mqttClass.client.loop_start()                                   
+        # 永久ループして待ち続ける
+        #mqttClass.client.loop_forever()                                 
+
         # Drone init, arm and takeoff
         # Log: CRITICAL, ERROR < WARNING < INFO < DEBUG 
         dlog.LOG("INFO", "Vehicle初期化完了")
@@ -87,7 +108,14 @@ if __name__ == '__main__':
         # モードをAUTOに設定して、ミッションを開始する
         dCtrlClass.set_vehicle_mode("AUTO")
 
+        count = 0
         while True:
+
+            send_message = "Hello, Drone!" + str(count)
+            count = count + 1
+            dlog.LOG("DEBUG", send_message)
+            mqttClass.client.publish(mqttClass.topic, send_message)    # トピック名とメッセージを決めて送信
+
             nextwaypoint=dCtrlClass.vehicle.commands.next
             msg = 'Distance to waypoint (%s): %s' % (nextwaypoint, dCtrlClass.distance_to_current_waypoint())
             dlog.LOG("DEBUG", msg)

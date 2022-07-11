@@ -60,7 +60,7 @@ import dlogger as dlog
 ##################################################################
 ### Class as singleton
 ##################################################################
-class Singleton(object):
+class Dctr_Singleton(object):
     @classmethod
     def get_instance(cls):
         if not hasattr(cls, "_instance"):
@@ -73,7 +73,7 @@ class Singleton(object):
 ##################################################################
 ### Drone control class
 ##################################################################
-class DrnCtrl(Singleton):
+class DrnCtrl(Dctr_Singleton):
 
     vehicle = ""
     compass_data = 0.0
