@@ -11,6 +11,7 @@ Date: 10th Oct, 2021
 """
 import os
 import time
+import json                         # json.dumps関数を使いたいのでインポート
 
 import dctrl_cls as dccls
 import mqtt_cls as mqttcls
@@ -30,6 +31,15 @@ base_path = os.path.dirname(os.path.abspath(__file__))
 json_path = os.path.normpath(os.path.join(base_path, '../json/setting.json'))
 SETTING_JSON = json_path
 
+def pub_drone_info():
+    dCtrlClass.set_vehicle_info()
+    #--- MQTTの送信 ---
+    # 辞書型をJSON型に変換
+    json_message = json.dumps( dCtrlClass.drone_info )     
+    dlog.LOG("DEBUG", json_message)
+    # トピック名は以前と同じ"drone/001"
+    mqttClass.client.publish(mqttClass.topic_dstate, json_message )
+
 ###
 ### Main function
 ###
@@ -39,6 +49,7 @@ if __name__ == '__main__':
 
     # Get instance of DroneController(by Dronekit)
     dCtrlClass = dccls.DrnCtrl.get_instance()
+    # MQTT通信処理スタート
     mqttClass = mqttcls.MqttCtrl.get_instance()
     print("instance1", dCtrlClass)
 
@@ -46,24 +57,6 @@ if __name__ == '__main__':
     time.sleep(5)
 
     try:
-        dlog.LOG("INFO", "START MQTT")
-        # 接続時のコールバック関数を登録
-        mqttClass.client.on_connect = mqttClass.on_connect              
-        # 切断時のコールバックを登録
-        mqttClass.client.on_disconnect = mqttClass.on_disconnect        
-        # メッセージ送信時のコールバック
-        mqttClass.client.on_publish = mqttClass.on_publish              
-        # 接続先は自分自身
-        mqttClass.client.connect(mqttClass.host, mqttClass.port, 60)     
-        # メッセージ到着時のコールバック        
-        mqttClass.client.on_message = mqttClass.on_message              
-
-        # 通信処理スタート
-
-        # subはloop_forever()だが，pubはloop_start()で起動だけさせる
-        mqttClass.client.loop_start()                                   
-        # 永久ループして待ち続ける
-        #mqttClass.client.loop_forever()                                 
 
         # Drone init, arm and takeoff
         # Log: CRITICAL, ERROR < WARNING < INFO < DEBUG 
@@ -87,10 +80,12 @@ if __name__ == '__main__':
         
         # アーム
         if dCtrlClass.vehicle.armed == False:
+            pub_drone_info()
             dCtrlClass.arm_and_takeoff(ARM_HEIGHT)
             dlog.LOG("DEBUG", "ARMと離陸開始:" + str(ARM_HEIGHT) + 'm')
         # アーム状態をチェック
         while dCtrlClass.vehicle.armed == False:
+            pub_drone_info()
             dlog.LOG("DEBUG", "ARMと離陸をしています...")
             time.sleep(1)
         dlog.LOG("INFO", "ARMと離陸完了:" + str(ARM_HEIGHT) + 'm')
@@ -107,15 +102,11 @@ if __name__ == '__main__':
 
         # モードをAUTOに設定して、ミッションを開始する
         dCtrlClass.set_vehicle_mode("AUTO")
+        pub_drone_info()
 
         count = 0
         while True:
-
-            send_message = "Hello, Drone!" + str(count)
-            count = count + 1
-            dlog.LOG("DEBUG", send_message)
-            mqttClass.client.publish(mqttClass.topic, send_message)    # トピック名とメッセージを決めて送信
-
+            pub_drone_info()
             nextwaypoint=dCtrlClass.vehicle.commands.next
             msg = 'Distance to waypoint (%s): %s' % (nextwaypoint, dCtrlClass.distance_to_current_waypoint())
             dlog.LOG("DEBUG", msg)
@@ -128,7 +119,7 @@ if __name__ == '__main__':
                 msg = "最終目的地に向かう際、「標準」ミッションを終了する (5)"
                 dlog.LOG("DEBUG", msg)
                 break;
-            msg = "現在のウェイポイントは["+str(dCtrlClass.vehicle.commands.next)+"]です。"
+            msg = "現在のウェイポイントは["+str(dCtrlClass.vehicle.commands.next)+"]です。[Head:" + str(dCtrlClass.vehicle.heading) + "]"
             dlog.LOG("DEBUG", msg)
             time.sleep(1)
 

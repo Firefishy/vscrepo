@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drone Control System</title>
+    <!-- 以下の2行でLeafletで使用するスタイルシート(.css)とライブラリ(.js)を読み込む -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js" integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og==" crossorigin=""></script>
+    
+    <!-- 以下の2行で，MQTT over Websocketを使うライブラリ(.js)を読み込む -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    <script src="js/mqttws31.js" type="text/javascript"></script>
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+
+    <script src="js/MovingMarker.js" type="text/javascript"></script>
+    <script src="js/leaflet.rotatedMarker.js" type="text/javascript"></script>    
+
+    <link rel="stylesheet" type="text/css" href="css/my.css">
+</head>
+
+<body>
+
+    <div id="mapid" style="width: 800px; height: 600px;"></div>
+
+    latitude: <label id="cmt1">lat</label><br>
+    logitude: <label id="cmt2">long</label><br>
+    altitude: <label id="cmt3">alt</label><br>
+    heading : <label id="cmt4">head</label><br>
+
+
+    <script>
+        // // mapidと名の付いたdiv要素に地図を作成し，視点は富士山頂付近，ズームレベルは13に設定
+        // var mymap = L.map('mapid').setView([35.370772,138.727305], 13);
+    
+        // // OpenStreetMapのタイルレイヤーを作る
+        // var tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+        //     attribution: '© <a href="http://osm.org/copyright">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+        //     maxZoom: 19
+        // });
+        // tileLayer.addTo(mymap); // 作成したtileLayerをmymapに追加する
+    
+        // // マーカーを作り，それに紐付けるポップアップも同時作成
+        // L.marker([35.360772,138.727305]).addTo(mymap)       // 富士山頂にマーカーを追加
+        //     .bindPopup("<b>Hello Leaflet!</b><br/>これはポップアップです").openPopup();   // ポップアップで出すメッセージ
+    </script>
+
+    <script type="text/javascript" src = "js/mqtt.js"></script>
+
+
+</body>
+
+</html>
+

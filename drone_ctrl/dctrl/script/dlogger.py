@@ -71,23 +71,23 @@ def LOG(level, msg):
 
     # Error level CRITICAL and ERROR are always logged and console out
     if level == 'CRITICAL' or level == 'critical':
-        #print('\035[41m'+msg+'\033[0m',end="")
-        print('\035[41m'+msg+'\033[0m')
+        #print('\035[41m'+msg+'\033[0m',end="") # for python3
+        sys.stdout.write('\035[41m'+msg+'\033[0m') # for python2
         _file.write(msg)
     elif level == 'ERROR' or level == 'error':
-        #print('\033[31m'+msg+'\033[0m',end="")
-        print('\033[31m'+msg+'\033[0m')
+        #print('\033[31m'+msg+'\033[0m',end="") # for python3
+        sys.stdout.write('\033[31m'+msg+'\033[0m') # for python2
         _file.write(msg)
     elif (level == 'WARNING' or level == 'warning') and rts[1] >= LEVEL[2]:
-        #print('\033[33m'+msg+'\033[0m',end="")
-        print('\033[33m'+msg+'\033[0m')
+        #print('\033[33m'+msg+'\033[0m',end="") # for python3
+        sys.stdout.write('\033[33m'+msg+'\033[0m') # for python2
         _file.write(msg)
     elif (level == 'INFO' or level == 'info') and rts[1] >= LEVEL[3]:
-        #print('\033[36m'+msg+'\033[0m',end="")
-        print('\033[36m'+msg+'\033[0m')
+        #print('\033[36m'+msg+'\033[0m',end="") # for python3
+        sys.stdout.write('\033[36m'+msg+'\033[0m') # for python2
         _file.write(msg)
     elif (level == 'DEBUG' or level == 'debug') and rts[1] >= LEVEL[4]:
-        #print('\033[36m'+msg+'\033[0m',end="")
-        print('\033[36m'+msg+'\033[0m')
+        #print('\033[36m'+msg+'\033[0m',end="") # for python3
+        sys.stdout.write('\033[36m'+msg+'\033[0m') # for python2
         _file.write(msg)
     _file.close()

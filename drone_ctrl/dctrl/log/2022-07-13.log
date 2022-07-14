@@ -1,0 +1,983 @@
+<INFO> 2022-07-13_22:02:38 [__init__] dctrl_cls init
+<INFO> 2022-07-13_22:02:38 [__init__] START
+<DEBUG> 2022-07-13_22:02:38 [connect_vehicle] START
+<DEBUG> 2022-07-13_22:02:38 [connect_vehicle] Connect to vehicle object:/home/sayz/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-07-13_22:02:38 [connect_vehicle] /home/sayz/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-07-13_22:02:38 [connect_vehicle] Connecting to vehicle on: udp:127.0.0.1:14551
+<DEBUG> 2022-07-13_22:02:40 [connect_vehicle] END
+<INFO> 2022-07-13_22:02:45 [<module>] Vehicle初期化完了
+<DEBUG> 2022-07-13_22:02:45 [dsp_attributes] START
+<INFO> 2022-07-13_22:02:45 [dsp_attributes] 
+---- Vehicle attributes ----------------------------------------
+<INFO> 2022-07-13_22:02:45 [dsp_attributes] Ardupilot Firmware version: APM:Copter-4.3.0-dev0
+<INFO> 2022-07-13_22:02:45 [dsp_attributes]   Major version number: 4
+<INFO> 2022-07-13_22:02:45 [dsp_attributes]   Minor version number: 3
+<INFO> 2022-07-13_22:02:45 [dsp_attributes]   Patch version number: 0
+<INFO> 2022-07-13_22:02:45 [dsp_attributes]   Release type: dev
+<INFO> 2022-07-13_22:02:45 [dsp_attributes]   Release version: 0
+<INFO> 2022-07-13_22:02:45 [dsp_attributes]   Stable release?: False
+<INFO> 2022-07-13_22:02:45 [dsp_attributes] Autopilot capabilities
+<INFO> 2022-07-13_22:02:45 [dsp_attributes]   Supports MISSION_FLOAT message type: True
+<INFO> 2022-07-13_22:02:45 [dsp_attributes]   Supports PARAM_FLOAT message type: True
+<INFO> 2022-07-13_22:02:45 [dsp_attributes]   Supports MISSION_INT message type: True
+<INFO> 2022-07-13_22:02:45 [dsp_attributes]   Supports COMMAND_INT message type: True
+<INFO> 2022-07-13_22:02:45 [dsp_attributes]   Supports PARAM_UNION message type: False
+<INFO> 2022-07-13_22:02:45 [dsp_attributes]   Supports ftp for file transfers: True
+<INFO> 2022-07-13_22:02:45 [dsp_attributes]   Supports commanding attitude offboard: True
+<INFO> 2022-07-13_22:02:45 [dsp_attributes]   Supports commanding position and velocity targets in local NED frame: True
+<INFO> 2022-07-13_22:02:45 [dsp_attributes]   Supports set position + velocity targets in global scaled integers: True
+<INFO> 2022-07-13_22:02:45 [dsp_attributes]   Supports terrain protocol / data handling: True
+<INFO> 2022-07-13_22:02:45 [dsp_attributes]   Supports direct actuator control: False
+<INFO> 2022-07-13_22:02:45 [dsp_attributes]   Supports the flight termination command: True
+<INFO> 2022-07-13_22:02:45 [dsp_attributes]   Supports mission_float message type: True
+<INFO> 2022-07-13_22:02:45 [dsp_attributes]   Supports onboard compass calibration: True
+<INFO> 2022-07-13_22:02:45 [dsp_attributes] Global Location: LocationGlobal:lat=35.8940864,lon=139.9524484,alt=17.07
+<INFO> 2022-07-13_22:02:45 [dsp_attributes] Global Location (relative altitude): LocationGlobalRelative:lat=35.8940864,lon=139.9524484,alt=0.006
+<INFO> 2022-07-13_22:02:45 [dsp_attributes] Local Location: LocationLocal:north=-0.0574043616652,east=0.11868955195,down=0.0331597477198
+<INFO> 2022-07-13_22:02:45 [dsp_attributes] Attitude: Attitude:pitch=0.00161672208924,yaw=2.86631321907,roll=0.000650572008453
+<INFO> 2022-07-13_22:02:45 [dsp_attributes] Velocity: [0.01, -0.02, 0.0]
+<INFO> 2022-07-13_22:02:45 [dsp_attributes] GPS: GPSInfo:fix=6,num_sat=10
+<INFO> 2022-07-13_22:02:45 [dsp_attributes] Gimbal status: Gimbal: pitch=None, roll=None, yaw=None
+<INFO> 2022-07-13_22:02:45 [dsp_attributes] Battery: Battery:voltage=12.587,current=0.0,level=0
+<INFO> 2022-07-13_22:02:45 [dsp_attributes] EKF OK?: True
+<INFO> 2022-07-13_22:02:45 [dsp_attributes] Last Heartbeat: 0.000131583999973
+<INFO> 2022-07-13_22:02:45 [dsp_attributes] Rangefinder: Rangefinder: distance=None, voltage=None
+<INFO> 2022-07-13_22:02:45 [dsp_attributes] Rangefinder distance: None
+<INFO> 2022-07-13_22:02:45 [dsp_attributes] Rangefinder voltage: None
+<INFO> 2022-07-13_22:02:45 [dsp_attributes] Heading: 164
+<INFO> 2022-07-13_22:02:45 [dsp_attributes] Is Armable?: True
+<INFO> 2022-07-13_22:02:45 [dsp_attributes] System status: STANDBY
+<INFO> 2022-07-13_22:02:45 [dsp_attributes] Groundspeed: 0.0235696900636
+<INFO> 2022-07-13_22:02:45 [dsp_attributes] Airspeed: 0.0
+<INFO> 2022-07-13_22:02:45 [dsp_attributes] Mode: RTL
+<INFO> 2022-07-13_22:02:45 [dsp_attributes] Armed: False
+<INFO> 2022-07-13_22:02:45 [dsp_attributes] ----------------------------------------------------------------
+
+<DEBUG> 2022-07-13_22:02:45 [dsp_attributes] END
+<DEBUG> 2022-07-13_22:02:45 [<module>] GUIDEDモードに設定
+<DEBUG> 2022-07-13_22:02:45 [arm_and_takeoff] START
+<INFO> 2022-07-13_22:02:45 [arm_and_takeoff] Vehicle Arm開始しています
+<INFO> 2022-07-13_22:02:46 [arm_and_takeoff] Vehicle 離陸しています
+<INFO> 2022-07-13_22:02:46 [arm_and_takeoff] Vehicle現在高度: 0.006
+<INFO> 2022-07-13_22:02:47 [arm_and_takeoff] Vehicle現在高度: 0.006
+<INFO> 2022-07-13_22:02:48 [arm_and_takeoff] Vehicle現在高度: 0.006
+<INFO> 2022-07-13_22:02:49 [arm_and_takeoff] Vehicle現在高度: 0.256
+<INFO> 2022-07-13_22:02:50 [arm_and_takeoff] Vehicle現在高度: 1.877
+<INFO> 2022-07-13_22:02:51 [arm_and_takeoff] Vehicle現在高度: 2.845
+<INFO> 2022-07-13_22:02:52 [arm_and_takeoff] Vehicle現在高度: 3.035
+<DEBUG> 2022-07-13_22:02:52 [arm_and_takeoff] END
+<DEBUG> 2022-07-13_22:02:52 [<module>] ARMと離陸開始:3.0m
+<INFO> 2022-07-13_22:02:52 [<module>] ARMと離陸完了:3.0m
+<DEBUG> 2022-07-13_22:02:52 [<module>] Distance to waypoint (0): None
+<DEBUG> 2022-07-13_22:02:52 [<module>] 現在のウェイポイントは[0]です。
+<DEBUG> 2022-07-13_22:02:53 [<module>] Distance to waypoint (1): 275.051603461
+<DEBUG> 2022-07-13_22:02:53 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:02:54 [<module>] Distance to waypoint (1): 275.051603461
+<DEBUG> 2022-07-13_22:02:54 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:02:55 [<module>] Distance to waypoint (1): 275.051603461
+<DEBUG> 2022-07-13_22:02:55 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:02:56 [<module>] Distance to waypoint (1): 275.051603461
+<DEBUG> 2022-07-13_22:02:56 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:02:57 [<module>] Distance to waypoint (1): 275.05748085
+<DEBUG> 2022-07-13_22:02:57 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:02:58 [<module>] Distance to waypoint (1): 275.05748085
+<DEBUG> 2022-07-13_22:02:58 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:02:59 [<module>] Distance to waypoint (1): 275.05748085
+<DEBUG> 2022-07-13_22:02:59 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:03:00 [<module>] Distance to waypoint (1): 275.05748085
+<DEBUG> 2022-07-13_22:03:00 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:03:01 [<module>] Distance to waypoint (1): 275.05748085
+<DEBUG> 2022-07-13_22:03:01 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:03:02 [<module>] Distance to waypoint (1): 275.05748085
+<DEBUG> 2022-07-13_22:03:02 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:03:03 [<module>] Distance to waypoint (1): 275.05748085
+<DEBUG> 2022-07-13_22:03:03 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:03:04 [<module>] Distance to waypoint (1): 275.05748085
+<DEBUG> 2022-07-13_22:03:04 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:03:05 [<module>] Distance to waypoint (1): 275.05748085
+<DEBUG> 2022-07-13_22:03:05 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:03:06 [<module>] Distance to waypoint (1): 275.05748085
+<DEBUG> 2022-07-13_22:03:06 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:03:07 [<module>] Distance to waypoint (1): 275.05748085
+<DEBUG> 2022-07-13_22:03:07 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:03:08 [<module>] Distance to waypoint (1): 275.05748085
+<DEBUG> 2022-07-13_22:03:08 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:03:09 [<module>] Distance to waypoint (1): 275.05748085
+<DEBUG> 2022-07-13_22:03:09 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:03:10 [<module>] Distance to waypoint (1): 275.05748085
+<DEBUG> 2022-07-13_22:03:10 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:03:11 [<module>] Distance to waypoint (1): 275.05748085
+<DEBUG> 2022-07-13_22:03:11 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:03:12 [<module>] Distance to waypoint (1): 275.063358564
+<DEBUG> 2022-07-13_22:03:12 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:03:13 [<module>] Distance to waypoint (1): 275.063358564
+<DEBUG> 2022-07-13_22:03:13 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:03:14 [<module>] Distance to waypoint (1): 275.063358564
+<DEBUG> 2022-07-13_22:03:14 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:03:15 [<module>] Distance to waypoint (1): 275.063358564
+<DEBUG> 2022-07-13_22:03:15 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:03:16 [<module>] Distance to waypoint (1): 275.05748085
+<DEBUG> 2022-07-13_22:03:16 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:03:17 [<module>] Distance to waypoint (1): 275.05748085
+<DEBUG> 2022-07-13_22:03:17 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:03:18 [<module>] Distance to waypoint (1): 275.05748085
+<DEBUG> 2022-07-13_22:03:18 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:03:19 [<module>] Distance to waypoint (1): 275.05748085
+<DEBUG> 2022-07-13_22:03:19 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:03:20 [<module>] Distance to waypoint (1): 275.063358564
+<DEBUG> 2022-07-13_22:03:20 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:03:21 [<module>] Distance to waypoint (1): 275.063358564
+<DEBUG> 2022-07-13_22:03:21 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:03:22 [<module>] Distance to waypoint (1): 275.063358564
+<DEBUG> 2022-07-13_22:03:22 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:03:23 [<module>] Distance to waypoint (1): 275.063358564
+<DEBUG> 2022-07-13_22:03:23 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:03:24 [<module>] Distance to waypoint (1): 275.063358564
+<DEBUG> 2022-07-13_22:03:24 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:03:25 [<module>] Distance to waypoint (1): 275.05748085
+<DEBUG> 2022-07-13_22:03:25 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:03:26 [<module>] Distance to waypoint (1): 275.05748085
+<DEBUG> 2022-07-13_22:03:26 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:03:27 [<module>] Distance to waypoint (1): 275.05748085
+<DEBUG> 2022-07-13_22:03:27 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:03:28 [<module>] Distance to waypoint (2): 265.673328514
+<DEBUG> 2022-07-13_22:03:28 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:03:29 [<module>] Distance to waypoint (2): 265.125165184
+<DEBUG> 2022-07-13_22:03:29 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:03:30 [<module>] Distance to waypoint (2): 263.276335683
+<DEBUG> 2022-07-13_22:03:30 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:03:31 [<module>] Distance to waypoint (2): 259.435671891
+<DEBUG> 2022-07-13_22:03:31 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:03:32 [<module>] Distance to waypoint (2): 253.348175188
+<DEBUG> 2022-07-13_22:03:32 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:03:33 [<module>] Distance to waypoint (2): 245.207509428
+<DEBUG> 2022-07-13_22:03:33 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:03:34 [<module>] Distance to waypoint (2): 235.806161903
+<DEBUG> 2022-07-13_22:03:34 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:03:35 [<module>] Distance to waypoint (2): 225.866426077
+<DEBUG> 2022-07-13_22:03:35 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:03:36 [<module>] Distance to waypoint (2): 215.767671894
+<DEBUG> 2022-07-13_22:03:36 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:03:37 [<module>] Distance to waypoint (2): 205.534771411
+<DEBUG> 2022-07-13_22:03:37 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:03:38 [<module>] Distance to waypoint (2): 195.271665645
+<DEBUG> 2022-07-13_22:03:38 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:03:39 [<module>] Distance to waypoint (2): 184.958812847
+<DEBUG> 2022-07-13_22:03:39 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:03:40 [<module>] Distance to waypoint (2): 174.630863238
+<DEBUG> 2022-07-13_22:03:40 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:03:41 [<module>] Distance to waypoint (2): 164.26827005
+<DEBUG> 2022-07-13_22:03:41 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:03:42 [<module>] Distance to waypoint (2): 153.890583562
+<DEBUG> 2022-07-13_22:03:42 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:03:43 [<module>] Distance to waypoint (2): 143.497808992
+<DEBUG> 2022-07-13_22:03:43 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:03:44 [<module>] Distance to waypoint (2): 133.105050603
+<DEBUG> 2022-07-13_22:03:44 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:03:45 [<module>] Distance to waypoint (2): 122.692748244
+<DEBUG> 2022-07-13_22:03:45 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:03:46 [<module>] Distance to waypoint (2): 112.324908654
+<DEBUG> 2022-07-13_22:03:46 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:03:47 [<module>] Distance to waypoint (2): 101.897558615
+<DEBUG> 2022-07-13_22:03:47 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:03:48 [<module>] Distance to waypoint (2): 91.4453653544
+<DEBUG> 2022-07-13_22:03:48 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:03:49 [<module>] Distance to waypoint (2): 81.0030154275
+<DEBUG> 2022-07-13_22:03:49 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:03:50 [<module>] Distance to waypoint (2): 70.5758255485
+<DEBUG> 2022-07-13_22:03:50 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:03:51 [<module>] Distance to waypoint (2): 60.1487453427
+<DEBUG> 2022-07-13_22:03:51 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:03:52 [<module>] Distance to waypoint (2): 49.7467266433
+<DEBUG> 2022-07-13_22:03:52 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:03:53 [<module>] Distance to waypoint (2): 39.3201479797
+<DEBUG> 2022-07-13_22:03:53 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:03:54 [<module>] Distance to waypoint (2): 28.9041033525
+<DEBUG> 2022-07-13_22:03:54 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:03:55 [<module>] Distance to waypoint (2): 18.89833025
+<DEBUG> 2022-07-13_22:03:55 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:03:56 [<module>] Distance to waypoint (2): 10.1826922805
+<DEBUG> 2022-07-13_22:03:56 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:03:57 [<module>] Distance to waypoint (2): 3.77479812106
+<DEBUG> 2022-07-13_22:03:57 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:03:58 [<module>] Distance to waypoint (2): 0.939578784782
+<DEBUG> 2022-07-13_22:03:58 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:03:59 [<module>] Distance to waypoint (3): 200.999259853
+<DEBUG> 2022-07-13_22:03:59 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:03:59 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:04:00 [<module>] Distance to waypoint (3): 196.991711882
+<DEBUG> 2022-07-13_22:04:00 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:04:00 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:04:01 [<module>] Distance to waypoint (3): 191.092070526
+<DEBUG> 2022-07-13_22:04:01 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:04:01 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:04:02 [<module>] Distance to waypoint (3): 183.678471699
+<DEBUG> 2022-07-13_22:04:02 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:04:02 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:04:03 [<module>] Distance to waypoint (3): 175.118065536
+<DEBUG> 2022-07-13_22:04:03 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:04:03 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:04:04 [<module>] Distance to waypoint (3): 165.967677624
+<DEBUG> 2022-07-13_22:04:04 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:04:04 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:04:05 [<module>] Distance to waypoint (3): 156.572207987
+<DEBUG> 2022-07-13_22:04:05 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:04:05 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:04:06 [<module>] Distance to waypoint (3): 146.998583753
+<DEBUG> 2022-07-13_22:04:06 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:04:06 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:04:07 [<module>] Distance to waypoint (3): 137.313600023
+<DEBUG> 2022-07-13_22:04:07 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:04:07 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:04:08 [<module>] Distance to waypoint (3): 127.517304044
+<DEBUG> 2022-07-13_22:04:08 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:04:08 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:04:09 [<module>] Distance to waypoint (3): 117.687657719
+<DEBUG> 2022-07-13_22:04:09 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:04:09 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:04:10 [<module>] Distance to waypoint (3): 107.791189186
+<DEBUG> 2022-07-13_22:04:10 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:04:10 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:04:11 [<module>] Distance to waypoint (3): 97.8613371405
+<DEBUG> 2022-07-13_22:04:11 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:04:11 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:04:12 [<module>] Distance to waypoint (3): 87.9092375117
+<DEBUG> 2022-07-13_22:04:12 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:04:12 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:04:13 [<module>] Distance to waypoint (3): 77.9794241675
+<DEBUG> 2022-07-13_22:04:13 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:04:13 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:04:14 [<module>] Distance to waypoint (3): 67.9828514602
+<DEBUG> 2022-07-13_22:04:14 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:04:14 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:04:15 [<module>] Distance to waypoint (3): 57.9751955996
+<DEBUG> 2022-07-13_22:04:15 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:04:15 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:04:16 [<module>] Distance to waypoint (3): 47.9676358435
+<DEBUG> 2022-07-13_22:04:16 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:04:16 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:04:17 [<module>] Distance to waypoint (3): 37.982489087
+<DEBUG> 2022-07-13_22:04:17 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:04:17 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:04:18 [<module>] Distance to waypoint (3): 27.9976531715
+<DEBUG> 2022-07-13_22:04:18 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:04:18 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:04:19 [<module>] Distance to waypoint (3): 18.4145200078
+<DEBUG> 2022-07-13_22:04:19 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:04:19 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:04:20 [<module>] Distance to waypoint (3): 10.1363358157
+<DEBUG> 2022-07-13_22:04:20 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:04:20 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:04:21 [<module>] Distance to waypoint (3): 4.0396863405
+<DEBUG> 2022-07-13_22:04:21 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:04:21 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:04:22 [<module>] Distance to waypoint (3): 2.03337187142
+<DEBUG> 2022-07-13_22:04:22 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:04:22 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:04:23 [<module>] Distance to waypoint (4): 266.625416119
+<DEBUG> 2022-07-13_22:04:23 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:04:24 [<module>] Distance to waypoint (4): 259.978539654
+<DEBUG> 2022-07-13_22:04:24 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:04:25 [<module>] Distance to waypoint (4): 250.62047522
+<DEBUG> 2022-07-13_22:04:25 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:04:26 [<module>] Distance to waypoint (4): 239.63727977
+<DEBUG> 2022-07-13_22:04:26 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:04:27 [<module>] Distance to waypoint (4): 227.921406794
+<DEBUG> 2022-07-13_22:04:27 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:04:28 [<module>] Distance to waypoint (4): 215.917870236
+<DEBUG> 2022-07-13_22:04:28 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:04:29 [<module>] Distance to waypoint (4): 203.737279171
+<DEBUG> 2022-07-13_22:04:29 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:04:30 [<module>] Distance to waypoint (4): 191.545760886
+<DEBUG> 2022-07-13_22:04:30 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:04:31 [<module>] Distance to waypoint (4): 179.331982389
+<DEBUG> 2022-07-13_22:04:31 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:04:32 [<module>] Distance to waypoint (4): 167.118406696
+<DEBUG> 2022-07-13_22:04:32 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:04:33 [<module>] Distance to waypoint (4): 154.871237907
+<DEBUG> 2022-07-13_22:04:33 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:04:34 [<module>] Distance to waypoint (4): 142.613347426
+<DEBUG> 2022-07-13_22:04:34 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:04:35 [<module>] Distance to waypoint (4): 130.321864642
+<DEBUG> 2022-07-13_22:04:35 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:04:36 [<module>] Distance to waypoint (4): 118.008123903
+<DEBUG> 2022-07-13_22:04:36 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:04:37 [<module>] Distance to waypoint (4): 105.672126148
+<DEBUG> 2022-07-13_22:04:37 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:04:38 [<module>] Distance to waypoint (4): 93.3472625955
+<DEBUG> 2022-07-13_22:04:38 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:04:39 [<module>] Distance to waypoint (4): 81.0224051471
+<DEBUG> 2022-07-13_22:04:39 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:04:40 [<module>] Distance to waypoint (4): 68.7422970178
+<DEBUG> 2022-07-13_22:04:40 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:04:41 [<module>] Distance to waypoint (4): 56.3952112992
+<DEBUG> 2022-07-13_22:04:41 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:04:42 [<module>] Distance to waypoint (4): 44.0370290073
+<DEBUG> 2022-07-13_22:04:42 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:04:43 [<module>] Distance to waypoint (4): 31.7123055851
+<DEBUG> 2022-07-13_22:04:43 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:04:44 [<module>] Distance to waypoint (4): 20.0891451938
+<DEBUG> 2022-07-13_22:04:44 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:04:45 [<module>] Distance to waypoint (4): 10.3254642084
+<DEBUG> 2022-07-13_22:04:45 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:04:46 [<module>] Distance to waypoint (4): 2.1443383721
+<DEBUG> 2022-07-13_22:04:46 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:04:47 [<module>] Distance to waypoint (5): 213.049769021
+<DEBUG> 2022-07-13_22:04:47 [<module>] 最終目的地に向かう際、「標準」ミッションを終了する (5)
+<INFO> 2022-07-13_22:04:47 [<module>] Close vehicle object
+<INFO> 2022-07-13_22:04:47 [<module>] プログラム終了
+<INFO> 2022-07-13_22:10:02 [__init__] dctrl_cls init
+<INFO> 2022-07-13_22:10:02 [__init__] START
+<DEBUG> 2022-07-13_22:10:02 [connect_vehicle] START
+<DEBUG> 2022-07-13_22:10:02 [connect_vehicle] Connect to vehicle object:/home/sayz/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-07-13_22:10:02 [connect_vehicle] /home/sayz/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-07-13_22:10:02 [connect_vehicle] Connecting to vehicle on: udp:127.0.0.1:14551
+<DEBUG> 2022-07-13_22:10:03 [connect_vehicle] END
+<INFO> 2022-07-13_22:10:08 [<module>] Vehicle初期化完了
+<DEBUG> 2022-07-13_22:10:08 [dsp_attributes] START
+<INFO> 2022-07-13_22:10:08 [dsp_attributes] 
+---- Vehicle attributes ----------------------------------------
+<INFO> 2022-07-13_22:10:08 [dsp_attributes] Ardupilot Firmware version: APM:Copter-4.3.0-dev0
+<INFO> 2022-07-13_22:10:08 [dsp_attributes]   Major version number: 4
+<INFO> 2022-07-13_22:10:08 [dsp_attributes]   Minor version number: 3
+<INFO> 2022-07-13_22:10:08 [dsp_attributes]   Patch version number: 0
+<INFO> 2022-07-13_22:10:08 [dsp_attributes]   Release type: dev
+<INFO> 2022-07-13_22:10:08 [dsp_attributes]   Release version: 0
+<INFO> 2022-07-13_22:10:08 [dsp_attributes]   Stable release?: False
+<INFO> 2022-07-13_22:10:08 [dsp_attributes] Autopilot capabilities
+<INFO> 2022-07-13_22:10:08 [dsp_attributes]   Supports MISSION_FLOAT message type: True
+<INFO> 2022-07-13_22:10:08 [dsp_attributes]   Supports PARAM_FLOAT message type: True
+<INFO> 2022-07-13_22:10:08 [dsp_attributes]   Supports MISSION_INT message type: True
+<INFO> 2022-07-13_22:10:08 [dsp_attributes]   Supports COMMAND_INT message type: True
+<INFO> 2022-07-13_22:10:08 [dsp_attributes]   Supports PARAM_UNION message type: False
+<INFO> 2022-07-13_22:10:08 [dsp_attributes]   Supports ftp for file transfers: True
+<INFO> 2022-07-13_22:10:08 [dsp_attributes]   Supports commanding attitude offboard: True
+<INFO> 2022-07-13_22:10:08 [dsp_attributes]   Supports commanding position and velocity targets in local NED frame: True
+<INFO> 2022-07-13_22:10:08 [dsp_attributes]   Supports set position + velocity targets in global scaled integers: True
+<INFO> 2022-07-13_22:10:08 [dsp_attributes]   Supports terrain protocol / data handling: True
+<INFO> 2022-07-13_22:10:08 [dsp_attributes]   Supports direct actuator control: False
+<INFO> 2022-07-13_22:10:08 [dsp_attributes]   Supports the flight termination command: True
+<INFO> 2022-07-13_22:10:08 [dsp_attributes]   Supports mission_float message type: True
+<INFO> 2022-07-13_22:10:08 [dsp_attributes]   Supports onboard compass calibration: True
+<INFO> 2022-07-13_22:10:08 [dsp_attributes] Global Location: LocationGlobal:lat=35.8940865,lon=139.9524482,alt=17.07
+<INFO> 2022-07-13_22:10:08 [dsp_attributes] Global Location (relative altitude): LocationGlobalRelative:lat=35.8940865,lon=139.9524482,alt=0.007
+<INFO> 2022-07-13_22:10:08 [dsp_attributes] Local Location: LocationLocal:north=-0.0526730269194,east=0.116467997432,down=0.0321098975837
+<INFO> 2022-07-13_22:10:08 [dsp_attributes] Attitude: Attitude:pitch=-0.000576105201617,yaw=2.80835080147,roll=-0.00151441746857
+<INFO> 2022-07-13_22:10:08 [dsp_attributes] Velocity: [-0.01, 0.02, 0.0]
+<INFO> 2022-07-13_22:10:08 [dsp_attributes] GPS: GPSInfo:fix=6,num_sat=10
+<INFO> 2022-07-13_22:10:08 [dsp_attributes] Gimbal status: Gimbal: pitch=None, roll=None, yaw=None
+<INFO> 2022-07-13_22:10:08 [dsp_attributes] Battery: Battery:voltage=12.587,current=0.0,level=0
+<INFO> 2022-07-13_22:10:08 [dsp_attributes] EKF OK?: True
+<INFO> 2022-07-13_22:10:08 [dsp_attributes] Last Heartbeat: 0.131765099
+<INFO> 2022-07-13_22:10:08 [dsp_attributes] Rangefinder: Rangefinder: distance=None, voltage=None
+<INFO> 2022-07-13_22:10:08 [dsp_attributes] Rangefinder distance: None
+<INFO> 2022-07-13_22:10:08 [dsp_attributes] Rangefinder voltage: None
+<INFO> 2022-07-13_22:10:08 [dsp_attributes] Heading: 160
+<INFO> 2022-07-13_22:10:08 [dsp_attributes] Is Armable?: True
+<INFO> 2022-07-13_22:10:08 [dsp_attributes] System status: STANDBY
+<INFO> 2022-07-13_22:10:08 [dsp_attributes] Groundspeed: 0.0236793346703
+<INFO> 2022-07-13_22:10:08 [dsp_attributes] Airspeed: 0.0
+<INFO> 2022-07-13_22:10:08 [dsp_attributes] Mode: RTL
+<INFO> 2022-07-13_22:10:08 [dsp_attributes] Armed: False
+<INFO> 2022-07-13_22:10:08 [dsp_attributes] ----------------------------------------------------------------
+
+<DEBUG> 2022-07-13_22:10:08 [dsp_attributes] END
+<DEBUG> 2022-07-13_22:10:08 [<module>] GUIDEDモードに設定
+<DEBUG> 2022-07-13_22:10:08 [arm_and_takeoff] START
+<INFO> 2022-07-13_22:10:08 [arm_and_takeoff] Vehicle Arm開始しています
+<INFO> 2022-07-13_22:10:09 [arm_and_takeoff] Vehicle 離陸しています
+<INFO> 2022-07-13_22:10:09 [arm_and_takeoff] Vehicle現在高度: 0.008
+<INFO> 2022-07-13_22:10:10 [arm_and_takeoff] Vehicle現在高度: 0.008
+<INFO> 2022-07-13_22:10:11 [arm_and_takeoff] Vehicle現在高度: 0.008
+<INFO> 2022-07-13_22:10:12 [arm_and_takeoff] Vehicle現在高度: 0.488
+<INFO> 2022-07-13_22:10:13 [arm_and_takeoff] Vehicle現在高度: 2.076
+<INFO> 2022-07-13_22:10:14 [arm_and_takeoff] Vehicle現在高度: 2.91
+<DEBUG> 2022-07-13_22:10:14 [arm_and_takeoff] END
+<DEBUG> 2022-07-13_22:10:14 [<module>] ARMと離陸開始:3.0m
+<INFO> 2022-07-13_22:10:14 [<module>] ARMと離陸完了:3.0m
+<DEBUG> 2022-07-13_22:10:14 [<module>] Distance to waypoint (0): None
+<DEBUG> 2022-07-13_22:10:14 [<module>] 現在のウェイポイントは[0]です。
+<DEBUG> 2022-07-13_22:10:15 [<module>] Distance to waypoint (1): 275.084568242
+<DEBUG> 2022-07-13_22:10:15 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:16 [<module>] Distance to waypoint (1): 275.084568242
+<DEBUG> 2022-07-13_22:10:16 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:18 [<module>] Distance to waypoint (1): 275.099899928
+<DEBUG> 2022-07-13_22:10:18 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:19 [<module>] Distance to waypoint (1): 275.099899928
+<DEBUG> 2022-07-13_22:10:19 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:20 [<module>] Distance to waypoint (1): 275.099899928
+<DEBUG> 2022-07-13_22:10:20 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:21 [<module>] Distance to waypoint (1): 275.094021644
+<DEBUG> 2022-07-13_22:10:21 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:22 [<module>] Distance to waypoint (1): 275.094021644
+<DEBUG> 2022-07-13_22:10:22 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:23 [<module>] Distance to waypoint (1): 275.094021644
+<DEBUG> 2022-07-13_22:10:23 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:24 [<module>] Distance to waypoint (1): 275.094021644
+<DEBUG> 2022-07-13_22:10:24 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:25 [<module>] Distance to waypoint (1): 275.094021644
+<DEBUG> 2022-07-13_22:10:25 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:26 [<module>] Distance to waypoint (1): 275.094021644
+<DEBUG> 2022-07-13_22:10:26 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:27 [<module>] Distance to waypoint (1): 275.094021644
+<DEBUG> 2022-07-13_22:10:27 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:28 [<module>] Distance to waypoint (1): 275.094021644
+<DEBUG> 2022-07-13_22:10:28 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:29 [<module>] Distance to waypoint (1): 275.094021644
+<DEBUG> 2022-07-13_22:10:29 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:30 [<module>] Distance to waypoint (1): 275.088143685
+<DEBUG> 2022-07-13_22:10:30 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:31 [<module>] Distance to waypoint (1): 275.088143685
+<DEBUG> 2022-07-13_22:10:31 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:32 [<module>] Distance to waypoint (1): 275.082266051
+<DEBUG> 2022-07-13_22:10:32 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:33 [<module>] Distance to waypoint (1): 275.082266051
+<DEBUG> 2022-07-13_22:10:33 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:34 [<module>] Distance to waypoint (1): 275.082266051
+<DEBUG> 2022-07-13_22:10:34 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:35 [<module>] Distance to waypoint (1): 275.072812245
+<DEBUG> 2022-07-13_22:10:35 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:36 [<module>] Distance to waypoint (1): 275.066934732
+<DEBUG> 2022-07-13_22:10:36 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:37 [<module>] Distance to waypoint (1): 275.066934732
+<DEBUG> 2022-07-13_22:10:37 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:38 [<module>] Distance to waypoint (1): 275.066934732
+<DEBUG> 2022-07-13_22:10:38 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:39 [<module>] Distance to waypoint (1): 275.066934732
+<DEBUG> 2022-07-13_22:10:39 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:40 [<module>] Distance to waypoint (1): 275.066934732
+<DEBUG> 2022-07-13_22:10:40 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:41 [<module>] Distance to waypoint (1): 275.066934732
+<DEBUG> 2022-07-13_22:10:41 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:42 [<module>] Distance to waypoint (1): 275.066934732
+<DEBUG> 2022-07-13_22:10:42 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:43 [<module>] Distance to waypoint (1): 275.066934732
+<DEBUG> 2022-07-13_22:10:43 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:44 [<module>] Distance to waypoint (1): 275.066934732
+<DEBUG> 2022-07-13_22:10:44 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:45 [<module>] Distance to waypoint (1): 275.066934732
+<DEBUG> 2022-07-13_22:10:45 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:46 [<module>] Distance to waypoint (1): 275.066934732
+<DEBUG> 2022-07-13_22:10:46 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:47 [<module>] Distance to waypoint (1): 275.061057546
+<DEBUG> 2022-07-13_22:10:47 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:48 [<module>] Distance to waypoint (1): 275.061057546
+<DEBUG> 2022-07-13_22:10:48 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:49 [<module>] Distance to waypoint (1): 275.061057546
+<DEBUG> 2022-07-13_22:10:49 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:50 [<module>] Distance to waypoint (1): 275.061057546
+<DEBUG> 2022-07-13_22:10:50 [<module>] 現在のウェイポイントは[1]です。
+<DEBUG> 2022-07-13_22:10:51 [<module>] Distance to waypoint (2): 265.647544868
+<DEBUG> 2022-07-13_22:10:51 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:10:52 [<module>] Distance to waypoint (2): 264.990112302
+<DEBUG> 2022-07-13_22:10:52 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:10:53 [<module>] Distance to waypoint (2): 262.897868928
+<DEBUG> 2022-07-13_22:10:53 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:10:54 [<module>] Distance to waypoint (2): 258.673400245
+<DEBUG> 2022-07-13_22:10:54 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:10:55 [<module>] Distance to waypoint (2): 252.226973862
+<DEBUG> 2022-07-13_22:10:55 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:10:56 [<module>] Distance to waypoint (2): 243.811774999
+<DEBUG> 2022-07-13_22:10:56 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:10:57 [<module>] Distance to waypoint (2): 234.265611828
+<DEBUG> 2022-07-13_22:10:57 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:10:58 [<module>] Distance to waypoint (2): 224.281464246
+<DEBUG> 2022-07-13_22:10:58 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:10:59 [<module>] Distance to waypoint (2): 214.137400826
+<DEBUG> 2022-07-13_22:10:59 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:11:00 [<module>] Distance to waypoint (2): 203.899173148
+<DEBUG> 2022-07-13_22:11:00 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:11:01 [<module>] Distance to waypoint (2): 193.636074686
+<DEBUG> 2022-07-13_22:11:01 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:11:02 [<module>] Distance to waypoint (2): 183.323229608
+<DEBUG> 2022-07-13_22:11:02 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:11:03 [<module>] Distance to waypoint (2): 172.990840038
+<DEBUG> 2022-07-13_22:11:03 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:11:04 [<module>] Distance to waypoint (2): 162.653129686
+<DEBUG> 2022-07-13_22:11:04 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:11:05 [<module>] Distance to waypoint (2): 152.265674005
+<DEBUG> 2022-07-13_22:11:05 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:11:06 [<module>] Distance to waypoint (2): 141.888006318
+<DEBUG> 2022-07-13_22:11:06 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:11:07 [<module>] Distance to waypoint (2): 131.460598647
+<DEBUG> 2022-07-13_22:11:07 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:11:08 [<module>] Distance to waypoint (2): 121.058085556
+<DEBUG> 2022-07-13_22:11:08 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:11:09 [<module>] Distance to waypoint (2): 110.665380606
+<DEBUG> 2022-07-13_22:11:09 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:11:10 [<module>] Distance to waypoint (2): 100.262922674
+<DEBUG> 2022-07-13_22:11:10 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:11:11 [<module>] Distance to waypoint (2): 89.8258339293
+<DEBUG> 2022-07-13_22:11:11 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:11:12 [<module>] Distance to waypoint (2): 76.7831179713
+<DEBUG> 2022-07-13_22:11:12 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:11:13 [<module>] Distance to waypoint (2): 66.3408978203
+<DEBUG> 2022-07-13_22:11:13 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:11:14 [<module>] Distance to waypoint (2): 55.9387786915
+<DEBUG> 2022-07-13_22:11:14 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:11:15 [<module>] Distance to waypoint (2): 45.4969537716
+<DEBUG> 2022-07-13_22:11:15 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:11:16 [<module>] Distance to waypoint (2): 35.0706426859
+<DEBUG> 2022-07-13_22:11:16 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:11:17 [<module>] Distance to waypoint (2): 24.7251310178
+<DEBUG> 2022-07-13_22:11:17 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:11:18 [<module>] Distance to waypoint (2): 15.1292374459
+<DEBUG> 2022-07-13_22:11:18 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:11:19 [<module>] Distance to waypoint (2): 7.2552734993
+<DEBUG> 2022-07-13_22:11:19 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:11:20 [<module>] Distance to waypoint (2): 2.03714684975
+<DEBUG> 2022-07-13_22:11:20 [<module>] 現在のウェイポイントは[2]です。
+<DEBUG> 2022-07-13_22:11:21 [<module>] Distance to waypoint (3): 201.935253217
+<DEBUG> 2022-07-13_22:11:21 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:11:21 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:11:22 [<module>] Distance to waypoint (3): 199.65212407
+<DEBUG> 2022-07-13_22:11:22 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:11:22 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:11:23 [<module>] Distance to waypoint (3): 194.776622719
+<DEBUG> 2022-07-13_22:11:23 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:11:23 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:11:24 [<module>] Distance to waypoint (3): 188.264645536
+<DEBUG> 2022-07-13_22:11:24 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:11:24 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:11:25 [<module>] Distance to waypoint (3): 180.316689927
+<DEBUG> 2022-07-13_22:11:25 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:11:25 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:11:26 [<module>] Distance to waypoint (3): 171.433464497
+<DEBUG> 2022-07-13_22:11:26 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:11:26 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:11:27 [<module>] Distance to waypoint (3): 162.160491185
+<DEBUG> 2022-07-13_22:11:27 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:11:27 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:11:28 [<module>] Distance to waypoint (3): 152.675966931
+<DEBUG> 2022-07-13_22:11:28 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:11:28 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:11:29 [<module>] Distance to waypoint (3): 143.046684118
+<DEBUG> 2022-07-13_22:11:29 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:11:29 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:11:30 [<module>] Distance to waypoint (3): 133.328306209
+<DEBUG> 2022-07-13_22:11:30 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:11:30 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:11:31 [<module>] Distance to waypoint (3): 123.50974828
+<DEBUG> 2022-07-13_22:11:31 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:11:31 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:11:32 [<module>] Distance to waypoint (3): 113.646707803
+<DEBUG> 2022-07-13_22:11:32 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:11:32 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:11:33 [<module>] Distance to waypoint (3): 103.72797841
+<DEBUG> 2022-07-13_22:11:33 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:11:33 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:11:34 [<module>] Distance to waypoint (3): 93.7869985037
+<DEBUG> 2022-07-13_22:11:34 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:11:34 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:11:35 [<module>] Distance to waypoint (3): 83.8460365777
+<DEBUG> 2022-07-13_22:11:35 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:11:35 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:11:36 [<module>] Distance to waypoint (3): 73.8939679499
+<DEBUG> 2022-07-13_22:11:36 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:11:36 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:11:37 [<module>] Distance to waypoint (3): 63.9419295208
+<DEBUG> 2022-07-13_22:11:37 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:11:37 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:11:38 [<module>] Distance to waypoint (3): 53.9231761412
+<DEBUG> 2022-07-13_22:11:38 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:11:38 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:11:39 [<module>] Distance to waypoint (3): 43.9267889533
+<DEBUG> 2022-07-13_22:11:39 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:11:39 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:11:40 [<module>] Distance to waypoint (3): 33.8971990263
+<DEBUG> 2022-07-13_22:11:40 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:11:40 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:11:41 [<module>] Distance to waypoint (3): 24.0017336718
+<DEBUG> 2022-07-13_22:11:41 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:11:41 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:11:42 [<module>] Distance to waypoint (3): 14.819903618
+<DEBUG> 2022-07-13_22:11:42 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:11:42 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:11:43 [<module>] Distance to waypoint (3): 7.33517796766
+<DEBUG> 2022-07-13_22:11:43 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:11:43 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:11:44 [<module>] Distance to waypoint (3): 2.41911898813
+<DEBUG> 2022-07-13_22:11:44 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:11:44 [<module>] 現在のウェイポイントは[3]です。
+<DEBUG> 2022-07-13_22:11:45 [<module>] Distance to waypoint (4): 269.186715551
+<DEBUG> 2022-07-13_22:11:45 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:11:46 [<module>] Distance to waypoint (4): 264.266691566
+<DEBUG> 2022-07-13_22:11:46 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:11:47 [<module>] Distance to waypoint (4): 256.446513734
+<DEBUG> 2022-07-13_22:11:47 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:11:48 [<module>] Distance to waypoint (4): 246.275872507
+<DEBUG> 2022-07-13_22:11:48 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:11:49 [<module>] Distance to waypoint (4): 234.870487123
+<DEBUG> 2022-07-13_22:11:49 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:11:50 [<module>] Distance to waypoint (4): 222.977196992
+<DEBUG> 2022-07-13_22:11:50 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:11:51 [<module>] Distance to waypoint (4): 210.929758981
+<DEBUG> 2022-07-13_22:11:51 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:11:52 [<module>] Distance to waypoint (4): 198.738240686
+<DEBUG> 2022-07-13_22:11:52 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:11:53 [<module>] Distance to waypoint (4): 186.513332078
+<DEBUG> 2022-07-13_22:11:53 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:11:54 [<module>] Distance to waypoint (4): 174.277496367
+<DEBUG> 2022-07-13_22:11:54 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:11:55 [<module>] Distance to waypoint (4): 162.05258778
+<DEBUG> 2022-07-13_22:11:55 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:11:56 [<module>] Distance to waypoint (4): 149.794492846
+<DEBUG> 2022-07-13_22:11:56 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:11:57 [<module>] Distance to waypoint (4): 137.503008975
+<DEBUG> 2022-07-13_22:11:57 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:11:58 [<module>] Distance to waypoint (4): 125.200396813
+<DEBUG> 2022-07-13_22:11:58 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:11:59 [<module>] Distance to waypoint (4): 112.89778701
+<DEBUG> 2022-07-13_22:11:59 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:12:00 [<module>] Distance to waypoint (4): 100.58405048
+<DEBUG> 2022-07-13_22:12:00 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:12:01 [<module>] Distance to waypoint (4): 88.2369289174
+<DEBUG> 2022-07-13_22:12:01 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:12:02 [<module>] Distance to waypoint (4): 75.91229233
+<DEBUG> 2022-07-13_22:12:02 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:12:03 [<module>] Distance to waypoint (4): 63.5651949207
+<DEBUG> 2022-07-13_22:12:03 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:12:04 [<module>] Distance to waypoint (4): 51.2515086789
+<DEBUG> 2022-07-13_22:12:04 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:12:05 [<module>] Distance to waypoint (4): 38.9267356044
+<DEBUG> 2022-07-13_22:12:05 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:12:06 [<module>] Distance to waypoint (4): 26.8135101951
+<DEBUG> 2022-07-13_22:12:06 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:12:07 [<module>] Distance to waypoint (4): 15.7694474463
+<DEBUG> 2022-07-13_22:12:07 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:12:08 [<module>] Distance to waypoint (4): 7.05117431706
+<DEBUG> 2022-07-13_22:12:08 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:12:09 [<module>] Distance to waypoint (4): 1.49259483549
+<DEBUG> 2022-07-13_22:12:09 [<module>] 現在のウェイポイントは[4]です。
+<DEBUG> 2022-07-13_22:12:10 [<module>] Distance to waypoint (5): 212.544456134
+<DEBUG> 2022-07-13_22:12:10 [<module>] 最終目的地に向かう際、「標準」ミッションを終了する (5)
+<INFO> 2022-07-13_22:12:10 [<module>] Close vehicle object
+<INFO> 2022-07-13_22:12:10 [<module>] プログラム終了
+<INFO> 2022-07-13_22:19:30 [__init__] dctrl_cls init
+<INFO> 2022-07-13_22:19:30 [__init__] START
+<DEBUG> 2022-07-13_22:19:30 [connect_vehicle] START
+<DEBUG> 2022-07-13_22:19:30 [connect_vehicle] Connect to vehicle object:/home/sayz/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-07-13_22:19:30 [connect_vehicle] /home/sayz/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-07-13_22:19:30 [connect_vehicle] Connecting to vehicle on: udp:127.0.0.1:14551
+<DEBUG> 2022-07-13_22:19:31 [connect_vehicle] END
+<INFO> 2022-07-13_22:19:36 [<module>] Vehicle初期化完了
+<DEBUG> 2022-07-13_22:19:36 [dsp_attributes] START
+<INFO> 2022-07-13_22:19:36 [dsp_attributes] 
+---- Vehicle attributes ----------------------------------------
+<INFO> 2022-07-13_22:19:36 [dsp_attributes] Ardupilot Firmware version: APM:Copter-4.3.0-dev0
+<INFO> 2022-07-13_22:19:36 [dsp_attributes]   Major version number: 4
+<INFO> 2022-07-13_22:19:36 [dsp_attributes]   Minor version number: 3
+<INFO> 2022-07-13_22:19:36 [dsp_attributes]   Patch version number: 0
+<INFO> 2022-07-13_22:19:36 [dsp_attributes]   Release type: dev
+<INFO> 2022-07-13_22:19:36 [dsp_attributes]   Release version: 0
+<INFO> 2022-07-13_22:19:36 [dsp_attributes]   Stable release?: False
+<INFO> 2022-07-13_22:19:36 [dsp_attributes] Autopilot capabilities
+<INFO> 2022-07-13_22:19:36 [dsp_attributes]   Supports MISSION_FLOAT message type: True
+<INFO> 2022-07-13_22:19:36 [dsp_attributes]   Supports PARAM_FLOAT message type: True
+<INFO> 2022-07-13_22:19:36 [dsp_attributes]   Supports MISSION_INT message type: True
+<INFO> 2022-07-13_22:19:36 [dsp_attributes]   Supports COMMAND_INT message type: True
+<INFO> 2022-07-13_22:19:36 [dsp_attributes]   Supports PARAM_UNION message type: False
+<INFO> 2022-07-13_22:19:36 [dsp_attributes]   Supports ftp for file transfers: True
+<INFO> 2022-07-13_22:19:36 [dsp_attributes]   Supports commanding attitude offboard: True
+<INFO> 2022-07-13_22:19:36 [dsp_attributes]   Supports commanding position and velocity targets in local NED frame: True
+<INFO> 2022-07-13_22:19:36 [dsp_attributes]   Supports set position + velocity targets in global scaled integers: True
+<INFO> 2022-07-13_22:19:36 [dsp_attributes]   Supports terrain protocol / data handling: True
+<INFO> 2022-07-13_22:19:36 [dsp_attributes]   Supports direct actuator control: False
+<INFO> 2022-07-13_22:19:36 [dsp_attributes]   Supports the flight termination command: True
+<INFO> 2022-07-13_22:19:36 [dsp_attributes]   Supports mission_float message type: True
+<INFO> 2022-07-13_22:19:36 [dsp_attributes]   Supports onboard compass calibration: True
+<INFO> 2022-07-13_22:19:36 [dsp_attributes] Global Location: LocationGlobal:lat=35.8940863,lon=139.9524486,alt=17.07
+<INFO> 2022-07-13_22:19:36 [dsp_attributes] Global Location (relative altitude): LocationGlobalRelative:lat=35.8940863,lon=139.9524486,alt=0.006
+<INFO> 2022-07-13_22:19:36 [dsp_attributes] Local Location: LocationLocal:north=-0.0877555161715,east=0.151163801551,down=0.0330237075686
+<INFO> 2022-07-13_22:19:36 [dsp_attributes] Attitude: Attitude:pitch=-0.000597592210397,yaw=2.91918945312,roll=-0.00155380065553
+<INFO> 2022-07-13_22:19:36 [dsp_attributes] Velocity: [-0.01, 0.01, 0.0]
+<INFO> 2022-07-13_22:19:36 [dsp_attributes] GPS: GPSInfo:fix=6,num_sat=10
+<INFO> 2022-07-13_22:19:36 [dsp_attributes] Gimbal status: Gimbal: pitch=None, roll=None, yaw=None
+<INFO> 2022-07-13_22:19:36 [dsp_attributes] Battery: Battery:voltage=12.587,current=0.0,level=0
+<INFO> 2022-07-13_22:19:36 [dsp_attributes] EKF OK?: True
+<INFO> 2022-07-13_22:19:36 [dsp_attributes] Last Heartbeat: 9.47000007727e-05
+<INFO> 2022-07-13_22:19:36 [dsp_attributes] Rangefinder: Rangefinder: distance=None, voltage=None
+<INFO> 2022-07-13_22:19:36 [dsp_attributes] Rangefinder distance: None
+<INFO> 2022-07-13_22:19:36 [dsp_attributes] Rangefinder voltage: None
+<INFO> 2022-07-13_22:19:36 [dsp_attributes] Heading: 167
+<INFO> 2022-07-13_22:19:36 [dsp_attributes] Is Armable?: True
+<INFO> 2022-07-13_22:19:36 [dsp_attributes] System status: STANDBY
+<INFO> 2022-07-13_22:19:36 [dsp_attributes] Groundspeed: 0.023307973519
+<INFO> 2022-07-13_22:19:36 [dsp_attributes] Airspeed: 0.0
+<INFO> 2022-07-13_22:19:36 [dsp_attributes] Mode: RTL
+<INFO> 2022-07-13_22:19:36 [dsp_attributes] Armed: False
+<INFO> 2022-07-13_22:19:36 [dsp_attributes] ----------------------------------------------------------------
+
+<DEBUG> 2022-07-13_22:19:36 [dsp_attributes] END
+<DEBUG> 2022-07-13_22:19:36 [<module>] GUIDEDモードに設定
+<DEBUG> 2022-07-13_22:19:36 [arm_and_takeoff] START
+<INFO> 2022-07-13_22:19:36 [arm_and_takeoff] Vehicle Arm開始しています
+<INFO> 2022-07-13_22:19:37 [arm_and_takeoff] Vehicle 離陸しています
+<INFO> 2022-07-13_22:19:37 [arm_and_takeoff] Vehicle現在高度: 0.007
+<INFO> 2022-07-13_22:19:38 [arm_and_takeoff] Vehicle現在高度: 0.007
+<INFO> 2022-07-13_22:19:39 [arm_and_takeoff] Vehicle現在高度: 0.007
+<INFO> 2022-07-13_22:19:40 [arm_and_takeoff] Vehicle現在高度: 0.251
+<INFO> 2022-07-13_22:19:41 [arm_and_takeoff] Vehicle現在高度: 1.872
+<INFO> 2022-07-13_22:19:42 [arm_and_takeoff] Vehicle現在高度: 2.837
+<INFO> 2022-07-13_22:19:43 [arm_and_takeoff] Vehicle現在高度: 3.034
+<DEBUG> 2022-07-13_22:19:43 [arm_and_takeoff] END
+<DEBUG> 2022-07-13_22:19:43 [<module>] ARMと離陸開始:3.0m
+<INFO> 2022-07-13_22:19:43 [<module>] ARMと離陸完了:3.0m
+<DEBUG> 2022-07-13_22:19:43 [<module>] Distance to waypoint (0): None
+<DEBUG> 2022-07-13_22:19:43 [<module>] 現在のウェイポイントは[0]です。[Head:168]
+<DEBUG> 2022-07-13_22:19:44 [<module>] Distance to waypoint (1): 275.042149503
+<DEBUG> 2022-07-13_22:19:44 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:19:45 [<module>] Distance to waypoint (1): 275.042149503
+<DEBUG> 2022-07-13_22:19:45 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:19:47 [<module>] Distance to waypoint (1): 275.042149503
+<DEBUG> 2022-07-13_22:19:47 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:19:48 [<module>] Distance to waypoint (1): 275.036272237
+<DEBUG> 2022-07-13_22:19:48 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:19:49 [<module>] Distance to waypoint (1): 275.036272237
+<DEBUG> 2022-07-13_22:19:49 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:19:50 [<module>] Distance to waypoint (1): 275.036272237
+<DEBUG> 2022-07-13_22:19:50 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:19:51 [<module>] Distance to waypoint (1): 275.036272237
+<DEBUG> 2022-07-13_22:19:51 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:19:52 [<module>] Distance to waypoint (1): 275.036272237
+<DEBUG> 2022-07-13_22:19:52 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:19:53 [<module>] Distance to waypoint (1): 275.036272237
+<DEBUG> 2022-07-13_22:19:53 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:19:54 [<module>] Distance to waypoint (1): 275.036272237
+<DEBUG> 2022-07-13_22:19:54 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:19:55 [<module>] Distance to waypoint (1): 275.036272237
+<DEBUG> 2022-07-13_22:19:55 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:19:56 [<module>] Distance to waypoint (1): 275.036272237
+<DEBUG> 2022-07-13_22:19:56 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:19:57 [<module>] Distance to waypoint (1): 275.036272237
+<DEBUG> 2022-07-13_22:19:57 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:19:58 [<module>] Distance to waypoint (1): 275.036272237
+<DEBUG> 2022-07-13_22:19:58 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:19:59 [<module>] Distance to waypoint (1): 275.036272237
+<DEBUG> 2022-07-13_22:19:59 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:20:00 [<module>] Distance to waypoint (1): 275.036272237
+<DEBUG> 2022-07-13_22:20:00 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:20:01 [<module>] Distance to waypoint (1): 275.030395297
+<DEBUG> 2022-07-13_22:20:01 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:20:02 [<module>] Distance to waypoint (1): 275.036272237
+<DEBUG> 2022-07-13_22:20:02 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:20:03 [<module>] Distance to waypoint (1): 275.036272237
+<DEBUG> 2022-07-13_22:20:03 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:20:04 [<module>] Distance to waypoint (1): 275.036272237
+<DEBUG> 2022-07-13_22:20:04 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:20:05 [<module>] Distance to waypoint (1): 275.036272237
+<DEBUG> 2022-07-13_22:20:05 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:20:06 [<module>] Distance to waypoint (1): 275.036272237
+<DEBUG> 2022-07-13_22:20:06 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:20:07 [<module>] Distance to waypoint (1): 275.036272237
+<DEBUG> 2022-07-13_22:20:07 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:20:08 [<module>] Distance to waypoint (1): 275.036272237
+<DEBUG> 2022-07-13_22:20:08 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:20:09 [<module>] Distance to waypoint (1): 275.036272237
+<DEBUG> 2022-07-13_22:20:09 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:20:10 [<module>] Distance to waypoint (1): 275.036272237
+<DEBUG> 2022-07-13_22:20:10 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:20:11 [<module>] Distance to waypoint (1): 275.036272237
+<DEBUG> 2022-07-13_22:20:11 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:20:12 [<module>] Distance to waypoint (1): 275.030395297
+<DEBUG> 2022-07-13_22:20:12 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:20:13 [<module>] Distance to waypoint (1): 275.030395297
+<DEBUG> 2022-07-13_22:20:13 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:20:14 [<module>] Distance to waypoint (1): 275.030395297
+<DEBUG> 2022-07-13_22:20:14 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:20:15 [<module>] Distance to waypoint (1): 275.030395297
+<DEBUG> 2022-07-13_22:20:15 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:20:16 [<module>] Distance to waypoint (1): 275.030395297
+<DEBUG> 2022-07-13_22:20:16 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:20:17 [<module>] Distance to waypoint (1): 275.030395297
+<DEBUG> 2022-07-13_22:20:17 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:20:18 [<module>] Distance to waypoint (1): 275.030395297
+<DEBUG> 2022-07-13_22:20:18 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:20:19 [<module>] Distance to waypoint (1): 275.030395297
+<DEBUG> 2022-07-13_22:20:19 [<module>] 現在のウェイポイントは[1]です。[Head:168]
+<DEBUG> 2022-07-13_22:20:20 [<module>] Distance to waypoint (2): 265.632438288
+<DEBUG> 2022-07-13_22:20:20 [<module>] 現在のウェイポイントは[2]です。[Head:168]
+<DEBUG> 2022-07-13_22:20:21 [<module>] Distance to waypoint (2): 265.089613294
+<DEBUG> 2022-07-13_22:20:21 [<module>] 現在のウェイポイントは[2]です。[Head:158]
+<DEBUG> 2022-07-13_22:20:22 [<module>] Distance to waypoint (2): 263.226585191
+<DEBUG> 2022-07-13_22:20:22 [<module>] 現在のウェイポイントは[2]です。[Head:157]
+<DEBUG> 2022-07-13_22:20:23 [<module>] Distance to waypoint (2): 259.335263823
+<DEBUG> 2022-07-13_22:20:23 [<module>] 現在のウェイポイントは[2]です。[Head:154]
+<DEBUG> 2022-07-13_22:20:24 [<module>] Distance to waypoint (2): 253.206880535
+<DEBUG> 2022-07-13_22:20:24 [<module>] 現在のウェイポイントは[2]です。[Head:156]
+<DEBUG> 2022-07-13_22:20:25 [<module>] Distance to waypoint (2): 245.075988221
+<DEBUG> 2022-07-13_22:20:25 [<module>] 現在のウェイポイントは[2]です。[Head:155]
+<DEBUG> 2022-07-13_22:20:26 [<module>] Distance to waypoint (2): 235.714627595
+<DEBUG> 2022-07-13_22:20:26 [<module>] 現在のウェイポイントは[2]です。[Head:156]
+<DEBUG> 2022-07-13_22:20:27 [<module>] Distance to waypoint (2): 225.800671645
+<DEBUG> 2022-07-13_22:20:27 [<module>] 現在のウェイポイントは[2]です。[Head:156]
+<DEBUG> 2022-07-13_22:20:28 [<module>] Distance to waypoint (2): 215.696588877
+<DEBUG> 2022-07-13_22:20:28 [<module>] 現在のウェイポイントは[2]です。[Head:156]
+<DEBUG> 2022-07-13_22:20:29 [<module>] Distance to waypoint (2): 205.47346465
+<DEBUG> 2022-07-13_22:20:29 [<module>] 現在のウェイポイントは[2]です。[Head:156]
+<DEBUG> 2022-07-13_22:20:30 [<module>] Distance to waypoint (2): 195.220139101
+<DEBUG> 2022-07-13_22:20:30 [<module>] 現在のウェイポイントは[2]です。[Head:156]
+<DEBUG> 2022-07-13_22:20:31 [<module>] Distance to waypoint (2): 184.932170503
+<DEBUG> 2022-07-13_22:20:31 [<module>] 現在のウェイポイントは[2]です。[Head:156]
+<DEBUG> 2022-07-13_22:20:32 [<module>] Distance to waypoint (2): 174.619332003
+<DEBUG> 2022-07-13_22:20:32 [<module>] 現在のウェイポイントは[2]です。[Head:156]
+<DEBUG> 2022-07-13_22:20:33 [<module>] Distance to waypoint (2): 164.271847648
+<DEBUG> 2022-07-13_22:20:33 [<module>] 現在のウェイポイントは[2]です。[Head:156]
+<DEBUG> 2022-07-13_22:20:34 [<module>] Distance to waypoint (2): 153.89417131
+<DEBUG> 2022-07-13_22:20:34 [<module>] 現在のウェイポイントは[2]です。[Head:156]
+<DEBUG> 2022-07-13_22:20:35 [<module>] Distance to waypoint (2): 143.491630021
+<DEBUG> 2022-07-13_22:20:35 [<module>] 現在のウェイポイントは[2]です。[Head:156]
+<DEBUG> 2022-07-13_22:20:36 [<module>] Distance to waypoint (2): 133.098884472
+<DEBUG> 2022-07-13_22:20:36 [<module>] 現在のウェイポイントは[2]です。[Head:156]
+<DEBUG> 2022-07-13_22:20:37 [<module>] Distance to waypoint (2): 122.68659413
+<DEBUG> 2022-07-13_22:20:37 [<module>] 現在のウェイポイントは[2]です。[Head:156]
+<DEBUG> 2022-07-13_22:20:38 [<module>] Distance to waypoint (2): 112.324078469
+<DEBUG> 2022-07-13_22:20:38 [<module>] 現在のウェイポイントは[2]です。[Head:156]
+<DEBUG> 2022-07-13_22:20:39 [<module>] Distance to waypoint (2): 101.911831899
+<DEBUG> 2022-07-13_22:20:39 [<module>] 現在のウェイポイントは[2]です。[Head:156]
+<DEBUG> 2022-07-13_22:20:40 [<module>] Distance to waypoint (2): 91.4845310507
+<DEBUG> 2022-07-13_22:20:40 [<module>] 現在のウェイポイントは[2]です。[Head:156]
+<DEBUG> 2022-07-13_22:20:41 [<module>] Distance to waypoint (2): 81.0324033586
+<DEBUG> 2022-07-13_22:20:41 [<module>] 現在のウェイポイントは[2]です。[Head:155]
+<DEBUG> 2022-07-13_22:20:42 [<module>] Distance to waypoint (2): 70.5999555325
+<DEBUG> 2022-07-13_22:20:42 [<module>] 現在のウェイポイントは[2]です。[Head:156]
+<DEBUG> 2022-07-13_22:20:43 [<module>] Distance to waypoint (2): 60.1631024092
+<DEBUG> 2022-07-13_22:20:43 [<module>] 現在のウェイポイントは[2]です。[Head:156]
+<DEBUG> 2022-07-13_22:20:44 [<module>] Distance to waypoint (2): 49.7362433086
+<DEBUG> 2022-07-13_22:20:44 [<module>] 現在のウェイポイントは[2]です。[Head:156]
+<DEBUG> 2022-07-13_22:20:45 [<module>] Distance to waypoint (2): 39.3346126148
+<DEBUG> 2022-07-13_22:20:45 [<module>] 現在のウェイポイントは[2]です。[Head:156]
+<DEBUG> 2022-07-13_22:20:46 [<module>] Distance to waypoint (2): 28.908814702
+<DEBUG> 2022-07-13_22:20:46 [<module>] 現在のウェイポイントは[2]です。[Head:155]
+<DEBUG> 2022-07-13_22:20:47 [<module>] Distance to waypoint (2): 18.9082519822
+<DEBUG> 2022-07-13_22:20:47 [<module>] 現在のウェイポイントは[2]です。[Head:156]
+<DEBUG> 2022-07-13_22:20:48 [<module>] Distance to waypoint (2): 10.1927455749
+<DEBUG> 2022-07-13_22:20:48 [<module>] 現在のウェイポイントは[2]です。[Head:156]
+<DEBUG> 2022-07-13_22:20:49 [<module>] Distance to waypoint (2): 3.78829924848
+<DEBUG> 2022-07-13_22:20:49 [<module>] 現在のウェイポイントは[2]です。[Head:155]
+<DEBUG> 2022-07-13_22:20:50 [<module>] Distance to waypoint (2): 0.961803054784
+<DEBUG> 2022-07-13_22:20:50 [<module>] 現在のウェイポイントは[2]です。[Head:138]
+<DEBUG> 2022-07-13_22:20:51 [<module>] Distance to waypoint (3): 200.976906324
+<DEBUG> 2022-07-13_22:20:51 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:20:51 [<module>] 現在のウェイポイントは[3]です。[Head:69]
+<DEBUG> 2022-07-13_22:20:52 [<module>] Distance to waypoint (3): 196.99165275
+<DEBUG> 2022-07-13_22:20:52 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:20:52 [<module>] 現在のウェイポイントは[3]です。[Head:14]
+<DEBUG> 2022-07-13_22:20:53 [<module>] Distance to waypoint (3): 191.114334308
+<DEBUG> 2022-07-13_22:20:53 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:20:53 [<module>] 現在のウェイポイントは[3]です。[Head:356]
+<DEBUG> 2022-07-13_22:20:54 [<module>] Distance to waypoint (3): 183.68960357
+<DEBUG> 2022-07-13_22:20:54 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:20:54 [<module>] 現在のウェイポイントは[3]です。[Head:359]
+<DEBUG> 2022-07-13_22:20:55 [<module>] Distance to waypoint (3): 175.129241624
+<DEBUG> 2022-07-13_22:20:55 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:20:55 [<module>] 現在のウェイポイントは[3]です。[Head:1]
+<DEBUG> 2022-07-13_22:20:56 [<module>] Distance to waypoint (3): 165.96772429
+<DEBUG> 2022-07-13_22:20:56 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:20:56 [<module>] 現在のウェイポイントは[3]です。[Head:359]
+<DEBUG> 2022-07-13_22:20:57 [<module>] Distance to waypoint (3): 156.58338614
+<DEBUG> 2022-07-13_22:20:57 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:20:57 [<module>] 現在のウェイポイントは[3]です。[Head:0]
+<DEBUG> 2022-07-13_22:20:58 [<module>] Distance to waypoint (3): 146.998628854
+<DEBUG> 2022-07-13_22:20:58 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:20:58 [<module>] 現在のウェイポイントは[3]です。[Head:0]
+<DEBUG> 2022-07-13_22:20:59 [<module>] Distance to waypoint (3): 137.302511024
+<DEBUG> 2022-07-13_22:20:59 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:20:59 [<module>] 現在のウェイポイントは[3]です。[Head:0]
+<DEBUG> 2022-07-13_22:21:00 [<module>] Distance to waypoint (3): 127.517344373
+<DEBUG> 2022-07-13_22:21:00 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:21:00 [<module>] 現在のウェイポイントは[3]です。[Head:0]
+<DEBUG> 2022-07-13_22:21:01 [<module>] Distance to waypoint (3): 117.676525834
+<DEBUG> 2022-07-13_22:21:01 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:21:01 [<module>] 現在のウェイポイントは[3]です。[Head:0]
+<DEBUG> 2022-07-13_22:21:02 [<module>] Distance to waypoint (3): 107.780057289
+<DEBUG> 2022-07-13_22:21:02 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:21:02 [<module>] 現在のウェイポイントは[3]です。[Head:0]
+<DEBUG> 2022-07-13_22:21:03 [<module>] Distance to waypoint (3): 97.8502052319
+<DEBUG> 2022-07-13_22:21:03 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:21:03 [<module>] 現在のウェイポイントは[3]です。[Head:0]
+<DEBUG> 2022-07-13_22:21:04 [<module>] Distance to waypoint (3): 87.8981055905
+<DEBUG> 2022-07-13_22:21:04 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:21:04 [<module>] 現在のウェイポイントは[3]です。[Head:0]
+<DEBUG> 2022-07-13_22:21:05 [<module>] Distance to waypoint (3): 77.946028367
+<DEBUG> 2022-07-13_22:21:05 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:21:05 [<module>] 現在のウェイポイントは[3]です。[Head:0]
+<DEBUG> 2022-07-13_22:21:06 [<module>] Distance to waypoint (3): 67.9605875707
+<DEBUG> 2022-07-13_22:21:06 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:21:06 [<module>] 現在のウェイポイントは[3]です。[Head:0]
+<DEBUG> 2022-07-13_22:21:07 [<module>] Distance to waypoint (3): 58.0197244673
+<DEBUG> 2022-07-13_22:21:07 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:21:07 [<module>] 現在のウェイポイントは[3]です。[Head:0]
+<DEBUG> 2022-07-13_22:21:08 [<module>] Distance to waypoint (3): 48.02329552
+<DEBUG> 2022-07-13_22:21:08 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:21:08 [<module>] 現在のウェイポイントは[3]です。[Head:0]
+<DEBUG> 2022-07-13_22:21:09 [<module>] Distance to waypoint (3): 38.0158846952
+<DEBUG> 2022-07-13_22:21:09 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:21:09 [<module>] 現在のウェイポイントは[3]です。[Head:0]
+<DEBUG> 2022-07-13_22:21:10 [<module>] Distance to waypoint (3): 28.019916437
+<DEBUG> 2022-07-13_22:21:10 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:21:10 [<module>] 現在のウェイポイントは[3]です。[Head:0]
+<DEBUG> 2022-07-13_22:21:11 [<module>] Distance to waypoint (3): 18.4033894336
+<DEBUG> 2022-07-13_22:21:11 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:21:11 [<module>] 現在のウェイポイントは[3]です。[Head:0]
+<DEBUG> 2022-07-13_22:21:12 [<module>] Distance to waypoint (3): 10.1248252202
+<DEBUG> 2022-07-13_22:21:12 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:21:12 [<module>] 現在のウェイポイントは[3]です。[Head:0]
+<DEBUG> 2022-07-13_22:21:13 [<module>] Distance to waypoint (3): 4.03807554384
+<DEBUG> 2022-07-13_22:21:13 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:21:13 [<module>] 現在のウェイポイントは[3]です。[Head:5]
+<DEBUG> 2022-07-13_22:21:14 [<module>] Distance to waypoint (3): 2.00084221419
+<DEBUG> 2022-07-13_22:21:14 [<module>] ウェイポイント3に到達したらウェイポイント5へスキップする
+<DEBUG> 2022-07-13_22:21:14 [<module>] 現在のウェイポイントは[3]です。[Head:40]
+<DEBUG> 2022-07-13_22:21:15 [<module>] Distance to waypoint (4): 266.658569106
+<DEBUG> 2022-07-13_22:21:15 [<module>] 現在のウェイポイントは[4]です。[Head:89]
+<DEBUG> 2022-07-13_22:21:16 [<module>] Distance to waypoint (4): 259.989197223
+<DEBUG> 2022-07-13_22:21:16 [<module>] 現在のウェイポイントは[4]です。[Head:89]
+<DEBUG> 2022-07-13_22:21:17 [<module>] Distance to waypoint (4): 250.608671336
+<DEBUG> 2022-07-13_22:21:17 [<module>] 現在のウェイポイントは[4]です。[Head:91]
+<DEBUG> 2022-07-13_22:21:18 [<module>] Distance to waypoint (4): 239.592546339
+<DEBUG> 2022-07-13_22:21:18 [<module>] 現在のウェイポイントは[4]です。[Head:91]
+<DEBUG> 2022-07-13_22:21:19 [<module>] Distance to waypoint (4): 227.854420209
+<DEBUG> 2022-07-13_22:21:19 [<module>] 現在のウェイポイントは[4]です。[Head:91]
+<DEBUG> 2022-07-13_22:21:20 [<module>] Distance to waypoint (4): 215.839959568
+<DEBUG> 2022-07-13_22:21:20 [<module>] 現在のウェイポイントは[4]です。[Head:91]
+<DEBUG> 2022-07-13_22:21:21 [<module>] Distance to waypoint (4): 203.659571351
+<DEBUG> 2022-07-13_22:21:21 [<module>] 現在のウェイポイントは[4]です。[Head:91]
+<DEBUG> 2022-07-13_22:21:22 [<module>] Distance to waypoint (4): 191.456922943
+<DEBUG> 2022-07-13_22:21:22 [<module>] 現在のウェイポイントは[4]です。[Head:91]
+<DEBUG> 2022-07-13_22:21:23 [<module>] Distance to waypoint (4): 179.232014345
+<DEBUG> 2022-07-13_22:21:23 [<module>] 現在のウェイポイントは[4]です。[Head:91]
+<DEBUG> 2022-07-13_22:21:24 [<module>] Distance to waypoint (4): 166.995975659
+<DEBUG> 2022-07-13_22:21:24 [<module>] 現在のウェイポイントは[4]です。[Head:91]
+<DEBUG> 2022-07-13_22:21:25 [<module>] Distance to waypoint (4): 151.676088442
+<DEBUG> 2022-07-13_22:21:25 [<module>] 現在のウェイポイントは[4]です。[Head:91]
+<DEBUG> 2022-07-13_22:21:26 [<module>] Distance to waypoint (4): 139.406864559
+<DEBUG> 2022-07-13_22:21:26 [<module>] 現在のウェイポイントは[4]です。[Head:91]
+<DEBUG> 2022-07-13_22:21:27 [<module>] Distance to waypoint (4): 127.104252167
+<DEBUG> 2022-07-13_22:21:27 [<module>] 現在のウェイポイントは[4]です。[Head:91]
+<DEBUG> 2022-07-13_22:21:28 [<module>] Distance to waypoint (4): 114.801642051
+<DEBUG> 2022-07-13_22:21:28 [<module>] 現在のウェイポイントは[4]です。[Head:91]
+<DEBUG> 2022-07-13_22:21:29 [<module>] Distance to waypoint (4): 102.46564514
+<DEBUG> 2022-07-13_22:21:29 [<module>] 現在のウェイポイントは[4]です。[Head:91]
+<DEBUG> 2022-07-13_22:21:30 [<module>] Distance to waypoint (4): 90.1519127097
+<DEBUG> 2022-07-13_22:21:30 [<module>] 現在のウェイポイントは[4]です。[Head:91]
+<DEBUG> 2022-07-13_22:21:31 [<module>] Distance to waypoint (4): 77.8050147588
+<DEBUG> 2022-07-13_22:21:31 [<module>] 現在のウェイポイントは[4]です。[Head:91]
+<DEBUG> 2022-07-13_22:21:32 [<module>] Distance to waypoint (4): 65.4690450528
+<DEBUG> 2022-07-13_22:21:32 [<module>] 現在のウェイポイントは[4]です。[Head:91]
+<DEBUG> 2022-07-13_22:21:33 [<module>] Distance to waypoint (4): 53.1330958811
+<DEBUG> 2022-07-13_22:21:33 [<module>] 現在のウェイポイントは[4]です。[Head:91]
+<DEBUG> 2022-07-13_22:21:34 [<module>] Distance to waypoint (4): 40.8417030696
+<DEBUG> 2022-07-13_22:21:34 [<module>] 現在のウェイポイントは[4]です。[Head:91]
+<DEBUG> 2022-07-13_22:21:35 [<module>] Distance to waypoint (4): 28.6060403011
+<DEBUG> 2022-07-13_22:21:35 [<module>] 現在のウェイポイントは[4]です。[Head:91]
+<DEBUG> 2022-07-13_22:21:36 [<module>] Distance to waypoint (4): 17.3390547081
+<DEBUG> 2022-07-13_22:21:36 [<module>] 現在のウェイポイントは[4]です。[Head:91]
+<DEBUG> 2022-07-13_22:21:37 [<module>] Distance to waypoint (4): 8.19862638181
+<DEBUG> 2022-07-13_22:21:37 [<module>] 現在のウェイポイントは[4]です。[Head:91]
+<DEBUG> 2022-07-13_22:21:38 [<module>] Distance to waypoint (4): 2.08916185796
+<DEBUG> 2022-07-13_22:21:38 [<module>] 現在のウェイポイントは[4]です。[Head:107]
+<DEBUG> 2022-07-13_22:21:39 [<module>] Distance to waypoint (5): 213.017263381
+<DEBUG> 2022-07-13_22:21:39 [<module>] 最終目的地に向かう際、「標準」ミッションを終了する (5)
+<INFO> 2022-07-13_22:21:39 [<module>] Close vehicle object
+<INFO> 2022-07-13_22:21:39 [<module>] プログラム終了

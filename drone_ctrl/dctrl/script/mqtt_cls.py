@@ -6,7 +6,7 @@
  ^----^
   *  * 
    ~
-   //////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
 """
 
 from http import client
@@ -34,25 +34,41 @@ class MqttCtrl(Mqtt_Singleton):
 
     host = "localhost"
     port = 1883
-    topic = "drone/001"
+    # Published topic
+    topic_dstate = "drone/frame"
+    # Subscribed topic
+    topic_dinfo = "drone/dinfo"
     client = ""
     msg = ""
-    
+
     ### =================================================================================== 
     ### コンストラクタ
     ### =================================================================================== 
     def __init__(self):
+        dlog.LOG("INFO", "START")
         # クラスのインスタンス(実体)の作成
         self.client = mqtt.Client() 
-        print("init")
-        dlog.LOG("INFO", "init")
+        # 接続時のコールバック関数を登録
+        self.client.on_connect = self.on_connect              
+        # 切断時のコールバックを登録
+        self.client.on_disconnect = self.on_disconnect        
+        # メッセージ送信時のコールバック
+        self.client.on_publish = self.on_publish              
+        # 接続先は自分自身
+        self.client.connect(self.host, self.port, 60)     
+        # メッセージ到着時のコールバック        
+        self.client.on_message = self.on_message
+        # subはloop_forever()だが，pubはloop_start()で起動だけさせる
+        self.client.loop_start()                                   
+        # 永久ループして待ち続ける
+        #mqttClass.client.loop_forever()
 
     ### =================================================================================== 
     ### ブローカーに接続できたときの処理：コールバック
     ### =================================================================================== 
     def on_connect(self, client, userdata, flag, rc):
         print("Connected with result code " + str(rc))  # 接続できた旨表示
-        client.subscribe(self.topic)  # subするトピックを設定 
+        client.subscribe(self.topic_dinfo)  # subするトピックを設定 
 
     ### =================================================================================== 
     ### ブローカーから切断されたときの処理：コールバック

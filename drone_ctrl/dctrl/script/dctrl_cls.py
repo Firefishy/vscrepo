@@ -146,6 +146,19 @@ class DrnCtrl(Dctr_Singleton):
 
     #droneInfoMsg = DroneInfo()
 
+    #==MQTTでpubするJSONのベースになる辞書===========================================
+    drone_info = {  "status":{  "isArmable":"false",
+                            "Arm":"false",
+                            "FlightMode":"false"
+                        },
+                "position":{ "latitude":"35.0000", 
+                            "longitude":"135.0000",
+                            "altitude":"20",
+                            "heading":"0"
+                        }
+            }
+    #==MQTT関数の定義===========================================    
+
     ### =================================================================================== 
     ### コンストラクタ
     ### =================================================================================== 
@@ -158,6 +171,19 @@ class DrnCtrl(Dctr_Singleton):
     ### =================================================================================== 
     def set_vehicle_mode(self, mode):
         self.vehicle.mode = VehicleMode(mode)
+
+    ### =================================================================================== 
+    ### 
+    ### =================================================================================== 
+    def set_vehicle_info(self):
+        self.drone_info["status"]["isArmable"] = str(self.vehicle.is_armable)                 # ARM可能か？
+        self.drone_info["status"]["Arm"] = str(self.vehicle.armed)                            # ARM状態
+        self.drone_info["status"]["FlightMode"] = str(self.vehicle.mode.name)                 # フライトモード
+        self.drone_info["position"]["latitude"] = str(self.vehicle.location.global_frame.lat) # 緯度
+        self.drone_info["position"]["longitude"] = str(self.vehicle.location.global_frame.lon)# 経度
+        self.drone_info["position"]["altitude"] = str(self.vehicle.location.global_frame.alt) # 高度
+        self.drone_info["position"]["heading"] = str(self.vehicle.heading)                    # 方位
+        print( self.drone_info )  # 作ったdrone_infoを表示   
 
     ### =================================================================================== 
     ### Vehicleに接続
