@@ -38,7 +38,7 @@ def pub_drone_info():
     json_message = json.dumps( dCtrlClass.drone_info )     
     dlog.LOG("DEBUG", json_message)
     # トピック名は以前と同じ"drone/001"
-    mqttClass.client.publish(mqttClass.topic_dstate, json_message )
+    mqttClass.client.publish(mqttClass.topic_dinfo, json_message )
 
 ###
 ### Main function
@@ -89,13 +89,14 @@ if __name__ == '__main__':
             dlog.LOG("DEBUG", "ARMと離陸をしています...")
             time.sleep(1)
         dlog.LOG("INFO", "ARMと離陸完了:" + str(ARM_HEIGHT) + 'm')
+        pub_drone_info()
 
         # print("Starting mission")
         # # 最初の（0）ウェイポイントに設定されたミッションをリセット
         # dCtrlClass.vehicle.commands.next = 0
 
-        import_mission_filename = 'mpmission.txt'
-        export_mission_filename = 'exportedmission.txt' 
+        import_mission_filename = '../mission/mpmission.txt'
+        export_mission_filename = '../mission/exportedmission.txt' 
 
         #Upload mission from file
         dCtrlClass.upload_mission(import_mission_filename)

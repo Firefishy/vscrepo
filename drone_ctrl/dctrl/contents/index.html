@@ -24,27 +24,10 @@
 
     <div id="mapid" style="width: 800px; height: 600px;"></div>
 
-    latitude: <label id="cmt1">lat</label><br>
-    logitude: <label id="cmt2">long</label><br>
-    altitude: <label id="cmt3">alt</label><br>
-    heading : <label id="cmt4">head</label><br>
-
-
-    <script>
-        // // mapidと名の付いたdiv要素に地図を作成し，視点は富士山頂付近，ズームレベルは13に設定
-        // var mymap = L.map('mapid').setView([35.370772,138.727305], 13);
-    
-        // // OpenStreetMapのタイルレイヤーを作る
-        // var tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-        //     attribution: '© <a href="http://osm.org/copyright">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-        //     maxZoom: 19
-        // });
-        // tileLayer.addTo(mymap); // 作成したtileLayerをmymapに追加する
-    
-        // // マーカーを作り，それに紐付けるポップアップも同時作成
-        // L.marker([35.360772,138.727305]).addTo(mymap)       // 富士山頂にマーカーを追加
-        //     .bindPopup("<b>Hello Leaflet!</b><br/>これはポップアップです").openPopup();   // ポップアップで出すメッセージ
-    </script>
+    latitude: <label id="lat">lat</label><br>
+    logitude: <label id="lon">lon</label><br>
+    altitude: <label id="alt">alt</label><br>
+    heading : <label id="ang">ang</label><br>
 
     <script type="text/javascript" src = "js/mqtt.js"></script>
 

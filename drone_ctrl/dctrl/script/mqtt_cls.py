@@ -13,6 +13,7 @@ from http import client
 import paho.mqtt.client as mqtt     # MQTTのライブラリをインポート
 from time import sleep              # 3秒間のウェイトのために使う
 import dlogger as dlog
+import json
 
 ##################################################################
 ### Class as singleton
@@ -34,12 +35,21 @@ class MqttCtrl(Mqtt_Singleton):
 
     host = "localhost"
     port = 1883
-    # Published topic
-    topic_dstate = "drone/frame"
-    # Subscribed topic
+    # Publisher 座標等のドローン情報
     topic_dinfo = "drone/dinfo"
+    # Subscriber コマンド、ミッションデータ
+    topic_dctrl = "drone/dctrl"
     client = ""
     msg = ""
+
+    #== MQTTで受信するコマンドのベースになる辞書 ================
+    drone_command = {
+        "IsChanged":"false",
+        "command":"None",
+        "d_lat":"0",
+        "d_lon":"0",
+        "d_alt":"0"
+    }    
 
     ### =================================================================================== 
     ### コンストラクタ
@@ -68,7 +78,7 @@ class MqttCtrl(Mqtt_Singleton):
     ### =================================================================================== 
     def on_connect(self, client, userdata, flag, rc):
         print("Connected with result code " + str(rc))  # 接続できた旨表示
-        client.subscribe(self.topic_dinfo)  # subするトピックを設定 
+        client.subscribe(self.topic_dctrl)  # subするトピックを設定 
 
     ### =================================================================================== 
     ### ブローカーから切断されたときの処理：コールバック
@@ -88,12 +98,23 @@ class MqttCtrl(Mqtt_Singleton):
     ### =================================================================================== 
     def on_message(self, client, userdata, msg):
         # msg.topicにトピック名が，msg.payloadに届いたデータ本体が入っている
+        recv_command = json.loads(msg.payload)
+
+        # 受信メッセージをコマンド辞書にコピー、その際に変更フラグを付加
+        # 届いた際にtrueにし，コマンドを処理したらfalseにする
+        self.drone_command["IsChanged"] = "true"     
+        self.drone_command["command"] = recv_command["command"]
+
+        if self.drone_command["command"] == "GOTO":
+            self.drone_command["d_lat"] = recv_command["d_lat"]
+            self.drone_command["d_lon"] = recv_command["d_lon"]
+            self.drone_command["d_alt"] = recv_command["d_alt"]
+
         print("Received message '" 
-            + str(msg.payload) 
-            + "' on topic '" 
-            + msg.topic 
-            + "' with QoS " 
-            + str(msg.qos)
+            + self.drone_command["command"] + "/"
+            + str(self.drone_command["d_lat"]) + "/"
+            + str(self.drone_command["d_lon"]) + "/"
+            + str(self.drone_command["d_alt"]) 
         )
         
     ### =================================================================================== 

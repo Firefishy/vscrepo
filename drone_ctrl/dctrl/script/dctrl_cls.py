@@ -147,16 +147,43 @@ class DrnCtrl(Dctr_Singleton):
     #droneInfoMsg = DroneInfo()
 
     #==MQTTでpubするJSONのベースになる辞書===========================================
-    drone_info = {  "status":{  "isArmable":"false",
-                            "Arm":"false",
-                            "FlightMode":"false"
-                        },
-                "position":{ "latitude":"35.0000", 
-                            "longitude":"135.0000",
-                            "altitude":"20",
-                            "heading":"0"
-                        }
+    # drone_information: published to client
+    drone_info = {  
+                "status":{  
+                    "isArmable":"false",
+                    "Arm":"false",
+                    "FlightMode":"false"
+                },
+                "position":{ 
+                    "latitude":"35.0000", 
+                    "longitude":"135.0000",
+                    "altitude":"20",
+                    "heading":"0"
+                }
             }
+    # drone_control: subscribe from client
+    drone_ctrl = {  
+                "command":{  
+                    "Arm":"false",
+                    "FlightMode":"false",
+                    "Command":"false",
+                },
+                "position":{ 
+                    "index":"0", 
+                    "currentwp":"0",
+                    "frame":"0",
+                    "command":"16",
+                    "para1":"0",
+                    "para2":"0",
+                    "para3":"0",
+                    "para4":"0",
+                    "lat":"35.89",
+                    "lon":"139.95",
+                    "alt":"20.0",
+                    "aitocnt":"1",
+                }
+            }
+
     #==MQTT関数の定義===========================================    
 
     ### =================================================================================== 
@@ -183,14 +210,12 @@ class DrnCtrl(Dctr_Singleton):
         self.drone_info["position"]["longitude"] = str(self.vehicle.location.global_frame.lon)# 経度
         self.drone_info["position"]["altitude"] = str(self.vehicle.location.global_frame.alt) # 高度
         self.drone_info["position"]["heading"] = str(self.vehicle.heading)                    # 方位
-        print( self.drone_info )  # 作ったdrone_infoを表示   
-
+    
     ### =================================================================================== 
     ### Vehicleに接続
     ### =================================================================================== 
     def connect_vehicle(self, json_file):
         dlog.LOG("DEBUG", "START")
-        print("START")
         msgstr = "Connect to vehicle object:" + json_file
         dlog.LOG("DEBUG", msgstr)
         print("MSGSTR: " + msgstr)
@@ -202,15 +227,12 @@ class DrnCtrl(Dctr_Singleton):
         # Store connrction information
         self.SETTING_JSON = json_file
 
-        print("SETTING_JSON: " + self.SETTING_JSON)
-        print("connection_string: " + connection_string)
+        dlog.LOG("DEBUG", "SETTING_JSON: " + self.SETTING_JSON)
+        dlog.LOG("DEBUG", "connection_string: " + connection_string)
 
         # Connect to Vehicle
-        msgstr = 'Connecting to vehicle on: ' + str(connection_string)
-        dlog.LOG("DEBUG", msgstr)
+        dlog.LOG("DEBUG", "Connecting to vehicle on: " + str(connection_string))
         self.vehicle = connect(connection_string, wait_ready=True)
-
-        print("vehicle is: ", self.vehicle )
         self.vehicle.wait_ready('autopilot_version')
 
         dlog.LOG("DEBUG", "END")      
@@ -243,12 +265,11 @@ class DrnCtrl(Dctr_Singleton):
 
         while not self.vehicle.armed:      
             msgstr = "Vehicle Armしています"
-            print(msgstr)
+            dlog.LOG("INFO", msgstr)
             #self.pub_state(msgstr)
             time.sleep(1)
 
         msgstr = "Vehicle 離陸しています"
-        #self.pub_state(msgstr)
         dlog.LOG("INFO", msgstr) 
         self.vehicle.simple_takeoff(aTargetAltitude) # Take off to target altitude
 
@@ -256,12 +277,11 @@ class DrnCtrl(Dctr_Singleton):
         #  after Vehicle.simple_takeoff will execute immediately).
         while True:
             msgstr = "Vehicle現在高度: " + str(self.vehicle.location.global_relative_frame.alt)
-            print(msgstr)
             dlog.LOG("INFO", msgstr) 
             #self.pub_state(msgstr)
             if self.vehicle.location.global_relative_frame.alt>=aTargetAltitude*0.95: #Trigger just below target alt.
                 msgstr = "設定高度に到達しました"      
-                print(msgstr)
+                dlog.LOG("DEBUG", msgstr) 
                 #self.pub_state(msgstr)
                 break
             time.sleep(1)
@@ -354,14 +374,11 @@ class DrnCtrl(Dctr_Singleton):
 
     ### =============================================================================================
     ### 2 つの LocationGlobal オブジェクト間の地上距離をメートル単位で返します。
+    ###    このメソッドは近似値であり、長距離や地球の極の近くでは正確ではありません。
+    ###    これはArduPilotのテストコードに由来しています。
+    ###    https://github.com/diydrones/ardupilot/blob/master/Tools/autotest/common.py
     ### =============================================================================================
     def get_distance_metres(self, aLocation1, aLocation2):
-        """
-        このメソッドは近似値であり、長距離や地球の極に近いところでは正確ではありません。
-        このメソッドは近似値であり、長距離や地球の極の近くでは正確ではありません。
-        これはArduPilotのテストコードに由来しています。
-        https://github.com/diydrones/ardupilot/blob/master/Tools/autotest/common.py
-        """
         dlat = aLocation2.lat - aLocation1.lat
         dlong = aLocation2.lon - aLocation1.lon
         return math.sqrt((dlat*dlat) + (dlong*dlong)) * 1.113195e5
@@ -392,22 +409,17 @@ class DrnCtrl(Dctr_Singleton):
 
     ### =============================================================================================
     ### 現在のミッションに離陸コマンドと4つのウェイポイントコマンドを追加する。
+    ###        ウェイポイントは、指定されたLocationGlobal (aLocation)を中心に、辺の長さ2*aSizeの正方形を
+    ###    形成するように配置される。
+    ###    この関数は、vehicle.commandsが車両のミッションの状態と一致すると仮定しています。
+    ###    (セッション中、ミッションをクリアした後に少なくとも一度はdownloadを呼び出す必要があります)    
     ### =============================================================================================
     def adds_square_mission(self, aLocation, aSize):
-        """
-        ウェイポイントは、指定されたLocationGlobal (aLocation)を中心に、辺の長さ2*aSizeの正方形を
-        形成するように配置される。
-        この関数は、vehicle.commandsが車両のミッションの状態と一致すると仮定しています。
-        (セッション中、ミッションをクリアした後に少なくとも一度はdownloadを呼び出す必要があります)
-        """	
         cmds = self.vehicle.commands
-
         print(" Clear any existing commands")
         cmds.clear() 
-        
         print(" Define/add new commands.")
         # 新しいコマンドを追加します。パラメータの意味/順序はCommandクラスに記載されています。
-        
         # MAV_CMD_NAV_TAKEOFF コマンドを追加しました。すでに空中にいる場合は無視されます。
         cmds.add(
             Command
@@ -470,21 +482,13 @@ class DrnCtrl(Dctr_Singleton):
         dlog.LOG("DEBUG", msg)
         cmds.upload()
 
-
-
-
-
-
-
     ### =============================================================================================
     ### ファイルからリストにミッションを読み込む。
+    ###    ミッションの定義は、Waypointファイル
+    ###    形式(http://qgroundcontrol.org/mavlink/waypoint_protocol#waypoint_file_format)です。
+    ###    この関数は、upload_mission()で使用される。    
     ### =============================================================================================
     def readmission(self, aFileName):
-        """
-        ミッションの定義は、Waypointファイル
-        形式(http://qgroundcontrol.org/mavlink/waypoint_protocol#waypoint_file_format)です。
-        この関数は、upload_mission()で使用される。
-        """
         print("\nReading mission from file: %s" % aFileName)
         cmds = self.vehicle.commands
         missionlist=[]
@@ -495,19 +499,34 @@ class DrnCtrl(Dctr_Singleton):
                         raise Exception('File is not supported WP version')
                 else:
                     linearray=line.split('\t')
-                    ln_index=int(linearray[0])
-                    ln_currentwp=int(linearray[1])
-                    ln_frame=int(linearray[2])
-                    ln_command=int(linearray[3])
-                    ln_param1=float(linearray[4])
-                    ln_param2=float(linearray[5])
-                    ln_param3=float(linearray[6])
-                    ln_param4=float(linearray[7])
-                    ln_param5=float(linearray[8])
-                    ln_param6=float(linearray[9])
-                    ln_param7=float(linearray[10])
-                    ln_autocontinue=int(linearray[11].strip())
-                    cmd = Command( 0, 0, 0, ln_frame, ln_command, ln_currentwp, ln_autocontinue, ln_param1, ln_param2, ln_param3, ln_param4, ln_param5, ln_param6, ln_param7)
+                    ln_index=int(linearray[0])                  # INDEX: 0,1,2..　--> Don't use
+                    ln_currentwp=int(linearray[1])              # CURRENT WP　--> Don't use
+                    ln_frame=int(linearray[2])                  # COORD FRAME　--> [5]
+                    ln_command=int(linearray[3])                # COMMAND --> [4]
+                    ln_param1=float(linearray[4])               # PARAM1 --> [7]
+                    ln_param2=float(linearray[5])               # PARAM2 --> [8]
+                    ln_param3=float(linearray[6])               # PARAM3 --> [9]
+                    ln_param4=float(linearray[7])               # PARAM4 --> [10]
+                    ln_param5=float(linearray[8])               # PARAM5/LATITUDE --> [11]
+                    ln_param6=float(linearray[9])               # PARAM6/LONGITUDE --> [12]
+                    ln_param7=float(linearray[10])              # PARAM7/ALTITUDE --> [13]
+                    ln_autocontinue=int(linearray[11].strip())  # AUTOCONTINUE --> [6]
+                    cmd = Command(
+                        0,
+                        0,
+                        0,
+                        ln_frame,
+                        ln_command,
+                        ln_currentwp,
+                        ln_autocontinue,
+                        ln_param1,
+                        ln_param2,
+                        ln_param3, 
+                        ln_param4, 
+                        ln_param5,
+                        ln_param6,
+                        ln_param7
+                    )
                     missionlist.append(cmd)
         return missionlist
 
@@ -547,11 +566,9 @@ class DrnCtrl(Dctr_Singleton):
 
     ### =============================================================================================
     ### Save a mission in the Waypoint file format 
+    ###    (http://qgroundcontrol.org/mavlink/waypoint_protocol#waypoint_file_format).
     ### =============================================================================================
     def save_mission(self, aFileName):
-        """
-        (http://qgroundcontrol.org/mavlink/waypoint_protocol#waypoint_file_format).
-        """
         print("\nSave mission from Vehicle to file: %s" % aFileName)    
         #Download mission from vehicle
         missionlist = self.download_mission()
@@ -579,5 +596,5 @@ class DrnCtrl(Dctr_Singleton):
                 print(' %s' % line.strip())     
 
     ### =============================================================================================
-    ### 
+    ### End of file
     ### =============================================================================================
