@@ -44,9 +44,6 @@ from pymavlink import mavutil
 from multiprocessing import Value, Process
 #from geometry_msgs.msg import PoseStamped
 
-# from drone_ctrl.msg import DroneCtrl
-# from drone_ctrl.msg import DroneInfo
-
 import dlogger as dlog
 
 # from enum import IntEnum, auto
@@ -146,45 +143,34 @@ class DrnCtrl(Dctr_Singleton):
 
     #droneInfoMsg = DroneInfo()
 
-    #==MQTTでpubするJSONのベースになる辞書===========================================
-    # drone_information: published to client
-    drone_info = {  
-                "status":{  
-                    "isArmable":"false",
-                    "Arm":"false",
-                    "FlightMode":"false"
-                },
-                "position":{ 
-                    "latitude":"35.0000", 
-                    "longitude":"135.0000",
-                    "altitude":"20",
-                    "heading":"0"
-                }
-            }
-    # drone_control: subscribe from client
-    drone_ctrl = {  
-                "command":{  
-                    "Arm":"false",
-                    "FlightMode":"false",
-                    "Command":"false",
-                },
-                "position":{ 
-                    "index":"0", 
-                    "currentwp":"0",
-                    "frame":"0",
-                    "command":"16",
-                    "para1":"0",
-                    "para2":"0",
-                    "para3":"0",
-                    "para4":"0",
-                    "lat":"35.89",
-                    "lon":"139.95",
-                    "alt":"20.0",
-                    "aitocnt":"1",
-                }
-            }
+    ### =================================================================================== 
+    ### 連想配列 MQTTで受信するドローン操作コマンド:クライアントから受信
+    ###     コマンドおよび移動先の「緯度、経度、高度」情報
+    ### =================================================================================== 
+    drone_command = {
+        "command":"None",
+        "d_lat":"0",
+        "d_lon":"0",
+        "d_alt":"0"
+    } 
 
-    #==MQTT関数の定義===========================================    
+    ### =================================================================================== 
+    ### 連想配列 MQTTで受信するドローンの情報:クライアントから受信
+    ###     ドローンのステータス及び現在位置情報
+    ### =================================================================================== 
+    drone_info = {  
+        "status":{  
+            "isArmable":"false",
+            "Arm":"false",
+            "FlightMode":"false"
+        },
+        "position":{ 
+            "latitude":"35.0000", 
+            "longitude":"135.0000",
+            "altitude":"20",
+            "heading":"0"
+        }
+    }     
 
     ### =================================================================================== 
     ### コンストラクタ
@@ -194,13 +180,7 @@ class DrnCtrl(Dctr_Singleton):
         dlog.LOG("INFO", "dctrl_cls init")
 
     ### =================================================================================== 
-    ### Vehicleのモードを設定
-    ### =================================================================================== 
-    def set_vehicle_mode(self, mode):
-        self.vehicle.mode = VehicleMode(mode)
-
-    ### =================================================================================== 
-    ### 
+    ### ドローンの情報をセット
     ### =================================================================================== 
     def set_vehicle_info(self):
         self.drone_info["status"]["isArmable"] = str(self.vehicle.is_armable)                 # ARM可能か？
@@ -208,7 +188,7 @@ class DrnCtrl(Dctr_Singleton):
         self.drone_info["status"]["FlightMode"] = str(self.vehicle.mode.name)                 # フライトモード
         self.drone_info["position"]["latitude"] = str(self.vehicle.location.global_frame.lat) # 緯度
         self.drone_info["position"]["longitude"] = str(self.vehicle.location.global_frame.lon)# 経度
-        self.drone_info["position"]["altitude"] = str(self.vehicle.location.global_frame.alt) # 高度
+        self.drone_info["position"]["altitude"] = str(self.vehicle.location.global_relative_frame.alt) # 高度
         self.drone_info["position"]["heading"] = str(self.vehicle.heading)                    # 方位
     
     ### =================================================================================== 
@@ -238,7 +218,56 @@ class DrnCtrl(Dctr_Singleton):
         dlog.LOG("DEBUG", "END")      
 
     ### =================================================================================== 
-    ### ARMと離陸
+    ### Vehicleのモードを設定
+    ### =================================================================================== 
+    def set_vehicle_mode(self, mode):
+        dlog.LOG("DEBUG","SET MODE: " + mode)
+        self.vehicle.mode = VehicleMode(mode)
+
+    ### =================================================================================== 
+    ### Arming
+    ### =================================================================================== 
+    def vehicle_arming(self):
+        dlog.LOG("DEBUG","ARMING:")
+        if self.vehicle.is_armable == True:
+            if self.vehicle.armed:
+                dlog.LOG("DEBUG","すでにARMしています。")
+            else:
+                self.vehicle.armed = True
+        else:
+            dlog.LOG("DEBUG","ARMできません。")
+
+    ### =================================================================================== 
+    ### Disarm
+    ### =================================================================================== 
+    def vehicle_disarming(self):
+        dlog.LOG("DEBUG","ARMING:")
+        if not self.vehicle.armed:
+            dlog.LOG("DEBUG","すでにDISARM状態です。")
+        else:
+            self.vehicle.armed = False
+
+    ### =================================================================================== 
+    ### Take off
+    ### =================================================================================== 
+    def vehicle_takeoff(self, alt):
+        dlog.LOG("DEBUG","TAKEOFF")
+        self.vehicle.simple_takeoff(alt)  # Take off to target altitude
+
+    ### =================================================================================== 
+    ### Goto
+    ### =================================================================================== 
+    def vehicle_goto(self, cmd):            
+        dlog.LOG("DEBUG","Sinple GOTO")
+        point = LocationGlobalRelative(
+            float(cmd["d_lat"]), 
+            float(cmd["d_lon"]), 
+            float(cmd["d_alt"]) 
+        )
+        self.vehicle.simple_goto(point, groundspeed=5)
+
+    ### =================================================================================== 
+    ### 自動 ARMと離陸
     ### =================================================================================== 
     def arm_and_takeoff(self, aTargetAltitude):
         dlog.LOG("DEBUG", "START")

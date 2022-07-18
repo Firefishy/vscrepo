@@ -43,152 +43,183 @@
 <main>
     <section class="main_area">
 
-        <div  class="wrap_0">
+      <div  class="wrap_0">
+        <div id="mapid" class="mainMap"></div>
+      </div>
+      <div  class="wrap_0">
+        <!-- 折り畳み展開ポインタ -->
+        <div onclick="obj=document.getElementById('open_dinfo').style; obj.display=(obj.display=='none')?'block':'none';" >
+          <h2><a style="cursor:pointer;" class="border_content color_gray">Drone info (Click to close/open)</a></h2>
+        </div>
+          <!-- Control button -->
+        <div id="open_dinfo" class="border_control">
+          <h3>Current position</h3>
+          <table>
+            <tbody>
+              <tr>
+                <td class="e100">Latitude</td>
+                <td class="e200"><label id="clat">-</label></td>
+              </tr>
+              <tr>
+                <td class="e100">Longitude</td>
+                <td class="e200"><label id="clon">-</label></td>
+              </tr>
+              <tr>
+                <td class="e100">Altitude(rel)</td>
+                <td class="e200"><label id="calt">-</label></td>
+              </tr>
+              <tr>
+                <td class="e100">Heading</td>
+                <td class="e200"><label id="cang">-</label></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
 
-            <div id="mapid" class="mainMap"></div>
-
-            <!-- 折り畳み展開ポインタ -->
-            <div onclick="obj=document.getElementById('open_dinfo').style; obj.display=(obj.display=='none')?'block':'none';">
-                <h2><a style="cursor:pointer;" class="border_content color_gray">Drone info(Click!)</a></h2>
-            </div>
-            <!-- Control button -->
-            <div id="open_dinfo" class="border_control">
-                <table>
-                  <!-- <thead>
-                    <tr>
-                      <th colspan="2">The table header</th>
-                    </tr>
-                  </thead> -->
-                  <tbody>
-                      <tr>
-                        <td class="e200">Latitude</td>
-                        <td><input type="text" class="input_style1" name="lat" id="lat" placeholder="Latitude" value="35.893246" />&nbsp;deg</td>
-                        <td class="e200">Longitude</td>
-                        <td><input type="text" class="input_style1" name="lon" id="lon" placeholder="Longitude" value="139.954909" />&nbsp;deg</td>
-                      </tr>
-                      <tr>
-                        <td class="e200">Altitude</td>
-                        <td><input type="text" class="input_style1" name="alt" id="alt" placeholder="Altitude" value="30" />&nbsp;m</td>
-                        <td class="e200">Heading</td>
-                        <td><input type="text" class="input_style1" name="ang" id="ang" placeholder="Altitude" value="0" />&nbsp;deg</td>
-                      </tr>
-                    </tbody>
-                </table>
-
-                <table>
-									<thead>
-										<tr>
-											<th>Idx</th>
-											<th>Cwp</th>
-											<th>Cmd</th>
-											<th>Lat</th>
-											<th>Lon</th>
-											<th>Alt</th>
-											<th>Cnt</th>
-											<th>Apt</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>0</td>
-											<td>-</td>
-											<td>-</td>
-											<td>-</td>
-											<td>-</td>
-											<td>-</td>
-											<td>-</td>
-											<td>-</td>
-										</tr>
-										<tr>
-											<td>1</td>
-											<td>-</td>
-											<td>-</td>
-											<td>-</td>
-											<td>-</td>
-											<td>-</td>
-											<td>-</td>
-											<td><input type="button" class="acpbtn" id="" onclick=""/></td>
-										</tr>
-										<tr>
-											<td>2</td>
-											<td>-</td>
-											<td>-</td>
-											<td>-</td>
-											<td>-</td>
-											<td>-</td>
-											<td>-</td>
-											<td>-</td>
-										</tr>
-										<tr>
-											<td>3</td>
-											<td>-</td>
-											<td>-</td>
-											<td>-</td>
-											<td>-</td>
-											<td>-</td>
-											<td>-</td>
-											<td>-</td>
-										</tr>
-									</tbody>
-								</table>                
-
-
-
-
-
-            </div>                
+          <div  class="wrap_0">
             <!-- 折り畳み展開ポインタ -->
             <div onclick="obj=document.getElementById('open_control').style; obj.display=(obj.display=='none')?'block':'none';">
-                <h2><a style="cursor:pointer;" class="border_content color_gray">Drone control(Click!)</a></h2>
+                <h2><a style="cursor:pointer;" class="border_content color_gray">Drone control (Click to open/close)</a></h2>
             </div>
-
-            
             <!-- Control button -->
-            <div id="open_control" class="border_control">
-                <div class="wrap_btn">
-                    <input type="button" class="ctrlbtn button15pct color_green" id="bnt_step1js" value="GUIDED" onclick="javascript:droneCtrl('GUIDED');"/>
-                    <input type="button" class="ctrlbtn button15pct color_green" id="bnt_step1js" value="AUTO" onclick="javascript:droneCtrl('AUTO');"/>
-                    <input type="button" class="ctrlbtn button15pct color_green" id="bnt_step1js" value="RTL" onclick="javascript:droneCtrl('RTL');"/>
-                    <input type="button" class="ctrlbtn button15pct color_white" id="bnt_step1ms" value="-" onclick="javascript:droneCtrl('-');"/>
-                    <input type="button" class="ctrlbtn button15pct color_white" id="bnt_step2" value="-" onclick="javascript:droneCtrl('-');"/>
-                </div>
-                <div class="wrap_btn">
-                    <input type="button" class="ctrlbtn button15pct color_green" id="bnt_step1js" value="ARM"  onclick="javascript:droneCtrl('ARM');"/>
-                    <input type="button" class="ctrlbtn button15pct color_green" id="bnt_step1js" value="DISARM"  onclick="javascript:droneCtrl('DISARM');"/>
-                    <input type="button" class="ctrlbtn button15pct color_white" id="bnt_step2" value="-"  onclick="javascript:droneCtrl('-');"/>
-                    <input type="button" class="ctrlbtn button15pct color_white" id="bnt_step3" value="-"  onclick="javascript:droneCtrl('-');"/>
-                    <input type="button" class="ctrlbtn button15pct color_white" id="bnt_land" value="-"  onclick="javascript:droneCtrl('-');"/>
-                </div>
-                <div class="wrap_btn">
-                    <input type="button" class="ctrlbtn button15pct color_green" id="bnt_step1js" value="TAKEOFF"  onclick="javascript:droneCtrl('TAKEOFF');"/>
-                    <input type="button" class="ctrlbtn button15pct color_green" id="bnt_step1js" value="LAND"  onclick="javascript:droneCtrl('LAND');"/>
-                    <input type="button" class="ctrlbtn button15pct color_white" id="bnt_step2" value="-"  onclick="javascript:droneCtrl('-');"/>
-                    <input type="button" class="ctrlbtn button15pct color_white" id="bnt_step3" value="-"  onclick="javascript:droneCtrl('-');"/>
-                    <input type="button" class="ctrlbtn button15pct color_white" id="bnt_land" value="-"  onclick="javascript:droneCtrl('-');"/>
-                </div>
-                <div class="wrap_btn">
-                  <input type="button" class="ctrlbtn button75pct color_blue" id="bnt_goto" value="GOTO" onclick="javascript:droneCtrl('GOTO');"/>
-                </div>
-                <!-- 移動停止 -->
-                <div class="wrap_btn">
-                  <input type="button" class="ctrlbtn button75pct color_red" id="bnt_brake" value="STOP" onclick="javascript:droneCtrl('STOP');"/>
-                </div>
-            </div>            
+            <div id="open_control" style="display:none;clear:both;" class="border_control">
+              <div class="wrap_btn">
+                  <input type="button" class="ctrlbtn button15pct color_green" id="bnt_guided" value="GUIDED" onclick="javascript:droneCtrl('GUIDED');"/>
+                  <input type="button" class="ctrlbtn button15pct color_green" id="bnt_auto" value="AUTO" onclick="javascript:droneCtrl('AUTO');"/>
+                  <input type="button" class="ctrlbtn button15pct color_green" id="bnt_rtl" value="RTL" onclick="javascript:droneCtrl('RTL');"/>
+                  <!-- <input type="button" class="ctrlbtn button15pct color_white" id="" value="-" onclick="javascript:droneCtrl('-');"/>
+                  <input type="button" class="ctrlbtn button15pct color_white" id="" value="-" onclick="javascript:droneCtrl('-');"/> -->
+              </div>
+              <div class="wrap_btn">
+                  <input type="button" class="ctrlbtn button15pct color_green" id="bnt_arm" value="ARM"  onclick="javascript:droneCtrl('ARM');"/>
+                  <input type="button" class="ctrlbtn button15pct color_green" id="bnt_disarm" value="DISARM"  onclick="javascript:droneCtrl('DISARM');"/>
+                  <!-- <input type="button" class="ctrlbtn button15pct color_white" id="" value="-"  onclick="javascript:droneCtrl('-');"/>
+                  <input type="button" class="ctrlbtn button15pct color_white" id="" value="-"  onclick="javascript:droneCtrl('-');"/>
+                  <input type="button" class="ctrlbtn button15pct color_white" id="" value="-"  onclick="javascript:droneCtrl('-');"/> -->
+              </div>
+              <div class="wrap_btn">
+                  <input type="button" class="ctrlbtn button15pct color_green" id="bnt_takeoff" value="TAKEOFF"  onclick="javascript:droneCtrl('TAKEOFF');"/>
+                  <input type="button" class="ctrlbtn button15pct color_green" id="bnt_land" value="LAND"  onclick="javascript:droneCtrl('LAND');"/>
+                  <!-- <input type="button" class="ctrlbtn button15pct color_white" id="" value="-"  onclick="javascript:droneCtrl('-');"/>
+                  <input type="button" class="ctrlbtn button15pct color_white" id="" value="-"  onclick="javascript:droneCtrl('-');"/>
+                  <input type="button" class="ctrlbtn button15pct color_white" id="" value="-"  onclick="javascript:droneCtrl('-');"/> -->
+              </div>
+              <!-- 移動停止 -->
+              <div class="wrap_btn">
+                <input type="button" class="ctrlbtn button75pct color_red" id="bnt_brake" value="STOP" onclick="javascript:droneCtrl('STOP');"/>
+              </div>
+            </div>  
 
-
-            <!-- 折り畳み展開ポインタ -->
-            <div onclick="obj=document.getElementById('open_logs').style; obj.display=(obj.display=='none')?'block':'none';">
-                <h2><a style="cursor:pointer;" class="border_content color_gray">&#9661;&nbsp;マップコントロール(クリックで開く/閉じる)&#9651;</a></h2>
+      <div  class="wrap_0">
+        <!-- 折り畳み展開ポインタ -->
+        <div onclick="obj=document.getElementById('open_ddest').style; obj.display=(obj.display=='none')?'block':'none';">
+            <h2><a style="cursor:pointer;" class="border_content color_gray">Simple Goto (Click to open/close)</a></h2>
+        </div>
+        <!-- Control button -->
+        <div id="open_ddest" style="display:none;clear:both;" class="border_control">
+          <h3>Clicked point (Destination)</h3>
+          <table>
+              <tbody>
+                  <tr>
+                    <td class="e200">Latitude</td>
+                    <td><input type="text" class="input_style1" name="lat" id="lat" placeholder="Latitude" value="35.893246" />&nbsp;(deg)</td>
+                  </tr>
+                  <tr>
+                    <td class="e200">Longitude</td>
+                    <td><input type="text" class="input_style1" name="lon" id="lon" placeholder="Longitude" value="139.954909" />&nbsp;(deg)</td>
+                  </tr>
+                  <tr>
+                    <td class="e200">Altitude</td>
+                    <td><input type="text" class="input_style1" name="alt" id="alt" placeholder="Altitude" value="30" />&nbsp;(m)</td>
+                  </tr>
+                </tbody>
+            </table>
+            <div class="wrap_btn">
+              <input type="button" class="ctrlbtn button30pct color_green" id="bnt_goto" value="GOTO DEST"  onclick="javascript:droneCtrl('GOTO');"/>
             </div>
+          </div>
+        </div>
+
+        <div  class="wrap_0">
+          <!-- 折り畳み展開ポインタ -->
+          <div onclick="obj=document.getElementById('open_mission').style; obj.display=(obj.display=='none')?'block':'none';">
+              <h2><a style="cursor:pointer;" class="border_content color_gray">Mission (Click to open/close)</a></h2>
+          </div>
+          <!-- Control button -->
+          <div id="open_mission" style="display:none;clear:both;" class="border_control">
+            <h3>Mission point</h3>
+            <table>
+						  <thead>
+								<tr>
+									<th>Idx</th>
+									<th>Cwp</th>
+									<th>Cmd</th>
+									<th>Lat</th>
+									<th>Lon</th>
+									<th>Alt</th>
+									<th>Cnt</th>
+									<th>Apt</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>0</td>
+									<td>-</td>
+									<td>-</td>
+									<td>-</td>
+									<td>-</td>
+									<td>-</td>
+									<td>-</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>1</td>
+									<td>-</td>
+									<td>-</td>
+									<td>-</td>
+									<td>-</td>
+									<td>-</td>
+									<td>-</td>
+									<td><input type="button" class="acpbtn" id="" onclick=""/></td>
+								</tr>
+								<tr>
+									<td>2</td>
+									<td>-</td>
+									<td>-</td>
+									<td>-</td>
+									<td>-</td>
+									<td>-</td>
+									<td>-</td>
+									<td>-</td>
+								</tr>
+								<tr>
+									<td>3</td>
+									<td>-</td>
+									<td>-</td>
+									<td>-</td>
+									<td>-</td>
+									<td>-</td>
+									<td>-</td>
+									<td>-</td>
+								</tr>
+							</tbody>
+							</table>                
+              <div class="wrap_btn">
+                <input type="button" class="ctrlbtn button30pct color_green" id="bnt_mission" value="MISSION START"  onclick="javascript:droneCtrl('MISSION');"/>
+              </div>
+            </div>
+          </div>
+
+
+
+          
 
             <!-- -->
-            <div id="second" class="box">
+            <!-- <div id="second" class="box">
                 <h2>Logs</h2>
                 <div></div>
-              </div>
-
-
-
+              </div> -->
         </div>
 
 

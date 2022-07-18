@@ -20,15 +20,16 @@ let dzoom = 15;
 var drones = new Array();   // 緯度経度などのデータを保存する連想配列
 var markers = new Array();  // マーカーハンドラを保存する連想配列
 
-// ドローン操作用のコマンドの連想配列
+////////////////////////////////////////////////////////////////////////
+// 連想配列
+// ドローン操作用コマンド：Publish
 let command = {
   "command":"None",
   "d_lat":"0",
   "d_lon":"0",
   "d_alt":"0",
 }
-
-// ドローンミッション用のコマンドの連想配列
+// ドローンミッション用コマンド : Publish
 let mission_data = {
   "index":"0",
   "cntwp":"0",
@@ -95,14 +96,14 @@ sub.on('message', function (topic_sub, message) {
   // 方位
   let ang  = parseFloat( drone_data.position.heading );     
 
-  // document.getElementById('lat').innerHTML = dlat.toString() + " deg";
-  // document.getElementById('lon').innerHTML = dlon.toString() + " deg";
-  // document.getElementById('alt').innerHTML = alt.toString() + " m";
-  //document.getElementById('ang').innerHTML = ang.toString() + " deg";
-  document.getElementById('lat').value = dlat;
-  document.getElementById('lon').value = dlon;
-  document.getElementById('alt').value = alt;
-  document.getElementById('ang').value = ang;
+  document.getElementById('clat').innerHTML = dlat.toString() + " (deg)";
+  document.getElementById('clon').innerHTML = dlon.toString() + " (deg)";
+  document.getElementById('calt').innerHTML = alt.toString() + " (m)";
+  document.getElementById('cang').innerHTML = ang.toString() + " (deg)";
+  // document.getElementById('clat').value = dlat;
+  // document.getElementById('clon').value = dlon;
+  // document.getElementById('calt').value = alt;
+  // document.getElementById('cang').value = ang;
 
   // ポップアップ用に文字列を作る +=で追加していく
   let drone_popmessage = drone_name + '<br>';
