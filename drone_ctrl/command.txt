@@ -1,8 +1,10 @@
 ■ Ardupilot-SITL
 cd ~/ardupilot/ArduCopter
 /home/sayz/ardupilot/build/sitl/bin/arducopter -S -w --home 35.894087,139.952447,17,353 --model + --speedup 1 --slave 0 --defaults ../Tools/autotest/default_params/copter.parm -I0
+
 ■ Mavproxy
 mavproxy.py --out 127.0.0.1:14550 --out 127.0.0.1:14551 --master tcp:127.0.0.1:5760 --sitl 127.0.0.1:5501 --map --console
+
 ■ Dronekit
 cd ~/vscrepo/drone_ctrl/dctrl/script
 python dctrl_mission.py

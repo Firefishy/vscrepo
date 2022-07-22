@@ -152,7 +152,22 @@ class DrnCtrl(Dctr_Singleton):
         "d_lat":"0",
         "d_lon":"0",
         "d_alt":"0"
-    } 
+    }
+
+    drone_mission = {
+        "index":"0",
+        "cntwp":"0",
+        "frame":"0",
+        "command":"0",
+        "para1":"0",
+        "para2":"0",
+        "para3":"0",
+        "para4":"0",
+        "d_lat":"0",
+        "d_lon":"0",
+        "d_alt":"0",
+        "acnt":"0"
+    }
 
     ### =================================================================================== 
     ### 連想配列 MQTTで受信するドローンの情報:クライアントから受信
@@ -264,6 +279,11 @@ class DrnCtrl(Dctr_Singleton):
             float(cmd["d_lon"]), 
             float(cmd["d_alt"]) 
         )
+        # point = LocationGlobalRelative(
+        #     cmd["d_lat"], 
+        #     cmd["d_lon"], 
+        #     cmd["d_alt"] 
+        # )
         self.vehicle.simple_goto(point, groundspeed=5)
 
     ### =================================================================================== 
@@ -557,10 +577,11 @@ class DrnCtrl(Dctr_Singleton):
                         ln_param7
                     )
                     missionlist.append(cmd)
+        f.close()
         return missionlist
 
     ### =============================================================================================
-    ### ファイルからミッションをアップロードする。
+    ### ファイルからミッションデータをアップロードする。
     ### =============================================================================================
     def upload_mission(self, aFileName):
         #Read mission from file
@@ -576,7 +597,29 @@ class DrnCtrl(Dctr_Singleton):
             cmds.add(command)
         print(' Upload mission')
         self.vehicle.commands.upload()
-       
+
+    ### =============================================================================================
+    ### ファイルからジオフェンスデータをアップロードする。
+    ### Refer: https://github.com/dronekit/dronekit-python/issues/1092
+    ### =============================================================================================
+    def upload_fence(self, aFileName):
+        #Read mission from file
+        missionlist = self.readmission(aFileName)
+        
+        print("\nUpload fence from a file: %s" % aFileName)
+        # Clear existing mission from vehicle
+        # rint(' Clear mission')
+        cmds = self.vehicle.commands
+        #cmds.clear()
+        #Add new mission to vehicle
+        for command in missionlist:
+            # Missionの場合0のため、1に書き換える必要がある。
+            command.mission_type = 1
+            cmds.add(command)
+        print(' Upload mission')
+        #self.vehicle.commands.upload()
+        cmds.upload_fence()
+
     ### =============================================================================================
     ### 現在のミッションをダウンロードし、リストで返します。
     ### =============================================================================================

@@ -210,9 +210,9 @@ main {
 table {
   border-collapse: collapse;
   font-size: 16px;
-  width:550px;
+  width:620px;
   border-collapse: collapse;
-  margin: 10px 0px 10px 40px;
+  margin: 10px 0px 10px 10px;
 }
 th {
   color:#fff;
@@ -222,8 +222,15 @@ td {
   border: 1px solid rgb(73, 73, 73);
 }
 
+.e080 {
+  width: 80px;
+}
+
 .e100 {
   width: 100px;
+}
+.e150 {
+  width: 150px;
 }
 .e200 {
   width: 200px;
@@ -374,7 +381,7 @@ img {
 }
 
 .input_style1{
-  width:95px;
+  width:200px;
   height:14px;
   font-size:16px;
   text-align: right;
@@ -492,13 +499,13 @@ div {position: relative;}
 
 /* チェックが入ったチェックボックス */
 input[type="checkbox"] {
-  box-shadow: 0 0 0 5px rgb(255, 30, 0);
+  box-shadow: 0 0 0 1px rgb(0, 0, 0);
 }
 
 input[type="checkbox"]:checked {
   border-color:  #585753; /* 枠の色変更 お好きな色を */
   background-color: #FFF; /* 背景の色変更 お好きな色を */  
-  box-shadow: 0 0 0 5px rgb(0, 132, 255);
+  box-shadow: 0 0 0 0px rgb(0, 132, 255);
 }
 
 /* *** refer following articlw, thanks a lot ! ** / 

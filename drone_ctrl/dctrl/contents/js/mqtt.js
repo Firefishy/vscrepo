@@ -9,8 +9,9 @@
 let sub = mqtt.connect('ws://127.0.0.1:9001');
 
 // Topic definition
-let topic_pub = "drone/dctrl"; // コマンド、ミッションデータ
-let topic_sub = "drone/dinfo"; // 座標等のドローン情報
+let topic_pub = "drone/dctrl";        // 操作コマンド、Simple Goto
+let topic_mission = "drone/mission";  // ミッションデータ
+let topic_sub = "drone/dinfo";        // 座標等のドローン情報
 
 let dlat = 35.89;
 let dlon = 139.95;
@@ -23,14 +24,15 @@ var markers = new Array();  // マーカーハンドラを保存する連想配�
 ////////////////////////////////////////////////////////////////////////
 // 連想配列
 // ドローン操作用コマンド：Publish
-let command = {
-  "command":"None",
+let drone_command = {
+  "operation":"None",
   "d_lat":"0",
   "d_lon":"0",
-  "d_alt":"0",
+  "d_alt":"0"
 }
 // ドローンミッション用コマンド : Publish
-let mission_data = {
+let drone_mission = {
+  "operation":"None",
   "index":"0",
   "cntwp":"0",
   "frame":"0",
@@ -39,10 +41,22 @@ let mission_data = {
   "para2":"0",
   "para3":"0",
   "para4":"0",
-  "lat":"0",
-  "lon":"0",
-  "alt":"0",
+  "d_lat":"0",
+  "d_lon":"0",
+  "d_alt":"0",
   "acnt":"0"
+}
+
+let drone_mission2 = {
+  "sfx":"None",
+  "operation":"None",
+  "wp0":"None",
+  "wp1":"None",
+  "wp2":"None",
+  "wp3":"None",
+  "wp4":"None",
+  "wp5":"None",
+  "wp6":"None"
 }
 
 // mapidと名の付いたdiv要素に地図を作成’（[緯度,経度],拡大率）
@@ -55,17 +69,41 @@ let tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 });
 tileLayer.addTo(mymap); // 作成したtileLayerをmymapに追加する
 
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+// Goto/Missionの選択場所の判別
+let flg_operation = 0;
+let flg_mission_wp = 1;
+const setOperation = (flg1, flg2) => {
+  flg_operation = flg1;
+  flg_mission_wp = flg2;
+  console.log(flg1);
+  console.log(flg2);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////
 // 地図上を左クリックするとエディットボックスにその緯度/経度を書き込む
 mymap.on('click', function(e) {
   console.log("Mouse clicked!");
-  document.getElementById('lat').value = e.latlng.lat;
-  document.getElementById('lon').value = e.latlng.lng;
+  // Goto要素が選択されている場合
+  if(flg_operation==0){
+    document.getElementById('lat').value = e.latlng.lat;
+    document.getElementById('lon').value = e.latlng.lng;
+    console.log(e.latlng.lat);
+    console.log(e.latlng.lng);
+  }
+  // Mission要素が選択されている場合：現状最大5箇所
+  else{
+    document.getElementById('mwp' +  flg_mission_wp.toString() + '_lat').innerHTML = e.latlng.lat;
+    document.getElementById('mwp' +  flg_mission_wp.toString() + '_lon').innerHTML = e.latlng.lat;
+    document.getElementById('mwp' +  flg_mission_wp.toString() + '_alt').innerHTML = 30.0;
+  }
 } );
 
 // マーカーにする画像を読み込む
 let quad_x_Icon = L.icon({ iconUrl: 'img/quad_x-90.png', iconRetinaUrl: 'img/quad_x-90.png', iconSize: [50, 50], iconAnchor: [25, 25], popupAnchor: [0, -50] });
 
-
+////////////////////////////////////////////////////////////////////////////////////////////////
 // １秒毎にPublish実行
 // pubLoop = setInterval(() => {
 //   const time = Date.now().toString();
@@ -75,6 +113,7 @@ let quad_x_Icon = L.icon({ iconUrl: 'img/quad_x-90.png', iconRetinaUrl: 'img/qua
 //   //console.log(metric.toString());
 // }, 1000);
 
+////////////////////////////////////////////////////////////////////////////////////////////////
 // サブスクライバ
 sub.subscribe(topic_sub);
 // サブスクライバのCallback
@@ -165,45 +204,147 @@ var client = new Paho.MQTT.Client(
   "/ws", "myclientid_" + parseInt(Math.random() * 100, 10)
 );
 
-
+////////////////////////////////////////////////////////////////////////////////////////////////
 // HTML上のボタンが押された時の処理
-//function droneCtrl(str) {
 const droneCtrl = (str) => {
-  command["command"] = str;   // 引数の文字列がそのままコマンドになる
+  let latData, lonData, altData;
+  // コマンド
   // GOTOのときは，緯度/経度/高度も取得してコマンドを作る
-  if( str == "GOTO" ) {
-    console.log("###");
-    let _lat = document.getElementById('lat').value;
-    console.log(_lat);
-    let _lon = document.getElementById('lon').value;
-    console.log(_lon);
-    let _alt = document.getElementById('alt').value;
-    console.log(_alt);
-    command["d_lat"] = _lat;
-    command["d_lon"] = _lon;
-    command["d_alt"] = _alt;
+  if(str == "GOTO") {
+    // 操作画面から目的地の座標を取得して設定する
+    drone_command["operation"] = str;
+    latData = document.getElementById('lat').value;
+    console.log(latData);
+    lonData = document.getElementById('lon').value;
+    console.log(lonData);
+    altData = document.getElementById('alt').value;
+    console.log(altData);
+    drone_command["d_lat"] = latData;
+    drone_command["d_lon"] = lonData;
+    drone_command["d_alt"] = altData;
+    // MQTTでパブリッシュする
+    pubCommand(topic_pub,drone_command);
+  }
+  else if(str == "MISSION"){
+    // ミッションファイルを作成する
+    // createMissionFile()
+    drone_mission2["sfx"] = "'QGC WPL 110'+'\r\n'"
+
+    latData = document.getElementById('mwp1_lat').innerHTML;
+    lonData = document.getElementById('mwp1_lon').innerHTML;
+    altData = document.getElementById('mwp1_alt').innerHTML;    
+    drone_mission2["wp0"] =   
+      0 + '\t'
+      + 0 + '\t'
+      + 0 + '\t'
+      + document.getElementById('mwp1_cmd').value + '\t'
+      + 0 + '\t'
+      + 0 + '\t'
+      + 0 + '\t'
+      + 0 + '\t'
+      + latData + '\t'
+      + lonData + '\t'
+      + altData + '\t'
+      + 1 + '\r\n';    
+
+      latData = document.getElementById('mwp1_lat').innerHTML;
+      lonData = document.getElementById('mwp1_lon').innerHTML;
+      altData = document.getElementById('mwp1_alt').innerHTML;    
+      drone_mission2["wp1"] =   
+        1 + '\t'
+        + 0 + '\t'
+        + 0 + '\t'
+        + 22 + '\t'
+        + 0 + '\t'
+        + 0 + '\t'
+        + 0 + '\t'
+        + 0 + '\t'
+        + latData + '\t'
+        + lonData + '\t'
+        + altData + '\t'
+        + 1 + '\r\n';  
+
+    for (let i = 1; i < 6; i++){
+      latData = document.getElementById('mwp' + i.toString() + '_lat').innerHTML;
+      lonData = document.getElementById('mwp' + i.toString() + '_lon').innerHTML;
+      altData = document.getElementById('mwp' + i.toString() + '_alt').innerHTML;
+      console.log(latData);
+      drone_mission["operation"] = str;
+      drone_mission["index"] = i;
+      drone_mission["cntwp"] = 1;
+      drone_mission["frame"] = 0;
+      drone_mission["command"] = document.getElementById('mwp' + i.toString() + '_cmd').value;
+      drone_mission["para1"] = 0;
+      drone_mission["para2"] = 0;
+      drone_mission["para3"] = 0;
+      drone_mission["para4"] = 0;
+      drone_mission["d_lat"] = latData;
+      drone_mission["d_lon"] = lonData;
+      drone_mission["d_alt"] = altData;
+      drone_mission["acnt"]  = 1;  
+      // MQTTでパブリッシュする
+      // pubCommand(topic_mission,drone_mission);
+      drone_mission2["operation"] = str;
+      drone_mission2["wp"+(i+1).toString()] =   
+        i+1 + '\t'
+        + 0 + '\t'
+        + 0 + '\t'
+        + document.getElementById('mwp' + i.toString() + '_cmd').value + '\t'
+        + 0 + '\t'
+        + 0 + '\t'
+        + 0 + '\t'
+        + 0 + '\t'
+        + latData + '\t'
+        + lonData + '\t'
+        + altData + '\t'
+        + 1 + '\r\n';
+    }
+    pubCommand(topic_mission,drone_mission2);
   }
   else{
-    command["d_lat"] = 0;
-    command["d_lon"] = 0;
-    command["d_alt"] = 0;  
+    // Goto、Mission以外のコマンド送信時
+    drone_command["operation"] = str;
+    console.log(drone_command["operation"] = str)
+    drone_command["d_lat"] = 0;
+    drone_command["d_lon"] = 0;
+    drone_command["d_alt"] = 0;  
+    // MQTTでパブリッシュする
+    pubCommand(topic_pub,drone_command);
   }
-  pubCommand(command);
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////
 // JSON型にしてからMQTTでPublishする
-const pubCommand = (command) => {
+const pubCommand = (topic, cmd) => {
+  console.log("Pub command");
   // JSON型にする
-  json_command = JSON.stringify(command);
+  json_command = JSON.stringify(cmd);
   // MQTTのメッセージパケットを作る
   message = new Paho.MQTT.Message(json_command);  
   // トピック名を設定
-  message.destinationName = "drone/dctrl";            
+  message.destinationName = topic;            
   // MQTTでPubする
   client.send(message); 
-  console.log("SEND ON " + message.destinationName + " PAYLOAD " + message.payloadString);   //debugボックスに表示
+  //debugボックスに表示
+  console.log("SEND ON " + message.destinationName + " PAYLOAD " + message.payloadString);   
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////
+// Missionファイルを作成
+const createMissionFile = () =>{
+  // 1. Blobオブジェクトを作成する
+  const blob = new Blob(['あいうえお'],{type:"text/plain"});
+  // 2. HTMLのa要素を生成
+  const link = document.createElement('a');
+  // 3. BlobオブジェクトをURLに変換
+  link.href = URL.createObjectURL(blob);
+  // 4. ファイル名を指定する
+  link.download = 'aaa.txt';
+  // 5. a要素をクリックする処理を行う
+  link.click();
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////
 let has_had_focus = false;
 let pipe = function(el_name, send) {
   let div  = $(el_name + ' div');
@@ -226,6 +367,7 @@ let pipe = function(el_name, send) {
     return print;
 };
 
+////////////////////////////////////////////////////////////////////////////////////////////////
 let print_first = pipe('#first', function(data) {
     message = new Paho.MQTT.Message(data);
     message.destinationName = "test";
@@ -235,9 +377,7 @@ let print_first = pipe('#first', function(data) {
 
 let debug = pipe('#second');
 
-
-
-
+////////////////////////////////////////////////////////////////////////////////////////////////
 // MQTTの接続オプション
 var options = {
   timeout: 3,

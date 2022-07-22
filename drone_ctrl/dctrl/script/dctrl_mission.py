@@ -76,63 +76,93 @@ if __name__ == '__main__':
         pub_drone_info()
 
         while True:
-               
+            # ---------------------------
+            # Drone command   
+            # ---------------------------
             # Drone mode 
-            if mqttClass.drone_command["command"] == "GUIDED":
+            if mqttClass.drone_command["operation"] == "GUIDED":
                 dlog.LOG("DEBUG", "Set mode to GUIDED")
                 dCtrlClass.set_vehicle_mode("GUIDED")
-                mqttClass.drone_command["command"] = "NONE"
-            elif mqttClass.drone_command["command"] == "AUTO":
+                mqttClass.drone_command["operation"] = "NONE"
+            elif mqttClass.drone_command["operation"] == "AUTO":
                 dlog.LOG("DEBUG", "Set mode to AUTO")
                 dCtrlClass.set_vehicle_mode("AUTO")
-                mqttClass.drone_command["command"] = "NONE"
-            elif mqttClass.drone_command["command"] == "RTL":
+                mqttClass.drone_command["operation"] = "NONE"
+            elif mqttClass.drone_command["operation"] == "RTL":
                 dlog.LOG("DEBUG", "Set mode to AUTO")
                 dCtrlClass.set_vehicle_mode("RTL")
-                mqttClass.drone_command["command"] = "NONE"
+                mqttClass.drone_command["operation"] = "NONE"
             
             # Arm
-            elif mqttClass.drone_command["command"] == "ARM":
+            elif mqttClass.drone_command["operation"] == "ARM":
                 dlog.LOG("DEBUG", "Arming moter")
                 dCtrlClass.vehicle_arming()
-                mqttClass.drone_command["command"] = "NONE"
+                mqttClass.drone_command["operation"] = "NONE"
             # DisArm
-            elif mqttClass.drone_command["command"] == "DISARM":
+            elif mqttClass.drone_command["operation"] == "DISARM":
                 dlog.LOG("DEBUG", "DIsarming moter")
                 dCtrlClass.vehicle_disarming()
-                mqttClass.drone_command["command"] = "NONE"
+                mqttClass.drone_command["operation"] = "NONE"
 
             # Take off
-            elif mqttClass.drone_command["command"] == "TAKEOFF":
+            elif mqttClass.drone_command["operation"] == "TAKEOFF":
                 dlog.LOG("DEBUG", "Take off")
                 dCtrlClass.vehicle_takeoff(20.0)
-                mqttClass.drone_command["command"] = "NONE"
+                mqttClass.drone_command["operation"] = "NONE"
 
             # Land
-            elif mqttClass.drone_command["command"] == "LAND":
+            elif mqttClass.drone_command["operation"] == "LAND":
                 dlog.LOG("DEBUG", "Landing")
                 dCtrlClass.set_vehicle_mode("LAND")
-                mqttClass.drone_command["command"] = "NONE"
+                mqttClass.drone_command["operation"] = "NONE"
 
             # Simple GOTO
-            elif mqttClass.drone_command["command"] == "GOTO":
+            elif mqttClass.drone_command["operation"] == "GOTO":
                 dlog.LOG("DEBUG", "Simple GOTO")
-                dCtrlClass.vehicle_goto(mqttClass.drone_command)
-                mqttClass.drone_command["command"] = "NONE"
 
+                # ガイドモードにセット
+                dCtrlClass.set_vehicle_mode("GUIDED")
+                pub_drone_info()
+
+                # アームしていない場合ARMする
+                if dCtrlClass.vehicle.armed == False:
+                    pub_drone_info()
+                    dCtrlClass.arm_and_takeoff(ARM_HEIGHT)
+                    dlog.LOG("DEBUG", "ARMと離陸開始:" + str(ARM_HEIGHT) + 'm')
+                # アーム状態をチェック
+                while dCtrlClass.vehicle.armed == False:
+                    pub_drone_info()
+                    dlog.LOG("DEBUG", "ARMと離陸をしています...")
+                    time.sleep(1)
+                dlog.LOG("INFO", "ARMと離陸完了:" + str(ARM_HEIGHT) + 'm')    
+
+                dCtrlClass.vehicle_goto(mqttClass.drone_command)
+                mqttClass.drone_command["operation"] = "NONE"
+
+            # ---------------------------
+            # Drone mission   
+            # ---------------------------
             # Mission
-            elif mqttClass.drone_command["command"] == "MISSION":
+            if mqttClass.drone_mission["operation"] == "MISSION":
                 dlog.LOG("DEBUG", "MISSION")
-                mqttClass.drone_command["command"] = "NONE"
+                mqttClass.drone_mission["operation"] = "NONE"
 
                 # print("Starting mission")
                 # # 最初の（0）ウェイポイントに設定されたミッションをリセット
                 # dCtrlClass.vehicle.commands.next = 0
 
-                import_mission_filename = '../mission/mpmission.txt'
-                export_mission_filename = '../mission/exportedmission.txt' 
+                # # ジオフェンスファイル名
+                # import_fence_filename = '../mission/polygon_fence.txt'
 
-                #Upload mission from file
+                # # ジオフェンスデータをファイルからドローンへアップロード
+                # dCtrlClass.upload_fence(import_fence_filename) 
+                
+                # ミッションファイル名
+                import_mission_filename = '../mission/mpmission.txt'
+                # エクスポートファイル名
+                export_mission_filename = '../mission/exportedmission.txt'
+
+                # ミッションデータをファイルからドローンへアップロード
                 dCtrlClass.upload_mission(import_mission_filename)
 
                 # ガイドモードにセット
@@ -151,11 +181,11 @@ if __name__ == '__main__':
                     time.sleep(1)
                 dlog.LOG("INFO", "ARMと離陸完了:" + str(ARM_HEIGHT) + 'm')                
 
-                # AUTOモードに設定して、ミッションを開始する
+                # ミッションを実行するため、モードをAUTOにする
                 dCtrlClass.set_vehicle_mode("AUTO")
                 pub_drone_info()
 
-                count = 0
+                # ミッションを実行
                 while True:
                     pub_drone_info()
                     nextwaypoint=dCtrlClass.vehicle.commands.next
@@ -174,21 +204,20 @@ if __name__ == '__main__':
                     dlog.LOG("DEBUG", msg)
                     time.sleep(1)
 
+                # ミッション終了後、離陸地点へ戻る
                 dCtrlClass.set_vehicle_mode("RTL") 
             pub_drone_info()
             time.sleep(1)
-        
-        # スクリプトを終了する前に車両オブジェクトを閉じる
-        dlog.LOG("INFO", "Close vehicle object")
 
-        dCtrlClass.vehicle.close() 
-
-        dlog.LOG("INFO", "プログラム終了")
-
+    # キーボード割り込みで終了
     except KeyboardInterrupt:
         print("Exception")
         # Catch Ctrl-C
         msg = "キーボード例外処理発生"
+        # スクリプトを終了する前に車両オブジェクトを閉じる
+        dlog.LOG("INFO", "Close vehicle object")
+        dCtrlClass.vehicle.close() 
+        dlog.LOG("INFO", "プログラム終了")
         dlog.LOG("CRITICAL", msg)
 
 
