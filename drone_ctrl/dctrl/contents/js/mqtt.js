@@ -95,7 +95,7 @@ mymap.on('click', function(e) {
   // Mission要素が選択されている場合：現状最大5箇所
   else{
     document.getElementById('mwp' +  flg_mission_wp.toString() + '_lat').innerHTML = e.latlng.lat;
-    document.getElementById('mwp' +  flg_mission_wp.toString() + '_lon').innerHTML = e.latlng.lat;
+    document.getElementById('mwp' +  flg_mission_wp.toString() + '_lon').innerHTML = e.latlng.lng;
     document.getElementById('mwp' +  flg_mission_wp.toString() + '_alt').innerHTML = 30.0;
   }
 } );
@@ -139,10 +139,6 @@ sub.on('message', function (topic_sub, message) {
   document.getElementById('clon').innerHTML = dlon.toString() + " (deg)";
   document.getElementById('calt').innerHTML = alt.toString() + " (m)";
   document.getElementById('cang').innerHTML = ang.toString() + " (deg)";
-  // document.getElementById('clat').value = dlat;
-  // document.getElementById('clon').value = dlon;
-  // document.getElementById('calt').value = alt;
-  // document.getElementById('cang').value = ang;
 
   // ポップアップ用に文字列を作る +=で追加していく
   let drone_popmessage = drone_name + '<br>';
@@ -222,84 +218,44 @@ const droneCtrl = (str) => {
     drone_command["d_lat"] = latData;
     drone_command["d_lon"] = lonData;
     drone_command["d_alt"] = altData;
+
     // MQTTでパブリッシュする
     pubCommand(topic_pub,drone_command);
   }
+
   else if(str == "MISSION"){
-    // ミッションファイルを作成する
-    // createMissionFile()
-    drone_mission2["sfx"] = "'QGC WPL 110'+'\r\n'"
+
+    let cmdAry = [];
+    let mission_cmd;
 
     latData = document.getElementById('mwp1_lat').innerHTML;
     lonData = document.getElementById('mwp1_lon').innerHTML;
-    altData = document.getElementById('mwp1_alt').innerHTML;    
-    drone_mission2["wp0"] =   
-      0 + '\t'
-      + 0 + '\t'
-      + 0 + '\t'
-      + document.getElementById('mwp1_cmd').value + '\t'
-      + 0 + '\t'
-      + 0 + '\t'
-      + 0 + '\t'
-      + 0 + '\t'
-      + latData + '\t'
-      + lonData + '\t'
-      + altData + '\t'
-      + 1 + '\r\n';    
+    altData = document.getElementById('mwp1_alt').innerHTML;
 
-      latData = document.getElementById('mwp1_lat').innerHTML;
-      lonData = document.getElementById('mwp1_lon').innerHTML;
-      altData = document.getElementById('mwp1_alt').innerHTML;    
-      drone_mission2["wp1"] =   
-        1 + '\t'
-        + 0 + '\t'
-        + 0 + '\t'
-        + 22 + '\t'
-        + 0 + '\t'
-        + 0 + '\t'
-        + 0 + '\t'
-        + 0 + '\t'
-        + latData + '\t'
-        + lonData + '\t'
-        + altData + '\t'
-        + 1 + '\r\n';  
+    mission_cmd = makeMissionCmd(
+      0,
+      document.getElementById('mwp1_cmd').value, 
+      latData, lonData, altData, 1
+    );         
+    cmdAry.push(mission_cmd) 
+
+    mission_cmd = makeMissionCmd(1, 22, latData, lonData, altData, 1);     
+    cmdAry.push(mission_cmd) 
 
     for (let i = 1; i < 6; i++){
       latData = document.getElementById('mwp' + i.toString() + '_lat').innerHTML;
       lonData = document.getElementById('mwp' + i.toString() + '_lon').innerHTML;
       altData = document.getElementById('mwp' + i.toString() + '_alt').innerHTML;
-      console.log(latData);
-      drone_mission["operation"] = str;
-      drone_mission["index"] = i;
-      drone_mission["cntwp"] = 1;
-      drone_mission["frame"] = 0;
-      drone_mission["command"] = document.getElementById('mwp' + i.toString() + '_cmd').value;
-      drone_mission["para1"] = 0;
-      drone_mission["para2"] = 0;
-      drone_mission["para3"] = 0;
-      drone_mission["para4"] = 0;
-      drone_mission["d_lat"] = latData;
-      drone_mission["d_lon"] = lonData;
-      drone_mission["d_alt"] = altData;
-      drone_mission["acnt"]  = 1;  
-      // MQTTでパブリッシュする
-      // pubCommand(topic_mission,drone_mission);
       drone_mission2["operation"] = str;
-      drone_mission2["wp"+(i+1).toString()] =   
-        i+1 + '\t'
-        + 0 + '\t'
-        + 0 + '\t'
-        + document.getElementById('mwp' + i.toString() + '_cmd').value + '\t'
-        + 0 + '\t'
-        + 0 + '\t'
-        + 0 + '\t'
-        + 0 + '\t'
-        + latData + '\t'
-        + lonData + '\t'
-        + altData + '\t'
-        + 1 + '\r\n';
+      mission_cmd = makeMissionCmd(
+        i+1, 
+        document.getElementById('mwp' + i.toString() + '_cmd').value, 
+        latData, lonData, altData, 1
+      );
+      console.log(mission_cmd);
+      cmdAry.push(mission_cmd);
     }
-    pubCommand(topic_mission,drone_mission2);
+    pubCommand(topic_mission,cmdAry);
   }
   else{
     // Goto、Mission以外のコマンド送信時
@@ -311,6 +267,19 @@ const droneCtrl = (str) => {
     // MQTTでパブリッシュする
     pubCommand(topic_pub,drone_command);
   }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+// ミッションデータ（各WPのデータ）を作成
+const makeMissionCmd = (idx, cmd, lat , lon, alt, cnt) => {
+  missionData =   idx + '\t' 
+                + 0 + '\t' + 0 + '\t' + cmd + '\t' 
+                + 0 + '\t' + 0 + '\t' + 0 + '\t'  + 0 + '\t'
+                + lat + '\t' 
+                + lon + '\t' 
+                + alt + '\t'
+                + cnt + '\r\n';
+  return missionData;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////

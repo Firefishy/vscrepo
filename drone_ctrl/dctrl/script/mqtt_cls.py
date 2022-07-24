@@ -176,7 +176,7 @@ class MqttCtrl(Mqtt_Singleton):
     ### =================================================================================== 
     ### メッセージが届いたときの処理：コールバック
     ### =================================================================================== 
-    ### コマンド、Sinple Goto
+    ### コマンド: Simple Goto
     def on_message(self, client, userdata, msg):
         dlog.LOG("DEBUG","START");
         # msg.topicにトピック名が，msg.payloadに届いたデータ本体が入っている
@@ -196,84 +196,24 @@ class MqttCtrl(Mqtt_Singleton):
                 + str(self.drone_command["d_lon"]) + ","
                 + str(self.drone_command["d_alt"]) 
             )
-    ### Mission
+    ### コマンド: Mission
     def on_message_m(self, client, userdata, msg):
         dlog.LOG("DEBUG","START");
 
         path = '../mission/mpmission.txt'
         f = open(path, 'w')
-        f.write('QGC WPL 110###'+'\r\n')
+        #f.write(self.drone_mission2["sfx"]) # これは送られていない、要チェック！
+        f.write('QGC WPL 110'+'\r\n')
 
         # msg.topicにトピック名が，msg.payloadに届いたデータ本体が入っている
         recvData = json.loads(msg.payload)
 
+        # ミッションデータをファイルに保存
         if msg.topic==self.topic_mission:
-            self.drone_mission["operation"] = recvData["operation"]
-            if self.drone_mission["operation"] == "MISSION":
-                self.drone_mission2["wp0"] = recvData["wp0"]
-                self.drone_mission2["wp1"] = recvData["wp1"]
-                self.drone_mission2["wp2"] = recvData["wp2"]
-                self.drone_mission2["wp3"] = recvData["wp3"]
-                self.drone_mission2["wp4"] = recvData["wp4"]
-                self.drone_mission2["wp5"] = recvData["wp5"]
-                self.drone_mission2["wp6"] = recvData["wp6"]
-                f.write(self.drone_mission2["wp0"])
-                f.write(self.drone_mission2["wp1"])
-                f.write(self.drone_mission2["wp2"])
-                f.write(self.drone_mission2["wp3"])
-                f.write(self.drone_mission2["wp4"])
-                f.write(self.drone_mission2["wp5"])
-                f.write(self.drone_mission2["wp6"])
-
-
-
+          for num in range(len(recvData)):
+            f.write(recvData[num])
+          self.drone_mission["operation"] = "MISSION";
         f.close()        
-        # if msg.topic==self.topic_mission:
-        #     self.drone_mission["operation"] = recvData["operation"]
-        #     if self.drone_mission["operation"] == "MISSION":
-        #         self.drone_mission["index"] = recvData["index"];
-        #         self.drone_mission["cntwp"] = recvData["cntwp"];
-        #         self.drone_mission["frame"] = recvData["frame"];
-        #         self.drone_mission["command"] = recvData["command"];
-        #         self.drone_mission["para1"] = recvData["para1"];
-        #         self.drone_mission["para2"] = recvData["para2"];
-        #         self.drone_mission["para3"] = recvData["para3"];
-        #         self.drone_mission["para4"] = recvData["para4"];
-        #         self.drone_mission["d_lat"] = recvData["d_lat"];
-        #         self.drone_mission["d_lon"] = recvData["d_lon"];
-        #         self.drone_mission["d_alt"] = recvData["d_alt"];
-        #         self.drone_mission["acnt"]  = recvData["acnt"];
-        #     dlog.LOG("DEBUG", 
-        #     "Mission data: " 
-        #         + str(self.drone_mission["operation"]) + ","
-        #         + str(self.drone_mission["index"]) + ","
-        #         + str(self.drone_mission["cntwp"]) + ","
-        #         + str(self.drone_mission["frame"]) + ","
-        #         + str(self.drone_mission["command"]) + ","
-        #         + str(self.drone_mission["para1"]) + ","
-        #         + str(self.drone_mission["para2"]) + ","
-        #         + str(self.drone_mission["para3"]) + ","
-        #         + str(self.drone_mission["para4"]) + ","              
-        #         + str(self.drone_mission["d_lat"]) + ","
-        #         + str(self.drone_mission["d_lon"]) + ","
-        #         + str(self.drone_mission["d_alt"]) 
-        #     )
-        #     cmd = Command(
-        #         0,
-        #         0,
-        #         0,
-        #         self.drone_mission["frame"],
-        #         self.drone_mission["command"],
-        #         self.drone_mission["cntwp"],
-        #         self.drone_mission["acnt"],
-        #         self.drone_mission["para1"],
-        #         self.drone_mission["para2"],
-        #         self.drone_mission["para3"], 
-        #         self.drone_mission["para4"], 
-        #         self.drone_mission["d_lat"],
-        #         self.drone_mission["d_lon"],
-        #         self.drone_mission["d_alt"]
-        #     )
 
     ### =================================================================================== 
     ### topicをpublish
