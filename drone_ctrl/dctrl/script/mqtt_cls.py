@@ -127,8 +127,8 @@ class MqttCtrl(Mqtt_Singleton):
         self.client.on_disconnect = self.on_disconnect        
         self.client_m.on_disconnect = self.on_disconnect_m        
         # メッセージ送信時のコールバック
-        self.client.on_publish = self.on_publish              
-        self.client_m.on_publish = self.on_publish_m              
+        #self.client.on_publish = self.on_publish              
+        #self.client_m.on_publish = self.on_publish_m              
         # 接続先は自分自身
         self.client.connect(self.host, self.port, 60)     
         self.client_m.connect(self.host, self.port, 60)     
@@ -146,11 +146,11 @@ class MqttCtrl(Mqtt_Singleton):
     ### ブローカーに接続できたときの処理：コールバック
     ### =================================================================================== 
     def on_connect(self, client, userdata, flag, rc):
-        print("Connected with result code " + str(rc))  # 接続できた旨表示
+        dlog.LOG("DEBUG", "Connected with result code " + str(rc))  # 接続できた旨表示
         client.subscribe(self.topic_dctrl)  # subするトピックを設定 
 
     def on_connect_m(self, client_m, userdata, flag, rc):
-        print("Connected with result code " + str(rc))  # 接続できた旨表示
+        dlog.LOG("DEBUG", "Connected with result code " + str(rc))  # 接続できた旨表示
         client_m.subscribe(self.topic_mission)  # subするトピックを設定 
 
     ### =================================================================================== 
@@ -158,20 +158,20 @@ class MqttCtrl(Mqtt_Singleton):
     ### =================================================================================== 
     def on_disconnect(self, client, userdata, rc):
         if rc != 0:
-            print("Unexpected disconnection.")
+            dlog.LOG("DEBUG", "Unexpected disconnection.")
 
     def on_disconnect_m(self, client, userdata, rc):
         if rc != 0:
-            print("Unexpected disconnection.")
+            dlog.LOG("DEBUG", "Unexpected disconnection.")
 
     ### =================================================================================== 
     ### publishが完了したときの処理：コールバック
     ### =================================================================================== 
-    def on_publish(self, client, userdata, mid):
-        print("publish: {0}".format(mid))
+    # def on_publish(self, client, userdata, mid):
+    #     dlog.LOG("DEBUG", "publish: {0}".format(mid))
 
-    def on_publish_m(self, client, userdata, mid):
-        print("publish: {0}".format(mid))
+    # def on_publish_m(self, client, userdata, mid):
+    #     dlog.LOG("DEBUG", "publish: {0}".format(mid))
 
     ### =================================================================================== 
     ### メッセージが届いたときの処理：コールバック
@@ -190,12 +190,12 @@ class MqttCtrl(Mqtt_Singleton):
                 self.drone_command["d_lon"] = recvData["d_lon"]
                 self.drone_command["d_alt"] = recvData["d_alt"]
 
-            print("Received command '" 
-                + self.drone_command["operation"] + ","
-                + str(self.drone_command["d_lat"]) + ","
-                + str(self.drone_command["d_lon"]) + ","
-                + str(self.drone_command["d_alt"]) 
-            )
+            # print("Received command '" 
+            #     + self.drone_command["operation"] + ","
+            #     + str(self.drone_command["d_lat"]) + ","
+            #     + str(self.drone_command["d_lon"]) + ","
+            #     + str(self.drone_command["d_alt"]) 
+            # )
     ### コマンド: Mission
     def on_message_m(self, client, userdata, msg):
         dlog.LOG("DEBUG","START");

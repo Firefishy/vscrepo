@@ -47,18 +47,6 @@ let drone_mission = {
   "acnt":"0"
 }
 
-let drone_mission2 = {
-  "sfx":"None",
-  "operation":"None",
-  "wp0":"None",
-  "wp1":"None",
-  "wp2":"None",
-  "wp3":"None",
-  "wp4":"None",
-  "wp5":"None",
-  "wp6":"None"
-}
-
 // mapidと名の付いたdiv要素に地図を作成’（[緯度,経度],拡大率）
 let mymap = L.map('mapid').setView([dlat,dlon],dzoom);
     
@@ -68,7 +56,6 @@ let tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
     maxZoom: 19
 });
 tileLayer.addTo(mymap); // 作成したtileLayerをmymapに追加する
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // Goto/Missionの選択場所の判別
@@ -133,12 +120,26 @@ sub.on('message', function (topic_sub, message) {
   // 高度
   let alt  = parseFloat( drone_data.position.altitude );    
   // 方位
-  let ang  = parseFloat( drone_data.position.heading );     
+  let ang  = parseFloat( drone_data.position.heading );
 
-  document.getElementById('clat').innerHTML = dlat.toString() + " (deg)";
-  document.getElementById('clon').innerHTML = dlon.toString() + " (deg)";
-  document.getElementById('calt').innerHTML = alt.toString() + " (m)";
-  document.getElementById('cang').innerHTML = ang.toString() + " (deg)";
+  document.getElementById('carm').innerHTML = arm;
+  if (arm == 'True'){
+    document.getElementById('carm').style.color = '#ffff00';
+  }
+  else{
+    document.getElementById('carm').style.color = '#777777';
+  }
+  document.getElementById('cmode').innerHTML = mode;
+  document.getElementById('clat').innerHTML = dlat.toString();
+  document.getElementById('clon').innerHTML = dlon.toString();
+  document.getElementById('calt').innerHTML = alt.toString();
+  if (alt > 1.0){
+    document.getElementById('calt').style.color = '#ffff00';
+  }
+  else{
+    document.getElementById('calt').style.color = '#777777';
+  }
+  document.getElementById('cang').innerHTML = ang.toString();
 
   // ポップアップ用に文字列を作る +=で追加していく
   let drone_popmessage = drone_name + '<br>';
@@ -205,7 +206,7 @@ var client = new Paho.MQTT.Client(
 const droneCtrl = (str) => {
   let latData, lonData, altData;
   // コマンド
-  // GOTOのときは，緯度/経度/高度も取得してコマンドを作る
+  // Simple GOTO: 緯度/経度/高度も取得してコマンドを作る
   if(str == "GOTO") {
     // 操作画面から目的地の座標を取得して設定する
     drone_command["operation"] = str;
@@ -223,38 +224,56 @@ const droneCtrl = (str) => {
     pubCommand(topic_pub,drone_command);
   }
 
+  // Mission
   else if(str == "MISSION"){
-
     let cmdAry = [];
     let mission_cmd;
 
-    latData = document.getElementById('mwp1_lat').innerHTML;
-    lonData = document.getElementById('mwp1_lon').innerHTML;
-    altData = document.getElementById('mwp1_alt').innerHTML;
+    let clatData = document.getElementById('clat').innerHTML;
+    let clonData = document.getElementById('clon').innerHTML;
+    let caltData = document.getElementById('calt').innerHTML;
 
+    let idx = 0;
+  
+    // 現在のウェイポイント
     mission_cmd = makeMissionCmd(
-      0,
+      idx++,
+      1,
+      3,
       document.getElementById('mwp1_cmd').value, 
-      latData, lonData, altData, 1
+      clatData, clonData, caltData, 1
     );         
     cmdAry.push(mission_cmd) 
 
-    mission_cmd = makeMissionCmd(1, 22, latData, lonData, altData, 1);     
+    // 現在位置で離陸: 離陸高度を5mとする（暫定）
+    mission_cmd = makeMissionCmd(idx++, 0, 3, 22, clatData, clonData, 5.0, 1);     
     cmdAry.push(mission_cmd) 
 
+    // ミッションウェイポイントの設定
     for (let i = 1; i < 6; i++){
-      latData = document.getElementById('mwp' + i.toString() + '_lat').innerHTML;
-      lonData = document.getElementById('mwp' + i.toString() + '_lon').innerHTML;
-      altData = document.getElementById('mwp' + i.toString() + '_alt').innerHTML;
-      drone_mission2["operation"] = str;
-      mission_cmd = makeMissionCmd(
-        i+1, 
-        document.getElementById('mwp' + i.toString() + '_cmd').value, 
-        latData, lonData, altData, 1
-      );
-      console.log(mission_cmd);
-      cmdAry.push(mission_cmd);
+      if( document.getElementById("achk" + i.toString()).checked == true ){
+        latData = document.getElementById('mwp' + i.toString() + '_lat').innerHTML;
+        lonData = document.getElementById('mwp' + i.toString() + '_lon').innerHTML;
+        altData = document.getElementById('mwp' + i.toString() + '_alt').innerHTML;
+        mission_cmd = makeMissionCmd(
+          idx++,
+          0, 
+          3,
+          document.getElementById('mwp' + i.toString() + '_cmd').value, 
+          latData, lonData, altData, 1
+        );
+        console.log(mission_cmd);
+        cmdAry.push(mission_cmd);
+      }       
     }
+
+    // RTL
+    if(document.getElementById("achke").checked == true){
+      mission_cmd = makeMissionCmd(idx, 0, 3, 20, clatData, clonData, caltData, 1); 
+      cmdAry.push(mission_cmd)  
+    }
+
+    // コマンドの送信
     pubCommand(topic_mission,cmdAry);
   }
   else{
@@ -271,9 +290,16 @@ const droneCtrl = (str) => {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // ミッションデータ（各WPのデータ）を作成
-const makeMissionCmd = (idx, cmd, lat , lon, alt, cnt) => {
+const makeMissionCmd = (
+  idx,              // index: 0,1,2 ...
+  cwp,              // current waypoint: 0, 1
+  frame,            // 0: global+MSL, 3:global+rel
+  cmd,              // command: 16, 22
+  lat , lon, alt,
+  cnt
+) => {
   missionData =   idx + '\t' 
-                + 0 + '\t' + 0 + '\t' + cmd + '\t' 
+                + cwp + '\t' + frame + '\t' + cmd + '\t' 
                 + 0 + '\t' + 0 + '\t' + 0 + '\t'  + 0 + '\t'
                 + lat + '\t' 
                 + lon + '\t' 

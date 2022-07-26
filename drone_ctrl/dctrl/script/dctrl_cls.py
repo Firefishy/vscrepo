@@ -147,13 +147,14 @@ class DrnCtrl(Dctr_Singleton):
     ### 連想配列 MQTTで受信するドローン操作コマンド:クライアントから受信
     ###     コマンドおよび移動先の「緯度、経度、高度」情報
     ### =================================================================================== 
+    ### For Simple GOTO
     drone_command = {
         "command":"None",
         "d_lat":"0",
         "d_lon":"0",
         "d_alt":"0"
     }
-
+    # For MISSION
     drone_mission = {
         "index":"0",
         "cntwp":"0",
@@ -191,7 +192,7 @@ class DrnCtrl(Dctr_Singleton):
     ### コンストラクタ
     ### =================================================================================== 
     def __init__(self):
-        print("init")
+        #print("init")
         dlog.LOG("INFO", "dctrl_cls init")
 
     ### =================================================================================== 
@@ -213,7 +214,6 @@ class DrnCtrl(Dctr_Singleton):
         dlog.LOG("DEBUG", "START")
         msgstr = "Connect to vehicle object:" + json_file
         dlog.LOG("DEBUG", msgstr)
-        print("MSGSTR: " + msgstr)
         json_open = open(json_file, 'r')
         json_load = json.load(json_open)
         connection_string = (json_load['connection']['sim'])
@@ -296,13 +296,12 @@ class DrnCtrl(Dctr_Singleton):
         # Don't let the user try to arm until autopilot is ready
         while not self.vehicle.is_armable:
             msgstr = "Vehicle準備中 しばらくお待ちください(30秒程度かかる場合があります): " + str(count) + " 秒経過"
-            print(msgstr)
+            dlog.LOG("DEBUG", msgstr)
             #self.pub_state(msgstr)
             time.sleep(1)
             count += 1
         msgstr = "Vehicle Arm開始しています"
-        print(msgstr)
-        dlog.LOG("INFO", msgstr) 
+        dlog.LOG("DEBUG",msgstr)
         #self.pub_state(msgstr)
 
         # Arming check: 0 is disable
@@ -456,6 +455,76 @@ class DrnCtrl(Dctr_Singleton):
         cmds.download()
         cmds.wait_ready() # wait until download is complete.
 
+    
+    def adds_square_fence(self, aLocation, aSize):
+        cmds = self.vehicle.commands
+        print(" Clear any existing commands")
+        cmds.clear() 
+        print(" Define/add new commands.")
+        # 新しいコマンドを追加します。パラメータの意味/順序はCommandクラスに記載されています。
+        # MAV_CMD_NAV_TAKEOFF コマンドを追加しました。すでに空中にいる場合は無視されます。
+        cmds.add(
+            Command
+            ( 
+                4, 
+                0, 
+                0, 
+                mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT,  # グローバル（WGS84）座標フレーム+ホームポジションを基準とした高度。最初の値/x：緯度、2番目の値/ y：経度、3番目の値/ z：正の高度。0はホームポジションの高度です。
+                mavutil.mavlink.MAV_CMD_NAV_TAKEOFF,            # 地面/手からの離陸
+                0, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0, 
+                0, 
+                10
+            )
+        )
+
+        # MAV_CMD_NAV_WAYPOINT を4 箇所定義し、コマンドを追加します。
+        point1 = self.get_location_metres(aLocation, aSize, -aSize)
+        point2 = self.get_location_metres(aLocation, aSize, aSize)
+        point3 = self.get_location_metres(aLocation, -aSize, aSize)
+        point4 = self.get_location_metres(aLocation, -aSize, -aSize)
+
+        """
+        https://mavlink.io/en/messages/common.html#enums
+        ミッションメッセージ
+
+        """
+
+        cmds.add(
+            Command( 
+                0,                                              # Target System ID
+                0,                                              # Target Component ID
+                0,                                              # Waypoint ID
+                mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT,  # frame: グローバル（WGS84）座標フレーム+ホームポジションを基準とした高度。最初の値/x：緯度、2番目の値/ y：経度、3番目の値/ z：正の高度。0はホームポジションの高度です。
+                mavutil.mavlink.MAV_CMD_NAV_WAYPOINT,           # command: ウェイポイントへの移動 
+                0,                                              # current: false=0, true=1
+                0,                                              # autocontinue to next waypoint 
+                0,                                              # param1:
+                0,                                              # param2:
+                0,                                              # param3:
+                0,                                              # param4:
+                point1.lat,                                     # 緯度(ローカル:x(m)x10^4, グローバル:緯度x10^7)
+                point1.lon,                                     # 経度(ローカル:y(m)x10^4, グローバル:経度x10^7)
+                11                                              # 高度(m) 相対、絶対
+            )
+        )
+        cmds.add(Command( 0, 0, 0, mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_NAV_WAYPOINT, 0, 0, 0, 0, 0, 0, point2.lat, point2.lon, 12))
+        cmds.add(Command( 0, 0, 0, mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_NAV_WAYPOINT, 0, 0, 0, 0, 0, 0, point3.lat, point3.lon, 13))
+        cmds.add(Command( 0, 0, 0, mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_NAV_WAYPOINT, 0, 0, 0, 0, 0, 0, point4.lat, point4.lon, 14))
+        
+        # 4地点にダミーのウェイポイント "5 "を追加（目的地に到着したことを知ることができる）
+        cmds.add(Command( 0, 0, 0, mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_NAV_WAYPOINT, 0, 0, 0, 0, 0, 0, point4.lat, point4.lon, 14))    
+
+        msg = " Upload new commands to vehicle"
+        dlog.LOG("DEBUG", msg)
+        cmds.upload()
+
+
     ### =============================================================================================
     ### 現在のミッションに離陸コマンドと4つのウェイポイントコマンドを追加する。
     ###        ウェイポイントは、指定されたLocationGlobal (aLocation)を中心に、辺の長さ2*aSizeの正方形を
@@ -465,9 +534,9 @@ class DrnCtrl(Dctr_Singleton):
     ### =============================================================================================
     def adds_square_mission(self, aLocation, aSize):
         cmds = self.vehicle.commands
-        print(" Clear any existing commands")
+        dlog.LOG("DEBUG"," Clear any existing commands")
         cmds.clear() 
-        print(" Define/add new commands.")
+        dlog.LOG("DEBUG"," Define/add new commands.")
         # 新しいコマンドを追加します。パラメータの意味/順序はCommandクラスに記載されています。
         # MAV_CMD_NAV_TAKEOFF コマンドを追加しました。すでに空中にいる場合は無視されます。
         cmds.add(
@@ -538,8 +607,8 @@ class DrnCtrl(Dctr_Singleton):
     ###    この関数は、upload_mission()で使用される。    
     ### =============================================================================================
     def readmission(self, aFileName):
-        print("\nReading mission from file: %s" % aFileName)
-        cmds = self.vehicle.commands
+        msgstr = "Reading mission from file: %s" % aFileName
+        dlog.LOG("DEBUG", msgstr)
         missionlist=[]
         with open(aFileName) as f:
             for i, line in enumerate(f):
@@ -548,7 +617,7 @@ class DrnCtrl(Dctr_Singleton):
                         raise Exception('File is not supported WP version')
                 else:
                     linearray=line.split('\t')
-                    ln_index=int(linearray[0])                  # INDEX: 0,1,2..　--> Don't use
+                    #ln_index=int(linearray[0])                  # INDEX: 0,1,2..　--> Don't use
                     ln_currentwp=int(linearray[1])              # CURRENT WP　--> Don't use
                     ln_frame=int(linearray[2])                  # COORD FRAME　--> [5]
                     ln_command=int(linearray[3])                # COMMAND --> [4]
@@ -560,7 +629,7 @@ class DrnCtrl(Dctr_Singleton):
                     ln_param6=float(linearray[9])               # PARAM6/LONGITUDE --> [12]
                     ln_param7=float(linearray[10])              # PARAM7/ALTITUDE --> [13]
                     ln_autocontinue=int(linearray[11].strip())  # AUTOCONTINUE --> [6]
-                    cmd = Command(
+                    mission_cmd = Command(
                         0,
                         0,
                         0,
@@ -576,7 +645,7 @@ class DrnCtrl(Dctr_Singleton):
                         ln_param6,
                         ln_param7
                     )
-                    missionlist.append(cmd)
+                    missionlist.append(mission_cmd)
         f.close()
         return missionlist
 
@@ -587,15 +656,15 @@ class DrnCtrl(Dctr_Singleton):
         #Read mission from file
         missionlist = self.readmission(aFileName)
         
-        print("\nUpload mission from a file: %s" % aFileName)
+        #print("\nUpload mission from a file: %s" % aFileName)
         #Clear existing mission from vehicle
-        print(' Clear mission')
+        #print(' Clear mission')
         cmds = self.vehicle.commands
         cmds.clear()
         #Add new mission to vehicle
         for command in missionlist:
             cmds.add(command)
-        print(' Upload mission')
+        #print(' Upload mission')
         self.vehicle.commands.upload()
 
     ### =============================================================================================
@@ -606,7 +675,7 @@ class DrnCtrl(Dctr_Singleton):
         #Read mission from file
         missionlist = self.readmission(aFileName)
         
-        print("\nUpload fence from a file: %s" % aFileName)
+        #print("\nUpload fence from a file: %s" % aFileName)
         # Clear existing mission from vehicle
         # rint(' Clear mission')
         cmds = self.vehicle.commands
@@ -616,7 +685,7 @@ class DrnCtrl(Dctr_Singleton):
             # Missionの場合0のため、1に書き換える必要がある。
             command.mission_type = 1
             cmds.add(command)
-        print(' Upload mission')
+        #print(' Upload mission')
         #self.vehicle.commands.upload()
         cmds.upload_fence()
 
@@ -627,7 +696,7 @@ class DrnCtrl(Dctr_Singleton):
         """        
         save_mission() で、保存するファイル情報を取得するために使用される。
         """
-        print(" Download mission from vehicle")
+        #print(" Download mission from vehicle")
         missionlist=[]
         cmds = self.vehicle.commands
         cmds.download()
@@ -641,7 +710,7 @@ class DrnCtrl(Dctr_Singleton):
     ###    (http://qgroundcontrol.org/mavlink/waypoint_protocol#waypoint_file_format).
     ### =============================================================================================
     def save_mission(self, aFileName):
-        print("\nSave mission from Vehicle to file: %s" % aFileName)    
+        #print("\nSave mission from Vehicle to file: %s" % aFileName)    
         #Download mission from vehicle
         missionlist = self.download_mission()
         #Add file-format information
@@ -654,7 +723,7 @@ class DrnCtrl(Dctr_Singleton):
             commandline="%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (cmd.seq,cmd.current,cmd.frame,cmd.command,cmd.param1,cmd.param2,cmd.param3,cmd.param4,cmd.x,cmd.y,cmd.z,cmd.autocontinue)
             output+=commandline
         with open(aFileName, 'w') as file_:
-            print(" Write mission to file")
+            #print(" Write mission to file")
             file_.write(output)
             
             
@@ -662,7 +731,7 @@ class DrnCtrl(Dctr_Singleton):
     ### Print a mission file to demonstrate "round trip"
     ### =============================================================================================
     def printfile(self, aFileName):
-        print("\nMission file: %s" % aFileName)
+        #print("\nMission file: %s" % aFileName)
         with open(aFileName) as f:
             for line in f:
                 print(' %s' % line.strip())     
