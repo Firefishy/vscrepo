@@ -151,13 +151,13 @@ if __name__ == '__main__':
 
                 # print("Starting mission")
                 # # 最初の（0）ウェイポイントに設定されたミッションをリセット
-                # dCtrlClass.vehicle.commands.next = 0
+                dCtrlClass.vehicle.commands.next = 0
 
                 # # ジオフェンスファイル名
-                # import_fence_filename = '../mission/polygon_fence.txt'
+                import_fence_filename = '../mission/polygon_fence.txt'
 
                 # # ジオフェンスデータをファイルからドローンへアップロード
-                # dCtrlClass.upload_fence(import_fence_filename) 
+                dCtrlClass.upload_fence(import_fence_filename) 
                 
                 # ミッションファイル名
                 import_mission_filename = '../mission/mpmission.txt'

@@ -9,12 +9,12 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 """
 
-from http import client
+#from http import client
 import paho.mqtt.client as mqtt     # MQTTのライブラリをインポート
-from time import sleep              # 3秒間のウェイトのために使う
+#from time import sleep              # 3秒間のウェイトのために使う
 import dlogger as dlog
 import json
-from dronekit import Command
+#from dronekit import Command
 import os
 
 ##################################################################
@@ -45,10 +45,10 @@ class MqttCtrl(Mqtt_Singleton):
     topic_mission = "drone/mission"
     client = ""
     client_m = ""
-    msg = ""
+    #msg = ""
 
     ### =================================================================================== 
-    ### 連想配列 MQTTで受信するドローン操作コマンド:クライアントから受信
+    ### MQTTで受信するドローン操作コマンド:クライアントから受信
     ###     コマンドおよび移動先の「緯度、経度、高度」情報
     ### =================================================================================== 
     drone_command = {
@@ -73,44 +73,6 @@ class MqttCtrl(Mqtt_Singleton):
         "d_alt":"0",
         "acnt":"0"
     }   
-
-    drone_mission2 = {
-        "sfx":"None",
-        "operation":"None",
-        "wp0":"None",
-        "wp1":"None",
-        "wp2":"None",
-        "wp3":"None",
-        "wp4":"None",
-        "wp5":"None",
-        "wp6":"None"
-    } 
-
-    ### =================================================================================== 
-    ### 連想配列 MQTTで受信するドローンの制御コマンド:クライアントから受信
-    ###     コマンドおよび移動先情報
-    ### =================================================================================== 
-    drone_ctrl = {  
-        "command":{  
-            "Arm":"false",
-            "FlightMode":"false",
-            "Command":"false",
-        },
-        "position":{ 
-            "index":"0", 
-            "currentwp":"0",
-            "frame":"0",
-            "command":"16",
-            "para1":"0",
-            "para2":"0",
-            "para3":"0",
-            "para4":"0",
-            "lat":"35.89",
-            "lon":"139.95",
-            "alt":"20.0",
-            "aitocnt":"1",
-        }
-    }
 
     ### =================================================================================== 
     ### コンストラクタ

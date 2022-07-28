@@ -24,24 +24,24 @@ Date: 2nd Dec, 2021
 """
 from __future__ import print_function
 
-import sys
+#import sys
 import math
-import numpy as np
-from numpy.core.numeric import True_
+#import numpy as np
+#from numpy.core.numeric import True_
 import time
-import datetime
-from decimal import Decimal, ROUND_HALF_UP, ROUND_HALF_EVEN
-from threading import current_thread
+#import datetime
+#from decimal import Decimal, ROUND_HALF_UP, ROUND_HALF_EVEN
+#from threading import current_thread
 import json
-import traceback
-import os
+#import traceback
+#import os
 
-from configparser import ConfigParser
+#from configparser import ConfigParser
 #from std_msgs.msg import Float64, Float32, String, Int32
 
 from dronekit import connect, VehicleMode, LocationGlobal, LocationGlobalRelative, Command
 from pymavlink import mavutil
-from multiprocessing import Value, Process
+#from multiprocessing import Value, Process
 #from geometry_msgs.msg import PoseStamped
 
 import dlogger as dlog
@@ -144,34 +144,7 @@ class DrnCtrl(Dctr_Singleton):
     #droneInfoMsg = DroneInfo()
 
     ### =================================================================================== 
-    ### 連想配列 MQTTで受信するドローン操作コマンド:クライアントから受信
-    ###     コマンドおよび移動先の「緯度、経度、高度」情報
-    ### =================================================================================== 
-    ### For Simple GOTO
-    drone_command = {
-        "command":"None",
-        "d_lat":"0",
-        "d_lon":"0",
-        "d_alt":"0"
-    }
-    # For MISSION
-    drone_mission = {
-        "index":"0",
-        "cntwp":"0",
-        "frame":"0",
-        "command":"0",
-        "para1":"0",
-        "para2":"0",
-        "para3":"0",
-        "para4":"0",
-        "d_lat":"0",
-        "d_lon":"0",
-        "d_alt":"0",
-        "acnt":"0"
-    }
-
-    ### =================================================================================== 
-    ### 連想配列 MQTTで受信するドローンの情報:クライアントから受信
+    ### MQTTで受信するドローンの情報:クライアントから受信
     ###     ドローンのステータス及び現在位置情報
     ### =================================================================================== 
     drone_info = {  
@@ -664,8 +637,9 @@ class DrnCtrl(Dctr_Singleton):
         #Add new mission to vehicle
         for command in missionlist:
             cmds.add(command)
-        #print(' Upload mission')
-        self.vehicle.commands.upload()
+        print('Mission upload start')
+        cmds.upload()
+        print('Mission uploaded')
 
     ### =============================================================================================
     ### ファイルからジオフェンスデータをアップロードする。
@@ -677,7 +651,7 @@ class DrnCtrl(Dctr_Singleton):
         
         #print("\nUpload fence from a file: %s" % aFileName)
         # Clear existing mission from vehicle
-        # rint(' Clear mission')
+        # print(' Clear mission')
         cmds = self.vehicle.commands
         #cmds.clear()
         #Add new mission to vehicle
@@ -685,9 +659,10 @@ class DrnCtrl(Dctr_Singleton):
             # Missionの場合0のため、1に書き換える必要がある。
             command.mission_type = 1
             cmds.add(command)
-        #print(' Upload mission')
+        print('Upload fence start...')
         #self.vehicle.commands.upload()
         cmds.upload_fence()
+        print('Upload fence end...')
 
     ### =============================================================================================
     ### 現在のミッションをダウンロードし、リストで返します。
