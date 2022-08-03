@@ -144,7 +144,7 @@ class DrnCtrl(Dctr_Singleton):
     #droneInfoMsg = DroneInfo()
 
     ### =================================================================================== 
-    ### MQTTで受信するドローンの情報:クライアントから受信
+    ### MQTTで送信するドローンの情報:クライアントへ送信
     ###     ドローンのステータス及び現在位置情報
     ### =================================================================================== 
     drone_info = {  
@@ -246,7 +246,7 @@ class DrnCtrl(Dctr_Singleton):
     ### Goto
     ### =================================================================================== 
     def vehicle_goto(self, cmd):            
-        dlog.LOG("DEBUG","Sinple GOTO")
+        dlog.LOG("DEBUG","Simple GOTO ---")
         point = LocationGlobalRelative(
             float(cmd["d_lat"]), 
             float(cmd["d_lon"]), 

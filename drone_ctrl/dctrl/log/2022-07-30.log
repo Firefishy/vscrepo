@@ -1,0 +1,848 @@
+<INFO> 2022-07-30_03:00:19 [__init__] dctrl_cls init
+<INFO> 2022-07-30_03:00:19 [__init__] START
+<DEBUG> 2022-07-30_03:00:19 [connect_vehicle] START
+<DEBUG> 2022-07-30_03:00:19 [connect_vehicle] Connect to vehicle object:/home/sayz/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-07-30_03:00:19 [connect_vehicle] /home/sayz/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-07-30_03:00:19 [connect_vehicle] SETTING_JSON: /home/sayz/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-07-30_03:00:19 [connect_vehicle] connection_string: udp:127.0.0.1:14551
+<DEBUG> 2022-07-30_03:00:19 [connect_vehicle] Connecting to vehicle on: udp:127.0.0.1:14551
+<DEBUG> 2022-07-30_03:00:19 [on_connect] Connected with result code 0
+<DEBUG> 2022-07-30_03:00:19 [on_connect_m] Connected with result code 0
+<DEBUG> 2022-07-30_03:00:21 [connect_vehicle] END
+<INFO> 2022-07-30_03:00:26 [<module>] Vehicle初期化完了
+<DEBUG> 2022-07-30_03:00:26 [dsp_attributes] START
+<INFO> 2022-07-30_03:00:26 [dsp_attributes] 
+---- Vehicle attributes ----------------------------------------
+<INFO> 2022-07-30_03:00:26 [dsp_attributes] Ardupilot Firmware version: APM:Copter-4.3.0-dev0
+<INFO> 2022-07-30_03:00:26 [dsp_attributes]   Major version number: 4
+<INFO> 2022-07-30_03:00:26 [dsp_attributes]   Minor version number: 3
+<INFO> 2022-07-30_03:00:26 [dsp_attributes]   Patch version number: 0
+<INFO> 2022-07-30_03:00:26 [dsp_attributes]   Release type: dev
+<INFO> 2022-07-30_03:00:26 [dsp_attributes]   Release version: 0
+<INFO> 2022-07-30_03:00:26 [dsp_attributes]   Stable release?: False
+<INFO> 2022-07-30_03:00:26 [dsp_attributes] Autopilot capabilities
+<INFO> 2022-07-30_03:00:26 [dsp_attributes]   Supports MISSION_FLOAT message type: True
+<INFO> 2022-07-30_03:00:26 [dsp_attributes]   Supports PARAM_FLOAT message type: True
+<INFO> 2022-07-30_03:00:26 [dsp_attributes]   Supports MISSION_INT message type: True
+<INFO> 2022-07-30_03:00:26 [dsp_attributes]   Supports COMMAND_INT message type: True
+<INFO> 2022-07-30_03:00:26 [dsp_attributes]   Supports PARAM_UNION message type: False
+<INFO> 2022-07-30_03:00:26 [dsp_attributes]   Supports ftp for file transfers: True
+<INFO> 2022-07-30_03:00:26 [dsp_attributes]   Supports commanding attitude offboard: True
+<INFO> 2022-07-30_03:00:26 [dsp_attributes]   Supports commanding position and velocity targets in local NED frame: True
+<INFO> 2022-07-30_03:00:26 [dsp_attributes]   Supports set position + velocity targets in global scaled integers: True
+<INFO> 2022-07-30_03:00:26 [dsp_attributes]   Supports terrain protocol / data handling: True
+<INFO> 2022-07-30_03:00:26 [dsp_attributes]   Supports direct actuator control: False
+<INFO> 2022-07-30_03:00:26 [dsp_attributes]   Supports the flight termination command: True
+<INFO> 2022-07-30_03:00:26 [dsp_attributes]   Supports mission_float message type: True
+<INFO> 2022-07-30_03:00:26 [dsp_attributes]   Supports onboard compass calibration: True
+<INFO> 2022-07-30_03:00:26 [dsp_attributes] Global Location: LocationGlobal:lat=35.894087,lon=139.9524471,alt=17.08
+<INFO> 2022-07-30_03:00:26 [dsp_attributes] Global Location (relative altitude): LocationGlobalRelative:lat=35.894087,lon=139.9524471,alt=-0.017
+<INFO> 2022-07-30_03:00:26 [dsp_attributes] Local Location: LocationLocal:north=-0.0107992459089,east=0.0141789903864,down=0.0272510480136
+<INFO> 2022-07-30_03:00:26 [dsp_attributes] Attitude: Attitude:pitch=0.000985617516562,yaw=-0.125834569335,roll=0.00121510843746
+<INFO> 2022-07-30_03:00:26 [dsp_attributes] Velocity: [-0.01, 0.01, 0.0]
+<INFO> 2022-07-30_03:00:26 [dsp_attributes] GPS: GPSInfo:fix=6,num_sat=10
+<INFO> 2022-07-30_03:00:26 [dsp_attributes] Gimbal status: Gimbal: pitch=None, roll=None, yaw=None
+<INFO> 2022-07-30_03:00:26 [dsp_attributes] Battery: Battery:voltage=12.587,current=0.0,level=100
+<INFO> 2022-07-30_03:00:26 [dsp_attributes] EKF OK?: True
+<INFO> 2022-07-30_03:00:26 [dsp_attributes] Last Heartbeat: 0.0648327260001
+<INFO> 2022-07-30_03:00:26 [dsp_attributes] Rangefinder: Rangefinder: distance=None, voltage=None
+<INFO> 2022-07-30_03:00:26 [dsp_attributes] Rangefinder distance: None
+<INFO> 2022-07-30_03:00:26 [dsp_attributes] Rangefinder voltage: None
+<INFO> 2022-07-30_03:00:26 [dsp_attributes] Heading: 352
+<INFO> 2022-07-30_03:00:26 [dsp_attributes] Is Armable?: True
+<INFO> 2022-07-30_03:00:26 [dsp_attributes] System status: STANDBY
+<INFO> 2022-07-30_03:00:26 [dsp_attributes] Groundspeed: 0.0227526742965
+<INFO> 2022-07-30_03:00:26 [dsp_attributes] Airspeed: 0.0
+<INFO> 2022-07-30_03:00:26 [dsp_attributes] Mode: STABILIZE
+<INFO> 2022-07-30_03:00:26 [dsp_attributes] Armed: False
+<INFO> 2022-07-30_03:00:26 [dsp_attributes] ----------------------------------------------------------------
+
+<DEBUG> 2022-07-30_03:00:26 [dsp_attributes] END
+<DEBUG> 2022-07-30_03:08:59 [on_message] START
+<DEBUG> 2022-07-30_03:08:59 [<module>] Arming moter
+<DEBUG> 2022-07-30_03:08:59 [vehicle_arming] ARMING:
+<DEBUG> 2022-07-30_03:09:03 [on_message] START
+<DEBUG> 2022-07-30_03:09:03 [<module>] Set mode to GUIDED
+<DEBUG> 2022-07-30_03:09:03 [set_vehicle_mode] SET MODE: GUIDED
+<DEBUG> 2022-07-30_03:09:04 [on_message] START
+<DEBUG> 2022-07-30_03:09:05 [on_message] START
+<DEBUG> 2022-07-30_03:09:05 [<module>] Arming moter
+<DEBUG> 2022-07-30_03:09:05 [vehicle_arming] ARMING:
+<DEBUG> 2022-07-30_03:09:05 [on_message] START
+<DEBUG> 2022-07-30_03:09:05 [on_message] START
+<DEBUG> 2022-07-30_03:09:06 [on_message] START
+<DEBUG> 2022-07-30_03:09:06 [<module>] Arming moter
+<DEBUG> 2022-07-30_03:09:06 [vehicle_arming] ARMING:
+<DEBUG> 2022-07-30_03:09:06 [on_message] START
+<DEBUG> 2022-07-30_03:09:06 [on_message] START
+<DEBUG> 2022-07-30_03:09:06 [on_message] START
+<DEBUG> 2022-07-30_03:09:06 [on_message] START
+<DEBUG> 2022-07-30_03:09:07 [<module>] Arming moter
+<DEBUG> 2022-07-30_03:09:07 [vehicle_arming] ARMING:
+<DEBUG> 2022-07-30_03:09:09 [on_message] START
+<DEBUG> 2022-07-30_03:09:09 [on_message] START
+<DEBUG> 2022-07-30_03:09:09 [<module>] Arming moter
+<DEBUG> 2022-07-30_03:09:09 [vehicle_arming] ARMING:
+<DEBUG> 2022-07-30_03:09:13 [on_message] START
+<DEBUG> 2022-07-30_03:09:13 [on_message] START
+<DEBUG> 2022-07-30_03:09:13 [<module>] Arming moter
+<DEBUG> 2022-07-30_03:09:13 [vehicle_arming] ARMING:
+<DEBUG> 2022-07-30_03:09:13 [on_message] START
+<DEBUG> 2022-07-30_03:09:14 [<module>] Arming moter
+<DEBUG> 2022-07-30_03:09:14 [vehicle_arming] ARMING:
+<DEBUG> 2022-07-30_03:09:16 [on_message] START
+<DEBUG> 2022-07-30_03:09:17 [<module>] Arming moter
+<DEBUG> 2022-07-30_03:09:17 [vehicle_arming] ARMING:
+<DEBUG> 2022-07-30_03:09:17 [on_message] START
+<DEBUG> 2022-07-30_03:09:18 [<module>] Take off
+<DEBUG> 2022-07-30_03:09:18 [vehicle_takeoff] TAKEOFF
+<DEBUG> 2022-07-30_03:09:18 [on_message] START
+<DEBUG> 2022-07-30_03:09:18 [on_message] START
+<DEBUG> 2022-07-30_03:09:19 [<module>] Take off
+<DEBUG> 2022-07-30_03:09:19 [vehicle_takeoff] TAKEOFF
+<DEBUG> 2022-07-30_03:09:26 [on_message] START
+<DEBUG> 2022-07-30_03:09:27 [<module>] Arming moter
+<DEBUG> 2022-07-30_03:09:27 [vehicle_arming] ARMING:
+<DEBUG> 2022-07-30_03:09:48 [on_message] START
+<DEBUG> 2022-07-30_03:09:48 [<module>] Arming moter
+<DEBUG> 2022-07-30_03:09:48 [vehicle_arming] ARMING:
+<DEBUG> 2022-07-30_03:09:49 [on_message] START
+<DEBUG> 2022-07-30_03:09:49 [<module>] Arming moter
+<DEBUG> 2022-07-30_03:09:49 [vehicle_arming] ARMING:
+<DEBUG> 2022-07-30_03:09:49 [on_message] START
+<DEBUG> 2022-07-30_03:09:50 [<module>] Arming moter
+<DEBUG> 2022-07-30_03:09:50 [vehicle_arming] ARMING:
+<DEBUG> 2022-07-30_03:09:50 [vehicle_arming] すでにARMしています。
+<DEBUG> 2022-07-30_03:09:51 [on_message] START
+<DEBUG> 2022-07-30_03:09:52 [<module>] Take off
+<DEBUG> 2022-07-30_03:09:52 [vehicle_takeoff] TAKEOFF
+<DEBUG> 2022-07-30_03:10:20 [on_message] START
+<DEBUG> 2022-07-30_03:10:21 [<module>] Simple GOTO
+<DEBUG> 2022-07-30_03:10:21 [set_vehicle_mode] SET MODE: GUIDED
+<INFO> 2022-07-30_03:10:21 [<module>] ARMと離陸完了:3.0m
+<DEBUG> 2022-07-30_03:10:21 [vehicle_goto] Sinple GOTO
+<DEBUG> 2022-07-30_03:21:11 [on_message] START
+<DEBUG> 2022-07-30_03:21:12 [<module>] Simple GOTO
+<DEBUG> 2022-07-30_03:21:12 [set_vehicle_mode] SET MODE: GUIDED
+<INFO> 2022-07-30_03:21:12 [<module>] ARMと離陸完了:3.0m
+<DEBUG> 2022-07-30_03:21:12 [vehicle_goto] Sinple GOTO
+<CRITICAL> 2022-07-30_03:27:08 [<module>] KeyBoard Exception
+<INFO> 2022-07-30_03:27:08 [<module>] Close vehicle object
+<INFO> 2022-07-30_03:27:08 [<module>] プログラム終了
+<CRITICAL> 2022-07-30_03:27:08 [<module>] キーボード例外処理発生
+<INFO> 2022-07-30_03:42:12 [__init__] dctrl_cls init
+<INFO> 2022-07-30_03:42:12 [__init__] START
+<DEBUG> 2022-07-30_03:42:12 [connect_vehicle] START
+<DEBUG> 2022-07-30_03:42:12 [connect_vehicle] Connect to vehicle object:/home/sayz/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-07-30_03:42:12 [connect_vehicle] /home/sayz/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-07-30_03:42:12 [on_connect] Connected with result code 0
+<DEBUG> 2022-07-30_03:42:12 [connect_vehicle] SETTING_JSON: /home/sayz/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-07-30_03:42:12 [on_connect_m] Connected with result code 0
+<DEBUG> 2022-07-30_03:42:12 [connect_vehicle] connection_string: udp:127.0.0.1:14551
+<DEBUG> 2022-07-30_03:42:12 [connect_vehicle] Connecting to vehicle on: udp:127.0.0.1:14551
+<DEBUG> 2022-07-30_03:42:14 [connect_vehicle] END
+<INFO> 2022-07-30_03:42:19 [<module>] Vehicle初期化完了
+<DEBUG> 2022-07-30_03:42:19 [dsp_attributes] START
+<INFO> 2022-07-30_03:42:19 [dsp_attributes] 
+---- Vehicle attributes ----------------------------------------
+<INFO> 2022-07-30_03:42:19 [dsp_attributes] Ardupilot Firmware version: APM:Copter-4.3.0-dev0
+<INFO> 2022-07-30_03:42:19 [dsp_attributes]   Major version number: 4
+<INFO> 2022-07-30_03:42:19 [dsp_attributes]   Minor version number: 3
+<INFO> 2022-07-30_03:42:19 [dsp_attributes]   Patch version number: 0
+<INFO> 2022-07-30_03:42:19 [dsp_attributes]   Release type: dev
+<INFO> 2022-07-30_03:42:19 [dsp_attributes]   Release version: 0
+<INFO> 2022-07-30_03:42:19 [dsp_attributes]   Stable release?: False
+<INFO> 2022-07-30_03:42:19 [dsp_attributes] Autopilot capabilities
+<INFO> 2022-07-30_03:42:19 [dsp_attributes]   Supports MISSION_FLOAT message type: True
+<INFO> 2022-07-30_03:42:19 [dsp_attributes]   Supports PARAM_FLOAT message type: True
+<INFO> 2022-07-30_03:42:19 [dsp_attributes]   Supports MISSION_INT message type: True
+<INFO> 2022-07-30_03:42:19 [dsp_attributes]   Supports COMMAND_INT message type: True
+<INFO> 2022-07-30_03:42:19 [dsp_attributes]   Supports PARAM_UNION message type: False
+<INFO> 2022-07-30_03:42:19 [dsp_attributes]   Supports ftp for file transfers: True
+<INFO> 2022-07-30_03:42:19 [dsp_attributes]   Supports commanding attitude offboard: True
+<INFO> 2022-07-30_03:42:19 [dsp_attributes]   Supports commanding position and velocity targets in local NED frame: True
+<INFO> 2022-07-30_03:42:19 [dsp_attributes]   Supports set position + velocity targets in global scaled integers: True
+<INFO> 2022-07-30_03:42:19 [dsp_attributes]   Supports terrain protocol / data handling: True
+<INFO> 2022-07-30_03:42:19 [dsp_attributes]   Supports direct actuator control: False
+<INFO> 2022-07-30_03:42:19 [dsp_attributes]   Supports the flight termination command: True
+<INFO> 2022-07-30_03:42:19 [dsp_attributes]   Supports mission_float message type: True
+<INFO> 2022-07-30_03:42:19 [dsp_attributes]   Supports onboard compass calibration: True
+<INFO> 2022-07-30_03:42:19 [dsp_attributes] Global Location: LocationGlobal:lat=35.8912318,lon=139.947187,alt=47.07
+<INFO> 2022-07-30_03:42:19 [dsp_attributes] Global Location (relative altitude): LocationGlobalRelative:lat=35.8912318,lon=139.947187,alt=29.999
+<INFO> 2022-07-30_03:42:19 [dsp_attributes] Local Location: LocationLocal:north=-317.840484619,east=-474.347839355,down=-29.9697551727
+<INFO> 2022-07-30_03:42:19 [dsp_attributes] Attitude: Attitude:pitch=0.00158218690194,yaw=-1.99525511265,roll=0.00151888234541
+<INFO> 2022-07-30_03:42:19 [dsp_attributes] Velocity: [0.02, 0.01, 0.0]
+<INFO> 2022-07-30_03:42:19 [dsp_attributes] GPS: GPSInfo:fix=6,num_sat=10
+<INFO> 2022-07-30_03:42:19 [dsp_attributes] Gimbal status: Gimbal: pitch=None, roll=None, yaw=None
+<INFO> 2022-07-30_03:42:19 [dsp_attributes] Battery: Battery:voltage=12.587,current=28.08,level=0
+<INFO> 2022-07-30_03:42:19 [dsp_attributes] EKF OK?: True
+<INFO> 2022-07-30_03:42:19 [dsp_attributes] Last Heartbeat: 0.123956309
+<INFO> 2022-07-30_03:42:19 [dsp_attributes] Rangefinder: Rangefinder: distance=None, voltage=None
+<INFO> 2022-07-30_03:42:19 [dsp_attributes] Rangefinder distance: None
+<INFO> 2022-07-30_03:42:19 [dsp_attributes] Rangefinder voltage: None
+<INFO> 2022-07-30_03:42:19 [dsp_attributes] Heading: 245
+<INFO> 2022-07-30_03:42:19 [dsp_attributes] Is Armable?: True
+<INFO> 2022-07-30_03:42:19 [dsp_attributes] System status: ACTIVE
+<INFO> 2022-07-30_03:42:19 [dsp_attributes] Groundspeed: 0.0278333444148
+<INFO> 2022-07-30_03:42:19 [dsp_attributes] Airspeed: 0.00400000018999
+<INFO> 2022-07-30_03:42:19 [dsp_attributes] Mode: GUIDED
+<INFO> 2022-07-30_03:42:19 [dsp_attributes] Armed: True
+<INFO> 2022-07-30_03:42:19 [dsp_attributes] ----------------------------------------------------------------
+
+<DEBUG> 2022-07-30_03:42:19 [dsp_attributes] END
+<DEBUG> 2022-07-30_03:42:20 [on_message] START
+<DEBUG> 2022-07-30_03:42:20 [<module>] Simple GOTO
+<DEBUG> 2022-07-30_03:42:20 [set_vehicle_mode] SET MODE: GUIDED
+<INFO> 2022-07-30_03:42:20 [<module>] ARMと離陸完了:3.0m
+<DEBUG> 2022-07-30_03:42:20 [vehicle_goto] Sinple GOTO
+<DEBUG> 2022-07-30_03:42:36 [on_message_m] START
+<DEBUG> 2022-07-30_03:42:37 [<module>] MISSION
+<DEBUG> 2022-07-30_03:42:37 [readmission] Reading mission from file: ../mission/polygon_fence.txt
+<INFO> 2022-07-30_03:44:04 [__init__] dctrl_cls init
+<INFO> 2022-07-30_03:44:04 [__init__] START
+<DEBUG> 2022-07-30_03:44:04 [connect_vehicle] START
+<DEBUG> 2022-07-30_03:44:04 [connect_vehicle] Connect to vehicle object:/home/sayz/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-07-30_03:44:04 [connect_vehicle] /home/sayz/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-07-30_03:44:04 [connect_vehicle] SETTING_JSON: /home/sayz/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-07-30_03:44:04 [on_connect_m] Connected with result code 0
+<DEBUG> 2022-07-30_03:44:04 [on_connect] Connected with result code 0
+<DEBUG> 2022-07-30_03:44:04 [connect_vehicle] connection_string: udp:127.0.0.1:14551
+<DEBUG> 2022-07-30_03:44:04 [connect_vehicle] Connecting to vehicle on: udp:127.0.0.1:14551
+<DEBUG> 2022-07-30_03:44:06 [connect_vehicle] END
+<DEBUG> 2022-07-30_03:44:11 [on_message_m] START
+<INFO> 2022-07-30_03:44:11 [<module>] Vehicle初期化完了
+<DEBUG> 2022-07-30_03:44:11 [dsp_attributes] START
+<INFO> 2022-07-30_03:44:11 [dsp_attributes] 
+---- Vehicle attributes ----------------------------------------
+<INFO> 2022-07-30_03:44:11 [dsp_attributes] Ardupilot Firmware version: APM:Copter-4.3.0-dev0
+<INFO> 2022-07-30_03:44:11 [dsp_attributes]   Major version number: 4
+<INFO> 2022-07-30_03:44:11 [dsp_attributes]   Minor version number: 3
+<INFO> 2022-07-30_03:44:11 [dsp_attributes]   Patch version number: 0
+<INFO> 2022-07-30_03:44:11 [dsp_attributes]   Release type: dev
+<INFO> 2022-07-30_03:44:11 [dsp_attributes]   Release version: 0
+<INFO> 2022-07-30_03:44:11 [dsp_attributes]   Stable release?: False
+<INFO> 2022-07-30_03:44:11 [dsp_attributes] Autopilot capabilities
+<INFO> 2022-07-30_03:44:11 [dsp_attributes]   Supports MISSION_FLOAT message type: True
+<INFO> 2022-07-30_03:44:11 [dsp_attributes]   Supports PARAM_FLOAT message type: True
+<INFO> 2022-07-30_03:44:11 [dsp_attributes]   Supports MISSION_INT message type: True
+<INFO> 2022-07-30_03:44:11 [dsp_attributes]   Supports COMMAND_INT message type: True
+<INFO> 2022-07-30_03:44:11 [dsp_attributes]   Supports PARAM_UNION message type: False
+<INFO> 2022-07-30_03:44:11 [dsp_attributes]   Supports ftp for file transfers: True
+<INFO> 2022-07-30_03:44:11 [dsp_attributes]   Supports commanding attitude offboard: True
+<INFO> 2022-07-30_03:44:11 [dsp_attributes]   Supports commanding position and velocity targets in local NED frame: True
+<INFO> 2022-07-30_03:44:11 [dsp_attributes]   Supports set position + velocity targets in global scaled integers: True
+<INFO> 2022-07-30_03:44:11 [dsp_attributes]   Supports terrain protocol / data handling: True
+<INFO> 2022-07-30_03:44:11 [dsp_attributes]   Supports direct actuator control: False
+<INFO> 2022-07-30_03:44:11 [dsp_attributes]   Supports the flight termination command: True
+<INFO> 2022-07-30_03:44:11 [dsp_attributes]   Supports mission_float message type: True
+<INFO> 2022-07-30_03:44:11 [dsp_attributes]   Supports onboard compass calibration: True
+<INFO> 2022-07-30_03:44:11 [dsp_attributes] Global Location: LocationGlobal:lat=35.8912318,lon=139.9471871,alt=47.07
+<INFO> 2022-07-30_03:44:11 [dsp_attributes] Global Location (relative altitude): LocationGlobalRelative:lat=35.8912318,lon=139.9471871,alt=29.998
+<INFO> 2022-07-30_03:44:11 [dsp_attributes] Local Location: LocationLocal:north=-317.838928223,east=-474.341186523,down=-29.968788147
+<INFO> 2022-07-30_03:44:11 [dsp_attributes] Attitude: Attitude:pitch=0.00124994467478,yaw=-1.9950299263,roll=0.00148312863894
+<INFO> 2022-07-30_03:44:11 [dsp_attributes] Velocity: [0.02, 0.0, 0.0]
+<INFO> 2022-07-30_03:44:11 [dsp_attributes] GPS: GPSInfo:fix=6,num_sat=10
+<INFO> 2022-07-30_03:44:11 [dsp_attributes] Gimbal status: Gimbal: pitch=None, roll=None, yaw=None
+<INFO> 2022-07-30_03:44:11 [dsp_attributes] Battery: Battery:voltage=12.587,current=28.08,level=0
+<INFO> 2022-07-30_03:44:11 [dsp_attributes] EKF OK?: True
+<INFO> 2022-07-30_03:44:11 [dsp_attributes] Last Heartbeat: 0.0134183539999
+<INFO> 2022-07-30_03:44:11 [dsp_attributes] Rangefinder: Rangefinder: distance=None, voltage=None
+<INFO> 2022-07-30_03:44:11 [dsp_attributes] Rangefinder distance: None
+<INFO> 2022-07-30_03:44:11 [dsp_attributes] Rangefinder voltage: None
+<INFO> 2022-07-30_03:44:11 [dsp_attributes] Heading: 245
+<INFO> 2022-07-30_03:44:11 [dsp_attributes] Is Armable?: True
+<INFO> 2022-07-30_03:44:11 [dsp_attributes] System status: ACTIVE
+<INFO> 2022-07-30_03:44:11 [dsp_attributes] Groundspeed: 0.0249692648649
+<INFO> 2022-07-30_03:44:11 [dsp_attributes] Airspeed: 0.0050000003539
+<INFO> 2022-07-30_03:44:11 [dsp_attributes] Mode: GUIDED
+<INFO> 2022-07-30_03:44:11 [dsp_attributes] Armed: True
+<INFO> 2022-07-30_03:44:11 [dsp_attributes] ----------------------------------------------------------------
+
+<DEBUG> 2022-07-30_03:44:11 [dsp_attributes] END
+<DEBUG> 2022-07-30_03:44:11 [<module>] MISSION
+<DEBUG> 2022-07-30_03:44:11 [readmission] Reading mission from file: ../mission/mpmission.txt
+<DEBUG> 2022-07-30_03:44:11 [set_vehicle_mode] SET MODE: GUIDED
+<INFO> 2022-07-30_03:44:11 [<module>] ARMと離陸完了:3.0m
+<DEBUG> 2022-07-30_03:44:11 [set_vehicle_mode] SET MODE: AUTO
+<DEBUG> 2022-07-30_03:44:11 [<module>] ウェイポイントまでの距離 (0): None
+<DEBUG> 2022-07-30_03:44:11 [<module>] 現在のウェイポイントは[0]です。[Head:245]
+<DEBUG> 2022-07-30_03:44:12 [<module>] ウェイポイントまでの距離 (2): 218.671297839
+<DEBUG> 2022-07-30_03:44:12 [<module>] 現在のウェイポイントは[2]です。[Head:245]
+<DEBUG> 2022-07-30_03:44:13 [<module>] ウェイポイントまでの距離 (2): 217.896047712
+<DEBUG> 2022-07-30_03:44:13 [<module>] 現在のウェイポイントは[2]です。[Head:230]
+<DEBUG> 2022-07-30_03:44:14 [<module>] ウェイポイントまでの距離 (2): 215.554956187
+<DEBUG> 2022-07-30_03:44:14 [<module>] 現在のウェイポイントは[2]です。[Head:234]
+<DEBUG> 2022-07-30_03:44:15 [<module>] ウェイポイントまでの距離 (2): 210.863335771
+<DEBUG> 2022-07-30_03:44:15 [<module>] 現在のウェイポイントは[2]です。[Head:230]
+<DEBUG> 2022-07-30_03:44:16 [<module>] ウェイポイントまでの距離 (2): 203.710265251
+<DEBUG> 2022-07-30_03:44:16 [<module>] 現在のウェイポイントは[2]です。[Head:232]
+<DEBUG> 2022-07-30_03:44:17 [<module>] ウェイポイントまでの距離 (2): 194.413167722
+<DEBUG> 2022-07-30_03:44:17 [<module>] 現在のウェイポイントは[2]です。[Head:232]
+<DEBUG> 2022-07-30_03:44:18 [<module>] ウェイポイントまでの距離 (2): 183.890064707
+<DEBUG> 2022-07-30_03:44:18 [<module>] 現在のウェイポイントは[2]です。[Head:232]
+<DEBUG> 2022-07-30_03:44:19 [<module>] ウェイポイントまでの距離 (2): 172.857209626
+<DEBUG> 2022-07-30_03:44:19 [<module>] 現在のウェイポイントは[2]です。[Head:232]
+<DEBUG> 2022-07-30_03:44:20 [<module>] ウェイポイントまでの距離 (2): 161.669777525
+<DEBUG> 2022-07-30_03:44:20 [<module>] 現在のウェイポイントは[2]です。[Head:232]
+<DEBUG> 2022-07-30_03:44:21 [<module>] ウェイポイントまでの距離 (2): 150.356086204
+<DEBUG> 2022-07-30_03:44:21 [<module>] 現在のウェイポイントは[2]です。[Head:232]
+<DEBUG> 2022-07-30_03:44:22 [<module>] ウェイポイントまでの距離 (2): 138.958617392
+<DEBUG> 2022-07-30_03:44:22 [<module>] 現在のウェイポイントは[2]です。[Head:232]
+<DEBUG> 2022-07-30_03:44:23 [<module>] ウェイポイントまでの距離 (2): 127.589470269
+<DEBUG> 2022-07-30_03:44:23 [<module>] 現在のウェイポイントは[2]です。[Head:232]
+<DEBUG> 2022-07-30_03:44:24 [<module>] ウェイポイントまでの距離 (2): 116.16132502
+<DEBUG> 2022-07-30_03:44:24 [<module>] 現在のウェイポイントは[2]です。[Head:232]
+<DEBUG> 2022-07-30_03:44:25 [<module>] ウェイポイントまでの距離 (2): 104.736729606
+<DEBUG> 2022-07-30_03:44:25 [<module>] 現在のウェイポイントは[2]です。[Head:232]
+<DEBUG> 2022-07-30_03:44:26 [<module>] ウェイポイントまでの距離 (2): 93.228354979
+<DEBUG> 2022-07-30_03:44:26 [<module>] 現在のウェイポイントは[2]です。[Head:232]
+<DEBUG> 2022-07-30_03:44:27 [<module>] ウェイポイントまでの距離 (2): 81.8250049088
+<DEBUG> 2022-07-30_03:44:27 [<module>] 現在のウェイポイントは[2]です。[Head:232]
+<DEBUG> 2022-07-30_03:44:28 [<module>] ウェイポイントまでの距離 (2): 70.3567629053
+<DEBUG> 2022-07-30_03:44:28 [<module>] 現在のウェイポイントは[2]です。[Head:232]
+<DEBUG> 2022-07-30_03:44:29 [<module>] ウェイポイントまでの距離 (2): 58.8732011081
+<DEBUG> 2022-07-30_03:44:29 [<module>] 現在のウェイポイントは[2]です。[Head:232]
+<DEBUG> 2022-07-30_03:44:30 [<module>] ウェイポイントまでの距離 (2): 47.3495513657
+<DEBUG> 2022-07-30_03:44:30 [<module>] 現在のウェイポイントは[2]です。[Head:232]
+<DEBUG> 2022-07-30_03:44:31 [<module>] ウェイポイントまでの距離 (2): 35.8412846581
+<DEBUG> 2022-07-30_03:44:31 [<module>] 現在のウェイポイントは[2]です。[Head:232]
+<DEBUG> 2022-07-30_03:44:32 [<module>] ウェイポイントまでの距離 (2): 24.527857302
+<DEBUG> 2022-07-30_03:44:32 [<module>] 現在のウェイポイントは[2]です。[Head:232]
+<DEBUG> 2022-07-30_03:44:33 [<module>] ウェイポイントまでの距離 (2): 14.4005889544
+<DEBUG> 2022-07-30_03:44:33 [<module>] 現在のウェイポイントは[2]です。[Head:232]
+<DEBUG> 2022-07-30_03:44:34 [<module>] ウェイポイントまでの距離 (2): 6.47023820727
+<DEBUG> 2022-07-30_03:44:34 [<module>] 現在のウェイポイントは[2]です。[Head:232]
+<DEBUG> 2022-07-30_03:44:35 [<module>] ウェイポイントまでの距離 (2): 1.43856412496
+<DEBUG> 2022-07-30_03:44:35 [<module>] 現在のウェイポイントは[2]です。[Head:232]
+<DEBUG> 2022-07-30_03:44:36 [<module>] ウェイポイントまでの距離 (2): 0.745572075671
+<DEBUG> 2022-07-30_03:44:36 [<module>] 現在のウェイポイントは[2]です。[Head:232]
+<DEBUG> 2022-07-30_03:44:37 [<module>] ウェイポイントまでの距離 (2): 1.00516991152
+<DEBUG> 2022-07-30_03:44:37 [<module>] 現在のウェイポイントは[2]です。[Head:232]
+<CRITICAL> 2022-07-30_03:44:37 [<module>] KeyBoard Exception
+<INFO> 2022-07-30_03:44:37 [<module>] Close vehicle object
+<INFO> 2022-07-30_03:44:37 [<module>] プログラム終了
+<CRITICAL> 2022-07-30_03:44:37 [<module>] キーボード例外処理発生
+<INFO> 2022-07-30_03:44:38 [__init__] dctrl_cls init
+<INFO> 2022-07-30_03:44:38 [__init__] START
+<DEBUG> 2022-07-30_03:44:38 [connect_vehicle] START
+<DEBUG> 2022-07-30_03:44:38 [connect_vehicle] Connect to vehicle object:/home/sayz/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-07-30_03:44:38 [connect_vehicle] /home/sayz/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-07-30_03:44:38 [connect_vehicle] SETTING_JSON: /home/sayz/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-07-30_03:44:38 [on_connect] Connected with result code 0
+<DEBUG> 2022-07-30_03:44:38 [on_connect_m] Connected with result code 0
+<DEBUG> 2022-07-30_03:44:38 [connect_vehicle] connection_string: udp:127.0.0.1:14551
+<DEBUG> 2022-07-30_03:44:38 [connect_vehicle] Connecting to vehicle on: udp:127.0.0.1:14551
+<DEBUG> 2022-07-30_03:44:40 [connect_vehicle] END
+<DEBUG> 2022-07-30_03:44:43 [on_message_m] START
+<INFO> 2022-07-30_03:44:45 [<module>] Vehicle初期化完了
+<DEBUG> 2022-07-30_03:44:45 [dsp_attributes] START
+<INFO> 2022-07-30_03:44:45 [dsp_attributes] 
+---- Vehicle attributes ----------------------------------------
+<INFO> 2022-07-30_03:44:45 [dsp_attributes] Ardupilot Firmware version: APM:Copter-4.3.0-dev0
+<INFO> 2022-07-30_03:44:45 [dsp_attributes]   Major version number: 4
+<INFO> 2022-07-30_03:44:45 [dsp_attributes]   Minor version number: 3
+<INFO> 2022-07-30_03:44:45 [dsp_attributes]   Patch version number: 0
+<INFO> 2022-07-30_03:44:45 [dsp_attributes]   Release type: dev
+<INFO> 2022-07-30_03:44:45 [dsp_attributes]   Release version: 0
+<INFO> 2022-07-30_03:44:45 [dsp_attributes]   Stable release?: False
+<INFO> 2022-07-30_03:44:45 [dsp_attributes] Autopilot capabilities
+<INFO> 2022-07-30_03:44:45 [dsp_attributes]   Supports MISSION_FLOAT message type: True
+<INFO> 2022-07-30_03:44:45 [dsp_attributes]   Supports PARAM_FLOAT message type: True
+<INFO> 2022-07-30_03:44:45 [dsp_attributes]   Supports MISSION_INT message type: True
+<INFO> 2022-07-30_03:44:45 [dsp_attributes]   Supports COMMAND_INT message type: True
+<INFO> 2022-07-30_03:44:45 [dsp_attributes]   Supports PARAM_UNION message type: False
+<INFO> 2022-07-30_03:44:45 [dsp_attributes]   Supports ftp for file transfers: True
+<INFO> 2022-07-30_03:44:45 [dsp_attributes]   Supports commanding attitude offboard: True
+<INFO> 2022-07-30_03:44:45 [dsp_attributes]   Supports commanding position and velocity targets in local NED frame: True
+<INFO> 2022-07-30_03:44:45 [dsp_attributes]   Supports set position + velocity targets in global scaled integers: True
+<INFO> 2022-07-30_03:44:45 [dsp_attributes]   Supports terrain protocol / data handling: True
+<INFO> 2022-07-30_03:44:45 [dsp_attributes]   Supports direct actuator control: False
+<INFO> 2022-07-30_03:44:45 [dsp_attributes]   Supports the flight termination command: True
+<INFO> 2022-07-30_03:44:45 [dsp_attributes]   Supports mission_float message type: True
+<INFO> 2022-07-30_03:44:45 [dsp_attributes]   Supports onboard compass calibration: True
+<INFO> 2022-07-30_03:44:45 [dsp_attributes] Global Location: LocationGlobal:lat=35.8903585,lon=139.9458256,alt=47.06
+<INFO> 2022-07-30_03:44:45 [dsp_attributes] Global Location (relative altitude): LocationGlobalRelative:lat=35.8903585,lon=139.9458256,alt=29.985
+<INFO> 2022-07-30_03:44:45 [dsp_attributes] Local Location: LocationLocal:north=-416.398284912,east=-599.074157715,down=-29.9546604156
+<INFO> 2022-07-30_03:44:45 [dsp_attributes] Attitude: Attitude:pitch=0.510012030602,yaw=-2.23674464226,roll=-0.0161680579185
+<INFO> 2022-07-30_03:44:45 [dsp_attributes] Velocity: [5.43, 7.84, 0.0]
+<INFO> 2022-07-30_03:44:45 [dsp_attributes] GPS: GPSInfo:fix=6,num_sat=10
+<INFO> 2022-07-30_03:44:45 [dsp_attributes] Gimbal status: Gimbal: pitch=None, roll=None, yaw=None
+<INFO> 2022-07-30_03:44:45 [dsp_attributes] Battery: Battery:voltage=12.587,current=30.32,level=0
+<INFO> 2022-07-30_03:44:45 [dsp_attributes] EKF OK?: True
+<INFO> 2022-07-30_03:44:45 [dsp_attributes] Last Heartbeat: 0.12947123
+<INFO> 2022-07-30_03:44:45 [dsp_attributes] Rangefinder: Rangefinder: distance=None, voltage=None
+<INFO> 2022-07-30_03:44:45 [dsp_attributes] Rangefinder distance: None
+<INFO> 2022-07-30_03:44:45 [dsp_attributes] Rangefinder voltage: None
+<INFO> 2022-07-30_03:44:45 [dsp_attributes] Heading: 231
+<INFO> 2022-07-30_03:44:45 [dsp_attributes] Is Armable?: True
+<INFO> 2022-07-30_03:44:45 [dsp_attributes] System status: ACTIVE
+<INFO> 2022-07-30_03:44:45 [dsp_attributes] Groundspeed: 9.54109477997
+<INFO> 2022-07-30_03:44:45 [dsp_attributes] Airspeed: 9.51600074768
+<INFO> 2022-07-30_03:44:45 [dsp_attributes] Mode: AUTO
+<INFO> 2022-07-30_03:44:45 [dsp_attributes] Armed: True
+<INFO> 2022-07-30_03:44:45 [dsp_attributes] ----------------------------------------------------------------
+
+<DEBUG> 2022-07-30_03:44:45 [dsp_attributes] END
+<DEBUG> 2022-07-30_03:44:45 [<module>] MISSION
+<DEBUG> 2022-07-30_03:44:45 [readmission] Reading mission from file: ../mission/mpmission.txt
+<DEBUG> 2022-07-30_03:44:45 [set_vehicle_mode] SET MODE: GUIDED
+<INFO> 2022-07-30_03:44:45 [<module>] ARMと離陸完了:3.0m
+<DEBUG> 2022-07-30_03:44:45 [set_vehicle_mode] SET MODE: AUTO
+<DEBUG> 2022-07-30_03:44:45 [<module>] ウェイポイントまでの距離 (0): None
+<DEBUG> 2022-07-30_03:44:45 [<module>] 現在のウェイポイントは[0]です。[Head:231]
+<DEBUG> 2022-07-30_03:44:46 [<module>] ウェイポイントまでの距離 (2): 49.3923021869
+<DEBUG> 2022-07-30_03:44:46 [<module>] 現在のウェイポイントは[2]です。[Head:231]
+<DEBUG> 2022-07-30_03:44:47 [<module>] ウェイポイントまでの距離 (2): 57.1437052713
+<DEBUG> 2022-07-30_03:44:47 [<module>] 現在のウェイポイントは[2]です。[Head:236]
+<DEBUG> 2022-07-30_03:44:48 [<module>] ウェイポイントまでの距離 (2): 59.6425232406
+<DEBUG> 2022-07-30_03:44:48 [<module>] 現在のウェイポイントは[2]です。[Head:234]
+<DEBUG> 2022-07-30_03:44:49 [<module>] ウェイポイントまでの距離 (2): 56.9058899355
+<DEBUG> 2022-07-30_03:44:49 [<module>] 現在のウェイポイントは[2]です。[Head:235]
+<DEBUG> 2022-07-30_03:44:50 [<module>] ウェイポイントまでの距離 (2): 51.6564363342
+<DEBUG> 2022-07-30_03:44:50 [<module>] 現在のウェイポイントは[2]です。[Head:235]
+<DEBUG> 2022-07-30_03:44:51 [<module>] ウェイポイントまでの距離 (2): 44.9224957536
+<DEBUG> 2022-07-30_03:44:51 [<module>] 現在のウェイポイントは[2]です。[Head:235]
+<DEBUG> 2022-07-30_03:44:52 [<module>] ウェイポイントまでの距離 (2): 37.082486568
+<DEBUG> 2022-07-30_03:44:52 [<module>] 現在のウェイポイントは[2]です。[Head:235]
+<DEBUG> 2022-07-30_03:44:53 [<module>] ウェイポイントまでの距離 (2): 28.335381652
+<DEBUG> 2022-07-30_03:44:53 [<module>] 現在のウェイポイントは[2]です。[Head:235]
+<DEBUG> 2022-07-30_03:44:54 [<module>] ウェイポイントまでの距離 (2): 19.4738081906
+<DEBUG> 2022-07-30_03:44:54 [<module>] 現在のウェイポイントは[2]です。[Head:235]
+<DEBUG> 2022-07-30_03:44:55 [<module>] ウェイポイントまでの距離 (2): 11.2159032387
+<DEBUG> 2022-07-30_03:44:55 [<module>] 現在のウェイポイントは[2]です。[Head:235]
+<DEBUG> 2022-07-30_03:44:56 [<module>] ウェイポイントまでの距離 (2): 4.76846274281
+<DEBUG> 2022-07-30_03:44:56 [<module>] 現在のウェイポイントは[2]です。[Head:235]
+<DEBUG> 2022-07-30_03:44:57 [<module>] ウェイポイントまでの距離 (2): 0.874591721108
+<DEBUG> 2022-07-30_03:44:57 [<module>] 現在のウェイポイントは[2]です。[Head:235]
+<DEBUG> 2022-07-30_03:44:58 [<module>] ウェイポイントまでの距離 (2): 0.666443964799
+<DEBUG> 2022-07-30_03:44:58 [<module>] 現在のウェイポイントは[2]です。[Head:235]
+<DEBUG> 2022-07-30_03:44:59 [<module>] ウェイポイントまでの距離 (2): 0.705702189728
+<DEBUG> 2022-07-30_03:44:59 [<module>] 現在のウェイポイントは[2]です。[Head:235]
+<DEBUG> 2022-07-30_03:45:00 [<module>] ウェイポイントまでの距離 (3): 0.534449544674
+<DEBUG> 2022-07-30_03:45:00 [<module>] ミッションを終了して離陸地点へ戻る
+<DEBUG> 2022-07-30_03:45:00 [set_vehicle_mode] SET MODE: RTL
+<DEBUG> 2022-07-30_03:46:15 [on_message] START
+<DEBUG> 2022-07-30_03:46:15 [<module>] Arming moter
+<DEBUG> 2022-07-30_03:46:15 [vehicle_arming] ARMING:
+<DEBUG> 2022-07-30_03:46:15 [vehicle_arming] すでにARMしています。
+<DEBUG> 2022-07-30_03:46:16 [on_message] START
+<DEBUG> 2022-07-30_03:46:16 [<module>] Set mode to GUIDED
+<DEBUG> 2022-07-30_03:46:16 [set_vehicle_mode] SET MODE: GUIDED
+<DEBUG> 2022-07-30_03:46:25 [on_message_m] START
+<DEBUG> 2022-07-30_03:46:25 [<module>] MISSION
+<DEBUG> 2022-07-30_03:46:25 [readmission] Reading mission from file: ../mission/mpmission.txt
+<DEBUG> 2022-07-30_03:46:25 [set_vehicle_mode] SET MODE: GUIDED
+<INFO> 2022-07-30_03:46:25 [<module>] ARMと離陸完了:3.0m
+<DEBUG> 2022-07-30_03:46:25 [set_vehicle_mode] SET MODE: AUTO
+<DEBUG> 2022-07-30_03:46:25 [<module>] ウェイポイントまでの距離 (0): None
+<DEBUG> 2022-07-30_03:46:25 [<module>] 現在のウェイポイントは[0]です。[Head:55]
+<DEBUG> 2022-07-30_03:46:26 [<module>] ウェイポイントまでの距離 (1): 0.125943636001
+<DEBUG> 2022-07-30_03:46:26 [<module>] 現在のウェイポイントは[1]です。[Head:55]
+<DEBUG> 2022-07-30_03:46:27 [<module>] ウェイポイントまでの距離 (1): 0.330976667967
+<DEBUG> 2022-07-30_03:46:27 [<module>] 現在のウェイポイントは[1]です。[Head:55]
+<DEBUG> 2022-07-30_03:46:28 [<module>] ウェイポイントまでの距離 (1): 0.587783827046
+<DEBUG> 2022-07-30_03:46:28 [<module>] 現在のウェイポイントは[1]です。[Head:55]
+<DEBUG> 2022-07-30_03:46:29 [<module>] ウェイポイントまでの距離 (3): 861.554343256
+<DEBUG> 2022-07-30_03:46:29 [<module>] 現在のウェイポイントは[3]です。[Head:55]
+<DEBUG> 2022-07-30_03:46:30 [<module>] ウェイポイントまでの距離 (3): 861.309967332
+<DEBUG> 2022-07-30_03:46:30 [<module>] 現在のウェイポイントは[3]です。[Head:55]
+<DEBUG> 2022-07-30_03:46:31 [<module>] ウェイポイントまでの距離 (3): 860.098992523
+<DEBUG> 2022-07-30_03:46:31 [<module>] 現在のウェイポイントは[3]です。[Head:115]
+<DEBUG> 2022-07-30_03:46:32 [<module>] ウェイポイントまでの距離 (3): 857.11370245
+<DEBUG> 2022-07-30_03:46:32 [<module>] 現在のウェイポイントは[3]です。[Head:169]
+<DEBUG> 2022-07-30_03:46:33 [<module>] ウェイポイントまでの距離 (3): 851.681600054
+<DEBUG> 2022-07-30_03:46:33 [<module>] 現在のウェイポイントは[3]です。[Head:234]
+<DEBUG> 2022-07-30_03:46:34 [<module>] ウェイポイントまでの距離 (3): 843.895484273
+<DEBUG> 2022-07-30_03:46:34 [<module>] 現在のウェイポイントは[3]です。[Head:233]
+<DEBUG> 2022-07-30_03:46:35 [<module>] ウェイポイントまでの距離 (3): 834.148255665
+<DEBUG> 2022-07-30_03:46:35 [<module>] 現在のウェイポイントは[3]です。[Head:237]
+<DEBUG> 2022-07-30_03:46:36 [<module>] ウェイポイントまでの距離 (3): 823.432027909
+<DEBUG> 2022-07-30_03:46:36 [<module>] 現在のウェイポイントは[3]です。[Head:233]
+<DEBUG> 2022-07-30_03:46:37 [<module>] ウェイポイントまでの距離 (3): 812.28222653
+<DEBUG> 2022-07-30_03:46:37 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:46:38 [<module>] ウェイポイントまでの距離 (3): 801.052384018
+<DEBUG> 2022-07-30_03:46:38 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:46:39 [<module>] ウェイポイントまでの距離 (3): 789.568460515
+<DEBUG> 2022-07-30_03:46:39 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:46:40 [<module>] ウェイポイントまでの距離 (3): 778.179735812
+<DEBUG> 2022-07-30_03:46:40 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:46:41 [<module>] ウェイポイントまでの距離 (3): 766.621223771
+<DEBUG> 2022-07-30_03:46:41 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:46:42 [<module>] ウェイポイントまでの距離 (3): 755.167615663
+<DEBUG> 2022-07-30_03:46:42 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:46:43 [<module>] ウェイポイントまでの距離 (3): 743.559377904
+<DEBUG> 2022-07-30_03:46:43 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:46:44 [<module>] ウェイポイントまでの距離 (3): 732.065749304
+<DEBUG> 2022-07-30_03:46:44 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:46:45 [<module>] ウェイポイントまでの距離 (3): 720.432648686
+<DEBUG> 2022-07-30_03:46:45 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:46:46 [<module>] ウェイポイントまでの距離 (3): 708.929314814
+<DEBUG> 2022-07-30_03:46:46 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:46:47 [<module>] ウェイポイントまでの距離 (3): 697.321077086
+<DEBUG> 2022-07-30_03:46:47 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:46:48 [<module>] ウェイポイントまでの距離 (3): 685.787428075
+<DEBUG> 2022-07-30_03:46:48 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:46:49 [<module>] ウェイポイントまでの距離 (3): 674.15432749
+<DEBUG> 2022-07-30_03:46:49 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:46:50 [<module>] ウェイポイントまでの距離 (3): 662.620678577
+<DEBUG> 2022-07-30_03:46:50 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:46:51 [<module>] ウェイポイントまでの距離 (3): 650.9627151
+<DEBUG> 2022-07-30_03:46:51 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:46:52 [<module>] ウェイポイントまでの距離 (3): 639.40965535
+<DEBUG> 2022-07-30_03:46:52 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:46:53 [<module>] ウェイポイントまでの距離 (3): 627.82628063
+<DEBUG> 2022-07-30_03:46:53 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:46:54 [<module>] ウェイポイントまでの距離 (3): 616.218043016
+<DEBUG> 2022-07-30_03:46:54 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:46:55 [<module>] ウェイポイントまでの距離 (3): 604.634668365
+<DEBUG> 2022-07-30_03:46:55 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:46:56 [<module>] ウェイポイントまでの距離 (3): 593.01127344
+<DEBUG> 2022-07-30_03:46:56 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:46:57 [<module>] ウェイポイントまでの距離 (3): 581.418193268
+<DEBUG> 2022-07-30_03:46:57 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:46:58 [<module>] ウェイポイントまでの距離 (3): 569.76993548
+<DEBUG> 2022-07-30_03:46:58 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:46:59 [<module>] ウェイポイントまでの距離 (3): 558.256895882
+<DEBUG> 2022-07-30_03:46:59 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:00 [<module>] ウェイポイントまでの距離 (3): 546.648658376
+<DEBUG> 2022-07-30_03:47:00 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:01 [<module>] ウェイポイントまでの距離 (3): 535.099852602
+<DEBUG> 2022-07-30_03:47:01 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:02 [<module>] ウェイポイントまでの距離 (3): 523.457046444
+<DEBUG> 2022-07-30_03:47:02 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:03 [<module>] ウェイポイントまでの距離 (3): 511.898535045
+<DEBUG> 2022-07-30_03:47:03 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:04 [<module>] ウェイポイントまでの距離 (3): 500.250277549
+<DEBUG> 2022-07-30_03:47:04 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:05 [<module>] ウェイポイントまでの距離 (3): 488.731786454
+<DEBUG> 2022-07-30_03:47:05 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:06 [<module>] ウェイポイントまでの距離 (3): 477.073823138
+<DEBUG> 2022-07-30_03:47:06 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:07 [<module>] ウェイポイントまでの距離 (3): 465.555332098
+<DEBUG> 2022-07-30_03:47:07 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:08 [<module>] ウェイポイントまでの距離 (3): 453.882211825
+<DEBUG> 2022-07-30_03:47:08 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:09 [<module>] ウェイポイントまでの距離 (3): 442.338857809
+<DEBUG> 2022-07-30_03:47:09 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:10 [<module>] ウェイポイントまでの距離 (3): 430.680894585
+<DEBUG> 2022-07-30_03:47:10 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:11 [<module>] ウェイポイントまでの距離 (3): 419.147246856
+<DEBUG> 2022-07-30_03:47:11 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:12 [<module>] ウェイポイントまでの距離 (3): 407.474126935
+<DEBUG> 2022-07-30_03:47:12 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:13 [<module>] ウェイポイントまでの距離 (3): 395.930773102
+<DEBUG> 2022-07-30_03:47:13 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:14 [<module>] ウェイポイントまでの距離 (3): 384.337693017
+<DEBUG> 2022-07-30_03:47:14 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:15 [<module>] ウェイポイントまでの距離 (3): 372.794339235
+<DEBUG> 2022-07-30_03:47:15 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:16 [<module>] ウェイポイントまでの距離 (3): 361.136376225
+<DEBUG> 2022-07-30_03:47:16 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:17 [<module>] ウェイポイントまでの距離 (3): 349.577865992
+<DEBUG> 2022-07-30_03:47:17 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:18 [<module>] ウェイポイントまでの距離 (3): 337.969629531
+<DEBUG> 2022-07-30_03:47:18 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:19 [<module>] ウェイポイントまでの距離 (3): 326.371100131
+<DEBUG> 2022-07-30_03:47:19 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:20 [<module>] ウェイポイントまでの距離 (3): 314.80288353
+<DEBUG> 2022-07-30_03:47:20 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:21 [<module>] ウェイポイントまでの距離 (3): 303.17949144
+<DEBUG> 2022-07-30_03:47:21 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:22 [<module>] ウェイポイントまでの距離 (3): 288.645398218
+<DEBUG> 2022-07-30_03:47:22 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:23 [<module>] ウェイポイントまでの距離 (3): 277.092337875
+<DEBUG> 2022-07-30_03:47:23 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:24 [<module>] ウェイポイントまでの距離 (3): 265.468946799
+<DEBUG> 2022-07-30_03:47:24 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:25 [<module>] ウェイポイントまでの距離 (3): 253.851003982
+<DEBUG> 2022-07-30_03:47:25 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:26 [<module>] ウェイポイントまでの距離 (3): 242.267632624
+<DEBUG> 2022-07-30_03:47:26 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:27 [<module>] ウェイポイントまでの距離 (3): 230.634534633
+<DEBUG> 2022-07-30_03:47:27 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:28 [<module>] ウェイポイントまでの距離 (3): 219.116046385
+<DEBUG> 2022-07-30_03:47:28 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:29 [<module>] ウェイポイントまでの距離 (3): 207.517521449
+<DEBUG> 2022-07-30_03:47:29 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:30 [<module>] ウェイポイントまでの距離 (3): 195.949306931
+<DEBUG> 2022-07-30_03:47:30 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:31 [<module>] ウェイポイントまでの距離 (3): 184.316210769
+<DEBUG> 2022-07-30_03:47:31 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:32 [<module>] ウェイポイントまでの距離 (3): 172.757706806
+<DEBUG> 2022-07-30_03:47:32 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:33 [<module>] ウェイポイントまでの距離 (3): 161.099748331
+<DEBUG> 2022-07-30_03:47:33 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:34 [<module>] ウェイポイントまでの距離 (3): 149.571553793
+<DEBUG> 2022-07-30_03:47:34 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:35 [<module>] ウェイポイントまでの距離 (3): 137.917866145
+<DEBUG> 2022-07-30_03:47:35 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:36 [<module>] ウェイポイントまでの距離 (3): 126.374521673
+<DEBUG> 2022-07-30_03:47:36 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:37 [<module>] ウェイポイントまでの距離 (3): 114.706856704
+<DEBUG> 2022-07-30_03:47:37 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:38 [<module>] ウェイポイントまでの距離 (3): 103.163515947
+<DEBUG> 2022-07-30_03:47:38 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:39 [<module>] ウェイポイントまでの距離 (3): 91.5001334803
+<DEBUG> 2022-07-30_03:47:39 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:40 [<module>] ウェイポイントまでの距離 (3): 79.9665204972
+<DEBUG> 2022-07-30_03:47:40 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:41 [<module>] ウェイポイントまでの距離 (3): 68.3637506578
+<DEBUG> 2022-07-30_03:47:41 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:42 [<module>] ウェイポイントまでの距離 (3): 56.8453076606
+<DEBUG> 2022-07-30_03:47:42 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:43 [<module>] ウェイポイントまでの距離 (3): 45.206864462
+<DEBUG> 2022-07-30_03:47:43 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:44 [<module>] ウェイポイントまでの距離 (3): 33.6387719835
+<DEBUG> 2022-07-30_03:47:44 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:45 [<module>] ウェイポイントまでの距離 (3): 22.1951702285
+<DEBUG> 2022-07-30_03:47:45 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:46 [<module>] ウェイポイントまでの距離 (3): 12.3068794688
+<DEBUG> 2022-07-30_03:47:46 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:47 [<module>] ウェイポイントまでの距離 (3): 4.93261521435
+<DEBUG> 2022-07-30_03:47:47 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:48 [<module>] ウェイポイントまでの距離 (3): 0.683804888251
+<DEBUG> 2022-07-30_03:47:48 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:49 [<module>] ウェイポイントまでの距離 (3): 0.926486170335
+<DEBUG> 2022-07-30_03:47:49 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:50 [<module>] ウェイポイントまでの距離 (3): 0.903152592885
+<DEBUG> 2022-07-30_03:47:50 [<module>] 現在のウェイポイントは[3]です。[Head:235]
+<DEBUG> 2022-07-30_03:47:51 [<module>] ウェイポイントまでの距離 (4): 861.879710465
+<DEBUG> 2022-07-30_03:47:51 [<module>] ミッションを終了して離陸地点へ戻る
+<DEBUG> 2022-07-30_03:47:51 [set_vehicle_mode] SET MODE: RTL
+<CRITICAL> 2022-07-30_04:04:35 [<module>] KeyBoard Exception
+<INFO> 2022-07-30_04:04:35 [<module>] Close vehicle object
+<INFO> 2022-07-30_04:04:35 [<module>] プログラム終了
+<CRITICAL> 2022-07-30_04:04:35 [<module>] キーボード例外処理発生
+<INFO> 2022-07-30_04:04:37 [__init__] dctrl_cls init
+<INFO> 2022-07-30_04:04:37 [__init__] START
+<DEBUG> 2022-07-30_04:04:37 [connect_vehicle] START
+<DEBUG> 2022-07-30_04:04:37 [connect_vehicle] Connect to vehicle object:/home/sayz/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-07-30_04:04:37 [connect_vehicle] /home/sayz/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-07-30_04:04:37 [connect_vehicle] SETTING_JSON: /home/sayz/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-07-30_04:04:37 [on_connect_m] Connected with result code 0
+<DEBUG> 2022-07-30_04:04:37 [connect_vehicle] connection_string: udp:127.0.0.1:14551
+<DEBUG> 2022-07-30_04:04:37 [on_connect] Connected with result code 0
+<DEBUG> 2022-07-30_04:04:37 [connect_vehicle] Connecting to vehicle on: udp:127.0.0.1:14551
+<DEBUG> 2022-07-30_04:04:39 [connect_vehicle] END
+<INFO> 2022-07-30_04:04:44 [<module>] Vehicle初期化完了
+<DEBUG> 2022-07-30_04:04:44 [dsp_attributes] START
+<INFO> 2022-07-30_04:04:44 [dsp_attributes] 
+---- Vehicle attributes ----------------------------------------
+<INFO> 2022-07-30_04:04:44 [dsp_attributes] Ardupilot Firmware version: APM:Copter-4.3.0-dev0
+<INFO> 2022-07-30_04:04:44 [dsp_attributes]   Major version number: 4
+<INFO> 2022-07-30_04:04:44 [dsp_attributes]   Minor version number: 3
+<INFO> 2022-07-30_04:04:44 [dsp_attributes]   Patch version number: 0
+<INFO> 2022-07-30_04:04:44 [dsp_attributes]   Release type: dev
+<INFO> 2022-07-30_04:04:44 [dsp_attributes]   Release version: 0
+<INFO> 2022-07-30_04:04:44 [dsp_attributes]   Stable release?: False
+<INFO> 2022-07-30_04:04:44 [dsp_attributes] Autopilot capabilities
+<INFO> 2022-07-30_04:04:44 [dsp_attributes]   Supports MISSION_FLOAT message type: True
+<INFO> 2022-07-30_04:04:44 [dsp_attributes]   Supports PARAM_FLOAT message type: True
+<INFO> 2022-07-30_04:04:44 [dsp_attributes]   Supports MISSION_INT message type: True
+<INFO> 2022-07-30_04:04:44 [dsp_attributes]   Supports COMMAND_INT message type: True
+<INFO> 2022-07-30_04:04:44 [dsp_attributes]   Supports PARAM_UNION message type: False
+<INFO> 2022-07-30_04:04:44 [dsp_attributes]   Supports ftp for file transfers: True
+<INFO> 2022-07-30_04:04:44 [dsp_attributes]   Supports commanding attitude offboard: True
+<INFO> 2022-07-30_04:04:44 [dsp_attributes]   Supports commanding position and velocity targets in local NED frame: True
+<INFO> 2022-07-30_04:04:44 [dsp_attributes]   Supports set position + velocity targets in global scaled integers: True
+<INFO> 2022-07-30_04:04:44 [dsp_attributes]   Supports terrain protocol / data handling: True
+<INFO> 2022-07-30_04:04:44 [dsp_attributes]   Supports direct actuator control: False
+<INFO> 2022-07-30_04:04:44 [dsp_attributes]   Supports the flight termination command: True
+<INFO> 2022-07-30_04:04:44 [dsp_attributes]   Supports mission_float message type: True
+<INFO> 2022-07-30_04:04:44 [dsp_attributes]   Supports onboard compass calibration: True
+<INFO> 2022-07-30_04:04:44 [dsp_attributes] Global Location: LocationGlobal:lat=35.8940867,lon=139.952447,alt=17.07
+<INFO> 2022-07-30_04:04:44 [dsp_attributes] Global Location (relative altitude): LocationGlobalRelative:lat=35.8940867,lon=139.952447,alt=-0.002
+<INFO> 2022-07-30_04:04:44 [dsp_attributes] Local Location: LocationLocal:north=-0.0442860238254,east=-0.00185245007742,down=0.0329718627036
+<INFO> 2022-07-30_04:04:44 [dsp_attributes] Attitude: Attitude:pitch=-0.000758635054808,yaw=-2.16692113876,roll=-0.00049710762687
+<INFO> 2022-07-30_04:04:44 [dsp_attributes] Velocity: [-0.01, 0.0, 0.0]
+<INFO> 2022-07-30_04:04:44 [dsp_attributes] GPS: GPSInfo:fix=6,num_sat=10
+<INFO> 2022-07-30_04:04:44 [dsp_attributes] Gimbal status: Gimbal: pitch=None, roll=None, yaw=None
+<INFO> 2022-07-30_04:04:44 [dsp_attributes] Battery: Battery:voltage=12.587,current=0.0,level=0
+<INFO> 2022-07-30_04:04:44 [dsp_attributes] EKF OK?: True
+<INFO> 2022-07-30_04:04:44 [dsp_attributes] Last Heartbeat: 0.0671832939997
+<INFO> 2022-07-30_04:04:44 [dsp_attributes] Rangefinder: Rangefinder: distance=None, voltage=None
+<INFO> 2022-07-30_04:04:44 [dsp_attributes] Rangefinder distance: None
+<INFO> 2022-07-30_04:04:44 [dsp_attributes] Rangefinder voltage: None
+<INFO> 2022-07-30_04:04:44 [dsp_attributes] Heading: 235
+<INFO> 2022-07-30_04:04:44 [dsp_attributes] Is Armable?: True
+<INFO> 2022-07-30_04:04:44 [dsp_attributes] System status: STANDBY
+<INFO> 2022-07-30_04:04:44 [dsp_attributes] Groundspeed: 0.0146991508082
+<INFO> 2022-07-30_04:04:44 [dsp_attributes] Airspeed: 0.0
+<INFO> 2022-07-30_04:04:44 [dsp_attributes] Mode: RTL
+<INFO> 2022-07-30_04:04:44 [dsp_attributes] Armed: False
+<INFO> 2022-07-30_04:04:44 [dsp_attributes] ----------------------------------------------------------------
+
+<DEBUG> 2022-07-30_04:04:44 [dsp_attributes] END
+<DEBUG> 2022-07-30_04:05:09 [on_message] START
+<DEBUG> 2022-07-30_04:05:09 [<module>] Arming moter
+<DEBUG> 2022-07-30_04:05:09 [vehicle_arming] ARMING:
+<DEBUG> 2022-07-30_04:05:10 [on_message] START
+<DEBUG> 2022-07-30_04:05:11 [<module>] Set mode to GUIDED
+<DEBUG> 2022-07-30_04:05:11 [set_vehicle_mode] SET MODE: GUIDED
+<DEBUG> 2022-07-30_04:05:14 [on_message] START
+<DEBUG> 2022-07-30_04:05:14 [on_message] START
+<DEBUG> 2022-07-30_04:05:14 [on_message] START
+<DEBUG> 2022-07-30_04:05:14 [<module>] Arming moter
+<DEBUG> 2022-07-30_04:05:14 [vehicle_arming] ARMING:
+<DEBUG> 2022-07-30_04:05:14 [on_message] START
+<DEBUG> 2022-07-30_04:05:14 [on_message] START
+<DEBUG> 2022-07-30_04:05:15 [on_message] START
+<DEBUG> 2022-07-30_04:05:15 [on_message] START
+<DEBUG> 2022-07-30_04:05:15 [on_message] START
+<DEBUG> 2022-07-30_04:05:15 [<module>] Arming moter
+<DEBUG> 2022-07-30_04:05:15 [vehicle_arming] ARMING:
+<DEBUG> 2022-07-30_04:05:26 [on_message] START
+<DEBUG> 2022-07-30_04:05:26 [on_message] START
+<DEBUG> 2022-07-30_04:05:26 [on_message] START
+<DEBUG> 2022-07-30_04:05:26 [<module>] Arming moter
+<DEBUG> 2022-07-30_04:05:26 [vehicle_arming] ARMING:
+<DEBUG> 2022-07-30_04:05:29 [on_message] START
+<DEBUG> 2022-07-30_04:05:29 [<module>] Take off
+<DEBUG> 2022-07-30_04:05:29 [vehicle_takeoff] TAKEOFF
+<DEBUG> 2022-07-30_04:05:59 [on_message_m] START
+<DEBUG> 2022-07-30_04:05:59 [<module>] MISSION
+<DEBUG> 2022-07-30_04:05:59 [readmission] Reading mission from file: ../mission/mpmission.txt
+<DEBUG> 2022-07-30_04:05:59 [set_vehicle_mode] SET MODE: GUIDED
+<INFO> 2022-07-30_04:05:59 [<module>] ARMと離陸完了:3.0m
+<DEBUG> 2022-07-30_04:05:59 [set_vehicle_mode] SET MODE: AUTO
+<DEBUG> 2022-07-30_04:05:59 [<module>] ウェイポイントまでの距離 (0): None
+<DEBUG> 2022-07-30_04:05:59 [<module>] 現在のウェイポイントは[0]です。[Head:235]
+<DEBUG> 2022-07-30_04:06:00 [<module>] ウェイポイントまでの距離 (2): 346.204095447
+<DEBUG> 2022-07-30_04:06:00 [<module>] 現在のウェイポイントは[2]です。[Head:235]
+<DEBUG> 2022-07-30_04:06:01 [<module>] ウェイポイントまでの距離 (2): 345.571968758
+<DEBUG> 2022-07-30_04:06:01 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:02 [<module>] ウェイポイントまでの距離 (2): 343.456022917
+<DEBUG> 2022-07-30_04:06:02 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:03 [<module>] ウェイポイントまでの距離 (2): 339.019566307
+<DEBUG> 2022-07-30_04:06:03 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:04 [<module>] ウェイポイントまでの距離 (2): 332.138489579
+<DEBUG> 2022-07-30_04:06:04 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:05 [<module>] ウェイポイントまでの距離 (2): 322.857793531
+<DEBUG> 2022-07-30_04:06:05 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:06 [<module>] ウェイポイントまでの距離 (2): 312.28761855
+<DEBUG> 2022-07-30_04:06:06 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:07 [<module>] ウェイポイントまでの距離 (2): 301.040314808
+<DEBUG> 2022-07-30_04:06:07 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:08 [<module>] ウェイポイントまでの距離 (2): 289.653564243
+<DEBUG> 2022-07-30_04:06:08 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:09 [<module>] ウェイポイントまでの距離 (2): 278.177146916
+<DEBUG> 2022-07-30_04:06:09 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:10 [<module>] ウェイポイントまでの距離 (2): 266.591281867
+<DEBUG> 2022-07-30_04:06:10 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:11 [<module>] ウェイポイントまでの距離 (2): 255.025200946
+<DEBUG> 2022-07-30_04:06:11 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:12 [<module>] ウェイポイントまでの距離 (2): 243.374562137
+<DEBUG> 2022-07-30_04:06:12 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:13 [<module>] ウェイポイントまでの距離 (2): 231.78359808
+<DEBUG> 2022-07-30_04:06:13 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:14 [<module>] ウェイポイントまでの距離 (2): 220.083185762
+<DEBUG> 2022-07-30_04:06:14 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:15 [<module>] ウェイポイントまでの距離 (2): 208.407666647
+<DEBUG> 2022-07-30_04:06:15 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:16 [<module>] ウェイポイントまでの距離 (2): 196.672477088
+<DEBUG> 2022-07-30_04:06:16 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:17 [<module>] ウェイポイントまでの距離 (2): 185.021855796
+<DEBUG> 2022-07-30_04:06:17 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:18 [<module>] ウェイポイントまでの距離 (2): 173.2566866
+<DEBUG> 2022-07-30_04:06:18 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:19 [<module>] ウェイポイントまでの距離 (2): 161.645961443
+<DEBUG> 2022-07-30_04:06:19 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:20 [<module>] ウェイポイントまでの距離 (2): 149.870910536
+<DEBUG> 2022-07-30_04:06:20 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:21 [<module>] ウェイポイントまでの距離 (2): 138.220320683
+<DEBUG> 2022-07-30_04:06:21 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:22 [<module>] ウェイポイントまでの距離 (2): 126.455194807
+<DEBUG> 2022-07-30_04:06:22 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:23 [<module>] ウェイポイントまでの距離 (2): 114.80463795
+<DEBUG> 2022-07-30_04:06:23 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:24 [<module>] ウェイポイントまでの距離 (2): 103.029652472
+<DEBUG> 2022-07-30_04:06:24 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:25 [<module>] ウェイポイントまでの距離 (2): 91.404043205
+<DEBUG> 2022-07-30_04:06:25 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:26 [<module>] ウェイポイントまでの距離 (2): 79.6690047829
+<DEBUG> 2022-07-30_04:06:26 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:27 [<module>] ウェイポイントまでの距離 (2): 67.9787564627
+<DEBUG> 2022-07-30_04:06:27 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:28 [<module>] ウェイポイントまでの距離 (2): 56.2040365318
+<DEBUG> 2022-07-30_04:06:28 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:29 [<module>] ウェイポイントまでの距離 (2): 44.5191504508
+<DEBUG> 2022-07-30_04:06:29 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:30 [<module>] ウェイポイントまでの距離 (2): 32.7798978094
+<DEBUG> 2022-07-30_04:06:30 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:31 [<module>] ウェイポイントまでの距離 (2): 21.7436876671
+<DEBUG> 2022-07-30_04:06:31 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:32 [<module>] ウェイポイントまでの距離 (2): 12.1991982464
+<DEBUG> 2022-07-30_04:06:32 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:33 [<module>] ウェイポイントまでの距離 (2): 5.34471945447
+<DEBUG> 2022-07-30_04:06:33 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:34 [<module>] ウェイポイントまでの距離 (2): 1.54090402813
+<DEBUG> 2022-07-30_04:06:34 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:35 [<module>] ウェイポイントまでの距離 (2): 0.56093637245
+<DEBUG> 2022-07-30_04:06:35 [<module>] 現在のウェイポイントは[2]です。[Head:237]
+<DEBUG> 2022-07-30_04:06:36 [<module>] ウェイポイントまでの距離 (3): 345.955292138
+<DEBUG> 2022-07-30_04:06:36 [<module>] ミッションを終了して離陸地点へ戻る
+<DEBUG> 2022-07-30_04:06:36 [set_vehicle_mode] SET MODE: RTL
+<CRITICAL> 2022-07-30_04:17:27 [<module>] KeyBoard Exception
+<INFO> 2022-07-30_04:17:27 [<module>] Close vehicle object
+<INFO> 2022-07-30_04:17:27 [<module>] プログラム終了
+<CRITICAL> 2022-07-30_04:17:27 [<module>] キーボード例外処理発生
+<INFO> 2022-07-30_04:17:30 [__init__] dctrl_cls init
+<INFO> 2022-07-30_04:17:30 [__init__] START
+<DEBUG> 2022-07-30_04:17:30 [on_connect] Connected with result code 0
+<DEBUG> 2022-07-30_04:17:30 [on_connect_m] Connected with result code 0
+<DEBUG> 2022-07-30_04:17:30 [connect_vehicle] START
+<DEBUG> 2022-07-30_04:17:30 [connect_vehicle] Connect to vehicle object:/home/sayz/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-07-30_04:17:30 [connect_vehicle] /home/sayz/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-07-30_04:17:30 [connect_vehicle] SETTING_JSON: /home/sayz/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-07-30_04:17:30 [connect_vehicle] connection_string: udp:127.0.0.1:14551
+<DEBUG> 2022-07-30_04:17:30 [connect_vehicle] Connecting to vehicle on: udp:127.0.0.1:14551
+<DEBUG> 2022-07-30_04:17:32 [connect_vehicle] END
+<INFO> 2022-07-30_04:17:37 [<module>] Vehicle初期化完了
+<DEBUG> 2022-07-30_04:17:37 [dsp_attributes] START
+<INFO> 2022-07-30_04:17:37 [dsp_attributes] 
+---- Vehicle attributes ----------------------------------------
+<INFO> 2022-07-30_04:17:37 [dsp_attributes] Ardupilot Firmware version: APM:Copter-4.3.0-dev0
+<INFO> 2022-07-30_04:17:37 [dsp_attributes]   Major version number: 4
+<INFO> 2022-07-30_04:17:37 [dsp_attributes]   Minor version number: 3
+<INFO> 2022-07-30_04:17:37 [dsp_attributes]   Patch version number: 0
+<INFO> 2022-07-30_04:17:37 [dsp_attributes]   Release type: dev
+<INFO> 2022-07-30_04:17:37 [dsp_attributes]   Release version: 0
+<INFO> 2022-07-30_04:17:37 [dsp_attributes]   Stable release?: False
+<INFO> 2022-07-30_04:17:37 [dsp_attributes] Autopilot capabilities
+<INFO> 2022-07-30_04:17:37 [dsp_attributes]   Supports MISSION_FLOAT message type: True
+<INFO> 2022-07-30_04:17:37 [dsp_attributes]   Supports PARAM_FLOAT message type: True
+<INFO> 2022-07-30_04:17:37 [dsp_attributes]   Supports MISSION_INT message type: True
+<INFO> 2022-07-30_04:17:37 [dsp_attributes]   Supports COMMAND_INT message type: True
+<INFO> 2022-07-30_04:17:37 [dsp_attributes]   Supports PARAM_UNION message type: False
+<INFO> 2022-07-30_04:17:37 [dsp_attributes]   Supports ftp for file transfers: True
+<INFO> 2022-07-30_04:17:37 [dsp_attributes]   Supports commanding attitude offboard: True
+<INFO> 2022-07-30_04:17:37 [dsp_attributes]   Supports commanding position and velocity targets in local NED frame: True
+<INFO> 2022-07-30_04:17:37 [dsp_attributes]   Supports set position + velocity targets in global scaled integers: True
+<INFO> 2022-07-30_04:17:37 [dsp_attributes]   Supports terrain protocol / data handling: True
+<INFO> 2022-07-30_04:17:37 [dsp_attributes]   Supports direct actuator control: False
+<INFO> 2022-07-30_04:17:37 [dsp_attributes]   Supports the flight termination command: True
+<INFO> 2022-07-30_04:17:37 [dsp_attributes]   Supports mission_float message type: True
+<INFO> 2022-07-30_04:17:37 [dsp_attributes]   Supports onboard compass calibration: True
+<INFO> 2022-07-30_04:17:37 [dsp_attributes] Global Location: LocationGlobal:lat=35.8940869,lon=139.9524472,alt=17.07
+<INFO> 2022-07-30_04:17:37 [dsp_attributes] Global Location (relative altitude): LocationGlobalRelative:lat=35.8940869,lon=139.9524472,alt=0.006
+<INFO> 2022-07-30_04:17:37 [dsp_attributes] Local Location: LocationLocal:north=-0.0184416081756,east=0.0139318443835,down=0.0332893431187
+<INFO> 2022-07-30_04:17:37 [dsp_attributes] Attitude: Attitude:pitch=-0.0011604654137,yaw=-2.15532279015,roll=-0.000940666068345
+<INFO> 2022-07-30_04:17:37 [dsp_attributes] Velocity: [-0.02, 0.0, 0.0]
+<INFO> 2022-07-30_04:17:37 [dsp_attributes] GPS: GPSInfo:fix=6,num_sat=10
+<INFO> 2022-07-30_04:17:37 [dsp_attributes] Gimbal status: Gimbal: pitch=None, roll=None, yaw=None
+<INFO> 2022-07-30_04:17:37 [dsp_attributes] Battery: Battery:voltage=12.587,current=0.0,level=0
+<INFO> 2022-07-30_04:17:37 [dsp_attributes] EKF OK?: True
+<INFO> 2022-07-30_04:17:37 [dsp_attributes] Last Heartbeat: 0.0173801000001
+<INFO> 2022-07-30_04:17:37 [dsp_attributes] Rangefinder: Rangefinder: distance=None, voltage=None
+<INFO> 2022-07-30_04:17:37 [dsp_attributes] Rangefinder distance: None
+<INFO> 2022-07-30_04:17:37 [dsp_attributes] Rangefinder voltage: None
+<INFO> 2022-07-30_04:17:37 [dsp_attributes] Heading: 236
+<INFO> 2022-07-30_04:17:37 [dsp_attributes] Is Armable?: True
+<INFO> 2022-07-30_04:17:37 [dsp_attributes] System status: STANDBY
+<INFO> 2022-07-30_04:17:37 [dsp_attributes] Groundspeed: 0.0237119439989
+<INFO> 2022-07-30_04:17:37 [dsp_attributes] Airspeed: 0.0
+<INFO> 2022-07-30_04:17:37 [dsp_attributes] Mode: RTL
+<INFO> 2022-07-30_04:17:37 [dsp_attributes] Armed: False
+<INFO> 2022-07-30_04:17:37 [dsp_attributes] ----------------------------------------------------------------
+
+<DEBUG> 2022-07-30_04:17:37 [dsp_attributes] END
