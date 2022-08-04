@@ -53,6 +53,7 @@ class MqttCtrl(Mqtt_Singleton):
     ### =================================================================================== 
     drone_command = {
         "operation":"None",
+        "subcode":"None",
         "d_lat":"0",
         "d_lon":"0",
         "d_alt":"0"

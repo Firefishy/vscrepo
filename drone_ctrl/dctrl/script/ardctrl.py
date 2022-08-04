@@ -2,304 +2,237 @@
 # -*- coding: utf-8 -*-
 
 """
-^----^
- *  * 
 This program is ...
-Drone control program for specific drone.
-Title: The part of drone(Coptor) control program using dronekit python
+main control program for delivery drone.
+Title: Drone(Coptor) control program using dronekit python
 Company: Systena Corporation Inc
-Autor: y.s
-Date: June, 2022
-
-This program is based on following ... Ardupilot
-------------------------------------------------------------------------------------------
-© Copyright 2015-2016, 3D Robotics.
-guided_set_speed_yaw.py: (Copter Only)
-This example shows how to move/direct Copter and send commands 
-in GUIDED mode using DroneKit Python.
-Example documentation: http://python.dronekit.io/examples/guided-set-speed-yaw-demo.html
-------------------------------------------------------------------------------------------
+Autor: y.saito
+Date: July, 2022
 """
-from __future__ import print_function
-
-#import sys
-import math
-#import numpy as np
-#from numpy.core.numeric import True_
+import os
 import time
-#import datetime
-#from decimal import Decimal, ROUND_HALF_UP, ROUND_HALF_EVEN
-#from threading import current_thread
-import json
-#import traceback
-#import os
-
-#from configparser import ConfigParser
-#from std_msgs.msg import Float64, Float32, String, Int32
-
-from dronekit import connect, VehicleMode, LocationGlobal, LocationGlobalRelative, Command
-from pymavlink import mavutil
-#from multiprocessing import Value, Process
-#from geometry_msgs.msg import PoseStamped
-
+import json # json.dumps関数を使いたいのでインポート
+import mqtt_cls as mqttcls
 import dlogger as dlog
+import ardctrl_cls_c2 as ardctrl
+from pymavlink import mavutil
 
-##################################################################
-### Ardupilot drone control base class
-##################################################################
-class ArdCtrl():
-    
-    vehicle = ""
+flg_MissionUploaded = False
 
-    ### =================================================================================== 
-    ### MQTTで送信するドローンの情報:クライアントへ送信
-    ###     ドローンのステータス及び現在位置情報
-    ### =================================================================================== 
-    drone_info = {  
-        "status":{  
-            "isArmable":"false",
-            "Arm":"false",
-            "FlightMode":"false"
-        },
-        "position":{ 
-            "latitude":"35.0000", 
-            "longitude":"135.0000",
-            "altitude":"20",
-            "heading":"0"
-        }
-    } 
-    
-    def __init__(self):
-        #print("init")
-        dlog.LOG("INFO", "Ardctrl_class init")
+# read path
+base_path = os.path.dirname(os.path.abspath(__file__))
+json_path = os.path.normpath(os.path.join(base_path, '../json/setting.json'))
+SETTING_JSON = json_path
 
-    ### =================================================================================== 
-    ### Vehicleに接続
-    ### =================================================================================== 
-    def connect_vehicle(self, json_file):
-        dlog.LOG("DEBUG", "START")
-        msgstr = "Connect to vehicle object:" + json_file
-        dlog.LOG("DEBUG", msgstr)
-        json_open = open(json_file, 'r')
-        json_load = json.load(json_open)
-        connection_string = (json_load['connection']['sim'])
-        dlog.LOG("DEBUG", json_file)
-        
-        # Store connrction information
-        self.SETTING_JSON = json_file
+### =================================================================================== 
+### ドローンの情報をクライアントにパブリッシュ
+### =================================================================================== 
+def pub_drone_info():
+    ardc.set_vehicle_info()
+    #--- MQTTの送信 ---
+    # 辞書型をJSON型に変換
+    json_message = json.dumps( ardc.drone_info )     
+    #dlog.LOG("DEBUG", json_message)
+    # トピック名は以前と同じ"drone/001"
+    mqttClass.client.publish(mqttClass.topic_dinfo, json_message )
 
-        dlog.LOG("DEBUG", "SETTING_JSON: " + self.SETTING_JSON)
-        dlog.LOG("DEBUG", "connection_string: " + connection_string)
+### =================================================================================== 
+### Main function
+### =================================================================================== 
+if __name__ == '__main__':
 
-        # Connect to Vehicle
-        dlog.LOG("DEBUG", "Connecting to vehicle on: " + str(connection_string))
-        self.vehicle = connect(connection_string, wait_ready=True)
-        self.vehicle.wait_ready('autopilot_version')
+    ARM_HEIGHT = 3.0
 
-        dlog.LOG("DEBUG", "END")
+    # Get instance of DroneController(by Dronekit)
+    ardc = ardctrl.ArdCtrlClsC2()
+    # MQTT通信処理スタート
+    mqttClass = mqttcls.MqttCtrl.get_instance()
+    #print("instance1", dCtrlClass)
 
-    ### =================================================================================== 
-    ### Vehicleクローズ
-    ### =================================================================================== 
-    def close_vehicle(self):
-        dlog.LOG("DEBUG", "START")      
-        self.vehicle.close()
-        dlog.LOG("DEBUG", "END")
+    ardc.connect_vehicle(SETTING_JSON)
+    time.sleep(5)
 
-    ### =================================================================================== 
-    ### ドローンの情報をセット
-    ### =================================================================================== 
-    def set_vehicle_info(self):
-        self.drone_info["status"]["isArmable"] = str(self.vehicle.is_armable)                 # ARM可能か？
-        self.drone_info["status"]["Arm"] = str(self.vehicle.armed)                            # ARM状態
-        self.drone_info["status"]["FlightMode"] = str(self.vehicle.mode.name)                 # フライトモード
-        self.drone_info["position"]["latitude"] = str(self.vehicle.location.global_frame.lat) # 緯度
-        self.drone_info["position"]["longitude"] = str(self.vehicle.location.global_frame.lon)# 経度
-        self.drone_info["position"]["altitude"] = str(self.vehicle.location.global_relative_frame.alt) # 高度
-        self.drone_info["position"]["heading"] = str(self.vehicle.heading) 
-    
-    ### =============================================================================================
-    ### ドローンの属性を取得しコンソールに表示する（のみ）
-    ### =============================================================================================
-    def dsp_attributes(self):
-        dlog.LOG("DEBUG", "START")
-        # Get all vehicle attributes (state)
-        dlog.LOG("INFO","\n---- Vehicle attributes ----------------------------------------")
-        dlog.LOG("INFO","Ardupilot Firmware version: " + str(self.vehicle.version))
-        # dlog.LOG("INFO","  Major version number: " + str(self.vehicle.version.major))
-        # dlog.LOG("INFO","  Minor version number: " + str(self.vehicle.version.minor))
-        # dlog.LOG("INFO","  Patch version number: " + str(self.vehicle.version.patch))
-        # dlog.LOG("INFO","  Release type: " + self.vehicle.version.release_type())
-        # dlog.LOG("INFO","  Release version: " + str(self.vehicle.version.release_version()))
-        # dlog.LOG("INFO","  Stable release?: " + str(self.vehicle.version.is_stable()))
-        # dlog.LOG("INFO","Autopilot capabilities")
-        # dlog.LOG("INFO","  Supports MISSION_FLOAT message type: " + str(self.vehicle.capabilities.mission_float))
-        # dlog.LOG("INFO","  Supports PARAM_FLOAT message type: " + str(self.vehicle.capabilities.param_float))
-        # dlog.LOG("INFO","  Supports MISSION_INT message type: " + str(self.vehicle.capabilities.mission_int))
-        # dlog.LOG("INFO","  Supports COMMAND_INT message type: " + str(self.vehicle.capabilities.command_int))
-        # dlog.LOG("INFO","  Supports PARAM_UNION message type: " + str(self.vehicle.capabilities.param_union))
-        # dlog.LOG("INFO","  Supports ftp for file transfers: " + str(self.vehicle.capabilities.ftp))
-        # dlog.LOG("INFO","  Supports commanding attitude offboard: " + str(self.vehicle.capabilities.set_attitude_target))
-        # dlog.LOG("INFO","  Supports commanding position and velocity targets in local NED frame: " + str(self.vehicle.capabilities.set_attitude_target_local_ned))
-        # dlog.LOG("INFO","  Supports set position + velocity targets in global scaled integers: " + str(self.vehicle.capabilities.set_altitude_target_global_int))
-        # dlog.LOG("INFO","  Supports terrain protocol / data handling: " + str(self.vehicle.capabilities.terrain))
-        # dlog.LOG("INFO","  Supports direct actuator control: " + str(self.vehicle.capabilities.set_actuator_target))
-        # dlog.LOG("INFO","  Supports the flight termination command: " + str(self.vehicle.capabilities.flight_termination))
-        # dlog.LOG("INFO","  Supports mission_float message type: " + str(self.vehicle.capabilities.mission_float))
-        # dlog.LOG("INFO","  Supports onboard compass calibration: " + str(self.vehicle.capabilities.compass_calibration))
-        dlog.LOG("INFO","Global Location: " + str(self.vehicle.location.global_frame))
-        dlog.LOG("INFO","Global Location (relative altitude): " + str(self.vehicle.location.global_relative_frame))
-        dlog.LOG("INFO","Local Location: " + str(self.vehicle.location.local_frame))
-        dlog.LOG("INFO","Attitude: " + str(self.vehicle.attitude))
-        dlog.LOG("INFO","Velocity: " + str(self.vehicle.velocity))
-        dlog.LOG("INFO","GPS: " + str(self.vehicle.gps_0))
-        dlog.LOG("INFO","Gimbal status: " + str(self.vehicle.gimbal))
-        dlog.LOG("INFO","Battery: " + str(self.vehicle.battery))
-        dlog.LOG("INFO","EKF OK?: " + str(self.vehicle.ekf_ok))
-        dlog.LOG("INFO","Last Heartbeat: " + str(self.vehicle.last_heartbeat))
-        # dlog.LOG("INFO","Rangefinder: " + str(self.vehicle.rangefinder))
-        # dlog.LOG("INFO","Rangefinder distance: " + str(self.vehicle.rangefinder.distance))
-        # dlog.LOG("INFO","Rangefinder voltage: " + str(self.vehicle.rangefinder.voltage))
-        dlog.LOG("INFO","Heading: " + str(self.vehicle.heading))
-        dlog.LOG("INFO","Is Armable?: " + str(self.vehicle.is_armable))
-        dlog.LOG("INFO","System status: " + str(self.vehicle.system_status.state))
-        dlog.LOG("INFO","Groundspeed: " + str(self.vehicle.groundspeed))    # settable
-        dlog.LOG("INFO","Airspeed: " + str(self.vehicle.airspeed))    # settable
-        dlog.LOG("INFO","Mode: " + str(self.vehicle.mode.name))    # settable
-        dlog.LOG("INFO","Armed: " + str(self.vehicle.armed))    # settable
-        dlog.LOG("INFO","----------------------------------------------------------------\n")
-        dlog.LOG("DEBUG", "END")
+    try:
 
-##################################################################
-### Ardupilot drone control command class
-##################################################################
-class ArdCtrlCmd(ArdCtrl):
+        # Drone init, arm and takeoff
+        # Log: CRITICAL, ERROR < WARNING < INFO < DEBUG 
+        dlog.LOG("INFO", "Vehicle初期化完了")
 
-    def __init__(self):
-        self.vehicle = ArdCtrl.vehicle
-        #print("init")
-        dlog.LOG("INFO", "dctrl_command_classinit")
+        # Get attributes
+        ardc.dsp_attributes()
 
-    ### =================================================================================== 
-    ### Vehicleのモードを設定
-    ### =================================================================================== 
-    def set_vehicle_mode(self, mode):
-        dlog.LOG("DEBUG","SET MODE: " + mode)
-        self.vehicle.mode = VehicleMode(mode)
+        # dlog.LOG("DEBUG", "新規ミッションの作成（現在地用）")
+        # dCtrlClass.adds_square_mission(dCtrlClass.vehicle.location.global_frame,50)        
 
-    ### =================================================================================== 
-    ### Arming
-    ### =================================================================================== 
-    def vehicle_arming(self):
-        dlog.LOG("DEBUG","ARMING:")
-        if self.vehicle.is_armable == True:
-            if self.vehicle.armed:
-                dlog.LOG("DEBUG","すでにARMしています。")
-            else:
-                self.vehicle.armed = True
-        else:
-            dlog.LOG("DEBUG","ARMできません。")
+        # Vehicleの現在モードを取得
+        mode = ardc.vehicle.mode
+        pub_drone_info()
 
-    ### =================================================================================== 
-    ### Disarm
-    ### =================================================================================== 
-    def vehicle_disarming(self):
-        dlog.LOG("DEBUG","ARMING:")
-        if not self.vehicle.armed:
-            dlog.LOG("DEBUG","すでにDISARM状態です。")
-        else:
-            self.vehicle.armed = False
-
-    ### =================================================================================== 
-    ### Take off
-    ### =================================================================================== 
-    def vehicle_takeoff(self, alt):
-        dlog.LOG("DEBUG","TAKEOFF")
-        self.vehicle.simple_takeoff(alt)  # Take off to target altitude
-
-    ### =================================================================================== 
-    ### Automatic arming and takeoff to set altitide
-    ### =================================================================================== 
-    def arm_and_takeoff(self, aTargetAltitude):
-        dlog.LOG("DEBUG", "START")
-        count = 0   
-        msgstr = ""
-        # Don't let the user try to arm until autopilot is ready
-        while not self.vehicle.is_armable:
-            msgstr = "Vehicle準備中 しばらくお待ちください(30秒程度かかる場合があります): " + str(count) + " 秒経過"
-            dlog.LOG("DEBUG", msgstr)
-            #self.pub_state(msgstr)
-            time.sleep(1)
-            count += 1
-        msgstr = "Vehicle Arm開始しています"
-        dlog.LOG("DEBUG",msgstr)
-        #self.pub_state(msgstr)
-
-        # Arming check: 0 is disable
-        # ArdCtrl.vehicle.parameters['ARMING_CHECK'] = 0
-
-        # Copter should arm in GUIDED mode
-        self.vehicle.mode = VehicleMode("GUIDED")
-        self.vehicle.armed = True
-
-        while not self.vehicle.armed:      
-            msgstr = "Vehicle Armしています"
-            dlog.LOG("INFO", msgstr)
-            #self.pub_state(msgstr)
-            time.sleep(1)
-
-        msgstr = "Vehicle 離陸しています"
-        dlog.LOG("INFO", msgstr) 
-        ArdCtrl.self.simple_takeoff(aTargetAltitude) # Take off to target altitude
-
-        # Wait until the vehicle reaches a safe height before processing the goto (otherwise the command 
-        #  after Vehicle.simple_takeoff will execute immediately).
         while True:
-            msgstr = "Vehicle現在高度: " + str(self.vehicle.location.global_relative_frame.alt)
-            dlog.LOG("INFO", msgstr) 
-            #self.pub_state(msgstr)
-            if self.vehicle.location.global_relative_frame.alt>=aTargetAltitude*0.95: #Trigger just below target alt.
-                msgstr = "設定高度に到達しました"      
-                dlog.LOG("DEBUG", msgstr) 
-                #self.pub_state(msgstr)
-                break
+            # ---------------------------
+            # Drone command   
+            # ---------------------------
+            
+            # Drone mode 
+            if mqttClass.drone_command["operation"] == "MAV_MESSAGE":
+                ardc.get_custom_message(mqttClass.drone_command["subcode"])
+
+            elif mqttClass.drone_command["operation"] == "GUIDED":
+                dlog.LOG("DEBUG", "GUIDED")
+                ardc.set_vehicle_mode("GUIDED")
+                mqttClass.drone_command["operation"] = "NONE"
+            elif mqttClass.drone_command["operation"] == "AUTO":
+                dlog.LOG("DEBUG", "Set mode to AUTO")
+                ardc.set_vehicle_mode("AUTO")
+                mqttClass.drone_command["operation"] = "NONE"
+            elif mqttClass.drone_command["operation"] == "RTL":
+                dlog.LOG("DEBUG", "Set mode to AUTO")
+                ardc.set_vehicle_mode("RTL")
+                mqttClass.drone_command["operation"] = "NONE"
+            
+            # Arm/Disarm
+            elif mqttClass.drone_command["operation"] == "ARM":
+                dlog.LOG("DEBUG", "Arm")
+                ardc.vehicle_arming()
+                mqttClass.drone_command["operation"] = "NONE"
+            # DisArm
+            elif mqttClass.drone_command["operation"] == "DISARM":
+                dlog.LOG("DEBUG", "Disarm")
+                ardc.vehicle_disarming()
+                mqttClass.drone_command["operation"] = "NONE"
+
+            # Take off
+            elif mqttClass.drone_command["operation"] == "TAKEOFF":
+                dlog.LOG("DEBUG", "Take off")
+                ardc.vehicle_takeoff(20.0)
+                mqttClass.drone_command["operation"] = "NONE"
+            # Land
+            elif mqttClass.drone_command["operation"] == "LAND":
+                dlog.LOG("DEBUG", "Landing")
+                ardc.set_vehicle_mode("LAND")
+                mqttClass.drone_command["operation"] = "NONE"
+
+            # ---------------------------
+            # Drone flight control   
+            # ---------------------------
+
+            # ---- Simple GOTO ----
+            elif mqttClass.drone_command["operation"] == "GOTO":
+                dlog.LOG("DEBUG", "Start Simple GOTO")
+
+                # ガイドモードにセット
+                ardc.set_vehicle_mode("GUIDED")
+                pub_drone_info()
+
+                # アームしていない場合ARMする
+                if ardc.vehicle.armed == False:
+                    pub_drone_info()
+                    ardc.arm_and_takeoff(ARM_HEIGHT)
+                    dlog.LOG("DEBUG", "ARMと離陸開始:" + str(ARM_HEIGHT) + 'm')
+                # アーム状態をチェック
+                while ardc.vehicle.armed == False:
+                    pub_drone_info()
+                    dlog.LOG("DEBUG", "ARMと離陸をしています...")
+                    time.sleep(1)
+                dlog.LOG("INFO", "ARMと離陸完了:" + str(ARM_HEIGHT) + 'm')    
+
+                ardc.vehicle_goto(mqttClass.drone_command)
+                mqttClass.drone_command["operation"] = "NONE"
+
+            # ---- Mission ----
+            elif mqttClass.drone_mission["operation"] == "MISSION_UPLOAD":
+                if flg_MissionUploaded == False:
+                    dlog.LOG("DEBUG", "MISSION UPLOAD")
+                    mqttClass.drone_mission["operation"] = "NONE"
+
+                    # print("Starting mission")
+                    # # 最初の（0）ウェイポイントに設定されたミッションをリセット
+                    ardc.vehicle.commands.next = 0
+
+                    # # ジオフェンスファイル名
+                    # import_fence_filename = '../mission/polygon_fence.txt'
+
+                    # # ジオフェンスデータをファイルからドローンへアップロード : T.B.D.
+                    # ardc.upload_fence(import_fence_filename) 
+                    
+                    # ミッションファイル名
+                    import_mission_filename = '../mission/mpmission.txt'
+                    # エクスポートファイル名
+                    # export_mission_filename = '../mission/exportedmission.txt'
+
+                    # ミッションデータをファイルからドローンへアップロード
+                    ardc.upload_mission(import_mission_filename)
+                    flg_MissionUploaded = True
+
+            elif mqttClass.drone_mission["operation"] == "MISSION_START":
+                if flg_MissionUploaded == True:
+                    dlog.LOG("DEBUG", "MISSION START")
+                    # Set GUIDED mode
+                    ardc.set_vehicle_mode("GUIDED")
+                    pub_drone_info()
+                    
+                    # アームしていない場合ARMする
+                    if ardc.vehicle.armed == False:
+                        pub_drone_info()
+                        ardc.arm_and_takeoff(ARM_HEIGHT)
+                        dlog.LOG("DEBUG", "ARMと離陸開始:" + str(ARM_HEIGHT) + 'm')
+                    # Checking arm status
+                    while ardc.vehicle.armed == False:
+                        pub_drone_info()
+                        dlog.LOG("DEBUG", "ARMと離陸をしています...")
+                        time.sleep(1)
+                    dlog.LOG("INFO", "ARMと離陸完了:" + str(ARM_HEIGHT) + 'm')                
+
+                    # ミッションを実行するため、モードをAUTOにする
+                    ardc.set_vehicle_mode("AUTO")
+                    # Publish drone information
+                    pub_drone_info()
+
+                    # ミッションを実行
+                    cntwaypoint = ardc.vehicle.commands.next
+                    while True:
+                        pub_drone_info()
+
+                        nextwaypoint = ardc.vehicle.commands.next
+                        missionitem = ardc.vehicle.commands[nextwaypoint-1] #commands are zero indexed
+                        mcmd = missionitem.command
+
+                        # ウェイポイントの切り替わりをチェック
+                        if cntwaypoint!=nextwaypoint:
+                            # 移動速度の変更や何らかの処理をここで行う。
+                            if nextwaypoint == 3: # 次のウェイポイントへスキップ
+                                msg = 'ウェイポイント3に到達'
+                                dlog.LOG("DEBUG", msg)
+                                # GUIDEDモードに設定
+                                ardc.set_vehicle_mode("GUIDED")                        
+                            cntwaypoint = ardc.vehicle.commands.next
+
+                        msg = 'ウェイポイントまでの距離 (%s): %s' % (nextwaypoint, ardc.distance_to_current_waypoint())
+                        dlog.LOG("DEBUG", msg)
+
+                        if mcmd==mavutil.mavlink.MAV_CMD_NAV_RETURN_TO_LAUNCH or mcmd==mavutil.mavlink.MAV_CMD_NAV_LAND:
+                            msg = "ミッションを終了して離陸地点へ戻る"
+                            dlog.LOG("DEBUG", msg)
+                            break
+
+                        msg = "現在のウェイポイントは["+str(ardc.vehicle.commands.next)+"]です。[Head:" + str(ardc.vehicle.heading) + "]"
+                        dlog.LOG("DEBUG", msg)
+
+                        time.sleep(1)
+
+                    # ミッション終了後、離陸地点へ戻る
+                    ardc.set_vehicle_mode("RTL") 
+                flg_MissionUploaded == False
+            pub_drone_info()
             time.sleep(1)
-        dlog.LOG("DEBUG", "END") 
 
-
-##################################################################
-### Ardupilot drone mission control command class
-##################################################################
-# class ArdCtrlMission(ArdCtrl):
-
-#     def __init__(self):
-#         #print("init")
-#         dlog.LOG("INFO", "dctrl_mission_class init")
-
-#     ### =================================================================================== 
-#     ### SimpleGoto
-#     ### =================================================================================== 
-#     def vehicle_goto(self, cmd):            
-#         dlog.LOG("DEBUG","Sinple GOTO")
-#         point = LocationGlobalRelative(
-#             float(cmd["d_lat"]), 
-#             float(cmd["d_lon"]), 
-#             float(cmd["d_alt"]) 
-#         )
-#         # point = LocationGlobalRelative(
-#         #     cmd["d_lat"], 
-#         #     cmd["d_lon"], 
-#         #     cmd["d_alt"] 
-#         # )
-#         ArdCtrl.vehicle.simple_goto(point, groundspeed=5)
-
-
-
-
-
-# ardcls = ArdCtrl.DrnCtrl.get_instance()
-
-# ardcls.set_vehicle_mode('GUIDED')
-
-
-
+    # キーボード割り込みで終了
+    except KeyboardInterrupt:
+        dlog.LOG("CRITICAL","KeyBoard Exception")
+        # Catch Ctrl-C
+        msg = "キーボード例外処理発生"
+        # スクリプトを終了する前に車両オブジェクトを閉じる
+        dlog.LOG("INFO", "Close vehicle object")
+        ardc.vehicle.close() 
+        dlog.LOG("INFO", "プログラム終了")
+        dlog.LOG("CRITICAL", msg)

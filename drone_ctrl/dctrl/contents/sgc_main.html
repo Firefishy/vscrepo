@@ -46,6 +46,7 @@
 -->
 <header>
 	<h2>SGC is Simple Ground Controler</h2>
+  <p style="padding-left:2.0em;" id="msg1">Vehicleに接続していません</h5>
 	<!-- <a href="https://ardupilot.org/" target="_blank"><img src="img/ArduPilot-Motto.png"></a> -->
 	<!-- <a href="https://px4.io/" target="_blank"><img src="img/PX4_logo.png"></a> -->
 </header>
@@ -64,8 +65,7 @@
       <div  class="wrap_0">
         <!-- 折り畳み展開ポインタ -->
         <div onclick="obj=document.getElementById('open_sgoto').style; obj.display=(obj.display=='none')?'block':'none';
-          document.getElementById('open_mission').style.display='none';
-          javascript:setOperation(0,0);">
+          document.getElementById('open_mission').style.display='none'; javascript:setOperation(0,0);">
           <h2><a style="cursor:pointer;" class="border_content color_gray">Simple Goto (Click to open/close)</a></h2>
         </div>
         <!-- Control button -->
@@ -98,7 +98,7 @@
         <!-- 折り畳み展開ポインタ -->
         <div onclick="
           obj=document.getElementById('open_mission').style; obj.display=(obj.display=='none')?'block':'none';
-          document.getElementById('open_sgoto').style.display='none';"">
+          document.getElementById('open_sgoto').style.display='none';">
           <h2><a style="cursor:pointer;" class="border_content color_gray">Mission (Click to open/close)</a></h2>
         </div>
         <!-- Control button -->
@@ -263,10 +263,24 @@
             </tbody>
           </table>                
           <div class="wrap_btn">
-            <input type="button" class="ctrlbtn button30pct color_green" id="bnt_mission" value="MISSION START" onclick="javascript:droneCtrl('MISSION');"/>
+            <input type="button" class="ctrlbtn button30pct color_green" id="bnt_mission_upload" value="MISSION UPLOAD" onclick="javascript:droneCtrl('MISSION_UPLOAD');"/>
+            <input type="button" class="ctrlbtn button30pct color_green" id="bnt_mission_start" value="MISSION START" onclick="javascript:droneCtrl('MISSION_START');"/>
           </div>
         </div>
-      </div>			
+      </div>
+      <!-- WayPointの設定：現状最大5箇所 -->
+      <div  class="wrap_0">
+        <!-- 折り畳み展開ポインタ -->
+        <div onclick="
+          obj=document.getElementById('open_chkmsg').style; obj.display=(obj.display=='none')?'block':'none';
+          document.getElementById('open_sgoto').style.display='none';">
+          <h2><a style="cursor:pointer;" class="border_content color_gray">Message check</a></h2>
+        </div>
+        <div id="open_chkmsg" style="display:none;clear:both;" class="border_control">
+          <input type="text" class="input_style3" name="" id="msgid" placeholder="" value="" />
+          <input type="button" class="ctrlbtn button15pct color_green" id="bnt_mission_upload" value="SEND" onclick="javascript:droneCtrl('MAV_MESSAGE');"/>
+        </div>
+      </div>      		
     </article>
 
     <!-- サイドメニュー -->
@@ -279,22 +293,37 @@
           <table>
             <tbody>
               <tr>
-                <td class="">Arm</td><td class=""><label id="carm">-</label></td>
+                <td class="e080">Arm</td><td class=""><label id="carm">-</label></td>
             	</tr>
             	<tr>
               	<td class="">Mode</td><td class=""><label id="cmode">-</label></td>
               </tr>
               <tr>
-								<td class="e100">Lat(deg)</td><td class=""><label id="clat">-</label></td>
+								<td class="">Lat</td><td class=""><label id="clat">-</label></td>
             	</tr>
             	<tr>
-              	<td class="">Long(deg)</td><td class=""><label id="clon">-</label></td>
+              	<td class="">Long</td><td class=""><label id="clon">-</label></td>
               </tr>
               <tr>
-                <td class="">Alt(m)</td><td class=""><label id="calt">-</label></td>
+                <td class="">Alt</td><td class=""><label id="calt">-</label></td>
             	</tr>
             	<tr>
-              	<td class="">Head(deg)</td><td class=""><label id="cang">-</label></td>
+              	<td class="">Head</td><td class=""><label id="cang">-</label></td>
+              </tr>
+            	<tr>
+              	<td class="">Speed</td><td class=""><label id="cspd">-</label></td>
+              </tr>
+            	<tr>
+              	<td class="">B-Volt</td><td class=""><label id="cvlt">-</label></td>
+              </tr>
+            	<tr>
+              	<td class="">B-Cnt</td><td class=""><label id="ccnt">-</label></td>
+              </tr>
+            	<tr>
+              	<td class=""></td><td class=""><label id="">-</label></td>
+              </tr>
+            	<tr>
+              	<td class=""></td><td class=""><label id="">-</label></td>
               </tr>
             </tbody>
           </table>
@@ -307,31 +336,30 @@
 				<div class="wrap_btn">
           <input type="button" class="ctrlbtn button30pct color_green" id="bnt_arm" value="ARM"  onclick="javascript:droneCtrl('ARM');"/>
           <input type="button" class="ctrlbtn button30pct color_green" id="bnt_disarm" value="DISARM"  onclick="javascript:droneCtrl('DISARM');"/>
-          <!-- <input type="button" class="ctrlbtn button30pct color_white" id="" value="-"  onclick="javascript:droneCtrl('-');"/>
-          <input type="button" class="ctrlbtn button30pct color_white" id="" value="-"  onclick="javascript:droneCtrl('-');"/>
-          <input type="button" class="ctrlbtn button30pct color_white" id="" value="-"  onclick="javascript:droneCtrl('-');"/> -->
         </div>
         <div class="wrap_btn">
 						<input type="button" class="ctrlbtn button30pct color_green" id="bnt_guided" value="GUIDED" onclick="javascript:droneCtrl('GUIDED');"/>
 						<input type="button" class="ctrlbtn button30pct color_green" id="bnt_auto" value="AUTO" onclick="javascript:droneCtrl('AUTO');"/>
 						<input type="button" class="ctrlbtn button30pct color_green" id="bnt_rtl" value="RTL" onclick="javascript:droneCtrl('RTL');"/>
-						<!-- <input type="button" class="ctrlbtn button30pct color_white" id="" value="-" onclick="javascript:droneCtrl('-');"/>
-						<input type="button" class="ctrlbtn button30pct color_white" id="" value="-" onclick="javascript:droneCtrl('-');"/> -->
 				</div>
 				<div class="wrap_btn">
 					<input type="button" class="ctrlbtn button30pct color_green" id="bnt_takeoff" value="TAKEOFF"  onclick="javascript:droneCtrl('TAKEOFF');"/>
 					<input type="button" class="ctrlbtn button30pct color_green" id="bnt_land" value="LAND"  onclick="javascript:droneCtrl('LAND');"/>
-					<!-- <input type="button" class="ctrlbtn button30pct color_white" id="" value="-"  onclick="javascript:droneCtrl('-');"/>
-					<input type="button" class="ctrlbtn button30pct color_white" id="" value="-"  onclick="javascript:droneCtrl('-');"/>
-					<input type="button" class="ctrlbtn button30pct color_white" id="" value="-"  onclick="javascript:droneCtrl('-');"/> -->
+        </div>
+				<div class="wrap_btn">
+					<input type="button" class="ctrlbtn button30pct color_green" id="bnt_pause" value="PAUSE"  onclick="javascript:droneCtrl('PAUSE');"/>
+					<input type="button" class="ctrlbtn button30pct color_green" id="bnt_resume" value="RESUME"  onclick="javascript:droneCtrl('RESUME');"/>
+        </div>
+				<div class="wrap_btn">
+					<input type="button" class="ctrlbtn button30pct color_green" id="bnt_rotation" value="ROT45"  onclick="javascript:droneCtrl('ROTATION');"/>
         </div>
         <!-- 移動停止 -->
         <div class="wrap_btn">
-          <input type="button" class="ctrlbtn button75pct color_red" id="bnt_brake" value="STOP" onclick="javascript:droneCtrl('STOP');"/>
+          <input type="button" class="ctrlbtn button75pct color_red" id="bnt_brake" value="BRAKE!" onclick="javascript:droneCtrl('BRAKE');"/>
         </div>
       </div> 
     </aside>
 </div><!-- /.news-contents -->
-<script type="text/javascript" src="js/mqtt.js"></script>
+<script type="text/javascript" src="js/map_ctrl.js"></script>
 </body>
 </html>
