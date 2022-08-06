@@ -49,11 +49,15 @@ class ArdCtrlCls():
             "voltage":"0.0",
             "current":"0.0"
         },
+        "gps":{
+            "count":"0"
+        },
         "position":{ 
             "latitude":"35.0000", 
             "longitude":"135.0000",
             "altitude":"20",
-            "heading":"0"
+            "heading":"0",
+            "speed":"0"
         }
     } 
     
@@ -96,15 +100,16 @@ class ArdCtrlCls():
     ### =================================================================================== 
     ### Add observer for the custom attribute
     ### =================================================================================== 
-    def raw_imu_callback(self, attr_name, value):
+    def raw_msg_callback(self, attr_name, value):
         # attr_name == 'raw_imu'
         # value == vehicle.raw_imu
         print(value)
+        dlog.LOG("INFO", value)
     def get_custom_message(self, message):
-        self.vehicle.add_attribute_listener(message, self.raw_imu_callback)
+        self.vehicle.add_attribute_listener(message, self.raw_msg_callback)
 
     ### =================================================================================== 
-    ### Set drone information (publish to server)
+    ### Set drone information (use for transfar to server by MQTT)
     ### =================================================================================== 
     def set_vehicle_info(self):
         # Is Armable ？
@@ -125,6 +130,10 @@ class ArdCtrlCls():
         self.drone_info["position"]["altitude"] = str(self.vehicle.location.global_relative_frame.alt) 
         # Drone heading
         self.drone_info["position"]["heading"] = str(self.vehicle.heading) 
+        # Drone Speed
+        self.drone_info["position"]["speed"] = str(self.vehicle.groundspeed) 
+        # GPS count
+        #self.drone_info["gps"]["count"] = str(self.vehicle.gps_0.num_sat)
     
     ### =============================================================================================
     ### ドローンの属性を取得しコンソールに表示する（のみ）

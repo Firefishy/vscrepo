@@ -14,7 +14,7 @@ import time
 import json # json.dumps関数を使いたいのでインポート
 import mqtt_cls as mqttcls
 import dlogger as dlog
-import ardctrl_cls_c2 as ardctrl
+#import ardctrl_cls_c2 as ardctrl
 from pymavlink import mavutil
 
 flg_MissionUploaded = False
@@ -23,6 +23,7 @@ flg_MissionUploaded = False
 base_path = os.path.dirname(os.path.abspath(__file__))
 json_path = os.path.normpath(os.path.join(base_path, '../json/setting.json'))
 SETTING_JSON = json_path
+
 
 ### =================================================================================== 
 ### ドローンの情報をクライアントにパブリッシュ
@@ -34,7 +35,7 @@ def pub_drone_info():
     json_message = json.dumps( ardc.drone_info )     
     #dlog.LOG("DEBUG", json_message)
     # トピック名は以前と同じ"drone/001"
-    mqttClass.client.publish(mqttClass.topic_dinfo, json_message )
+    ardc.client.publish(ardc.topic_dinfo, json_message )
 
 ### =================================================================================== 
 ### Main function
@@ -44,15 +45,44 @@ if __name__ == '__main__':
     ARM_HEIGHT = 3.0
 
     # Get instance of DroneController(by Dronekit)
-    ardc = ardctrl.ArdCtrlClsC2()
+    #ardc = ardctrl.ArdCtrlClsC2()
     # MQTT通信処理スタート
-    mqttClass = mqttcls.MqttCtrl.get_instance()
+    #mqttClass = mqttcls.MqttCtrl.get_instance()
+    ardc = mqttcls.MqttCtrl()
     #print("instance1", dCtrlClass)
 
     ardc.connect_vehicle(SETTING_JSON)
     time.sleep(5)
 
     try:
+
+        # ミションクリア時に取得するデコレータ
+        # @ardc.vehicle.on_message('MISSION_CLEAR_ALL')
+        # def listner( self, name, message ):
+        #     print(message)
+
+        # # システムステータスを取得するデコレータ
+        # @ardc.vehicle.on_message('SYS_STATUS')
+        # def listner( self, name, message ):
+        #     print(message)
+        # # IMU情報を取得するデコレータ
+        # @ardc.vehicle.on_message('RAW_IMU')
+        # def listner( self, name, message ):
+        #     print(message)
+
+        # ミッション実行中デコレータ
+        @ardc.vehicle.on_message('MISSION_ACK')
+        def listner( self, name, message ):
+            msg = "ミッション実行中:" + str(message)
+            dlog.LOG("DEBUG", msg)
+            print(message)
+
+        # ミッション位置到着デコレータ
+        @ardc.vehicle.on_message('MISSION_ITEM_REACHED')
+        def listner( self, name, message ):
+            msg = "ウェイポイントに到着:" + str(message)
+            dlog.LOG("DEBUG", msg)
+            print(message)
 
         # Drone init, arm and takeoff
         # Log: CRITICAL, ERROR < WARNING < INFO < DEBUG 
@@ -69,81 +99,39 @@ if __name__ == '__main__':
         pub_drone_info()
 
         while True:
-            # ---------------------------
-            # Drone command   
-            # ---------------------------
             
-            # Drone mode 
-            if mqttClass.drone_command["operation"] == "MAV_MESSAGE":
-                ardc.get_custom_message(mqttClass.drone_command["subcode"])
-
-            elif mqttClass.drone_command["operation"] == "GUIDED":
-                dlog.LOG("DEBUG", "GUIDED")
-                ardc.set_vehicle_mode("GUIDED")
-                mqttClass.drone_command["operation"] = "NONE"
-            elif mqttClass.drone_command["operation"] == "AUTO":
-                dlog.LOG("DEBUG", "Set mode to AUTO")
-                ardc.set_vehicle_mode("AUTO")
-                mqttClass.drone_command["operation"] = "NONE"
-            elif mqttClass.drone_command["operation"] == "RTL":
-                dlog.LOG("DEBUG", "Set mode to AUTO")
-                ardc.set_vehicle_mode("RTL")
-                mqttClass.drone_command["operation"] = "NONE"
-            
-            # Arm/Disarm
-            elif mqttClass.drone_command["operation"] == "ARM":
-                dlog.LOG("DEBUG", "Arm")
-                ardc.vehicle_arming()
-                mqttClass.drone_command["operation"] = "NONE"
-            # DisArm
-            elif mqttClass.drone_command["operation"] == "DISARM":
-                dlog.LOG("DEBUG", "Disarm")
-                ardc.vehicle_disarming()
-                mqttClass.drone_command["operation"] = "NONE"
-
-            # Take off
-            elif mqttClass.drone_command["operation"] == "TAKEOFF":
-                dlog.LOG("DEBUG", "Take off")
-                ardc.vehicle_takeoff(20.0)
-                mqttClass.drone_command["operation"] = "NONE"
-            # Land
-            elif mqttClass.drone_command["operation"] == "LAND":
-                dlog.LOG("DEBUG", "Landing")
-                ardc.set_vehicle_mode("LAND")
-                mqttClass.drone_command["operation"] = "NONE"
-
             # ---------------------------
             # Drone flight control   
             # ---------------------------
 
             # ---- Simple GOTO ----
-            elif mqttClass.drone_command["operation"] == "GOTO":
-                dlog.LOG("DEBUG", "Start Simple GOTO")
+            # if ardc.drone_command["operation"] == "GOTO":
+            #     dlog.LOG("DEBUG", "Start Simple GOTO")
 
-                # ガイドモードにセット
-                ardc.set_vehicle_mode("GUIDED")
-                pub_drone_info()
+            #     # ガイドモードにセット
+            #     ardc.set_vehicle_mode("GUIDED")
+            #     pub_drone_info()
 
-                # アームしていない場合ARMする
-                if ardc.vehicle.armed == False:
-                    pub_drone_info()
-                    ardc.arm_and_takeoff(ARM_HEIGHT)
-                    dlog.LOG("DEBUG", "ARMと離陸開始:" + str(ARM_HEIGHT) + 'm')
-                # アーム状態をチェック
-                while ardc.vehicle.armed == False:
-                    pub_drone_info()
-                    dlog.LOG("DEBUG", "ARMと離陸をしています...")
-                    time.sleep(1)
-                dlog.LOG("INFO", "ARMと離陸完了:" + str(ARM_HEIGHT) + 'm')    
+            #     # アームしていない場合ARMする
+            #     if ardc.vehicle.armed == False:
+            #         pub_drone_info()
+            #         ardc.arm_and_takeoff(ARM_HEIGHT)
+            #         dlog.LOG("DEBUG", "ARMと離陸開始:" + str(ARM_HEIGHT) + 'm')
+            #     # アーム状態をチェック
+            #     while ardc.vehicle.armed == False:
+            #         pub_drone_info()
+            #         dlog.LOG("DEBUG", "ARMと離陸をしています...")
+            #         time.sleep(1)
+            #     dlog.LOG("INFO", "ARMと離陸完了:" + str(ARM_HEIGHT) + 'm')    
 
-                ardc.vehicle_goto(mqttClass.drone_command)
-                mqttClass.drone_command["operation"] = "NONE"
+            #     ardc.vehicle_goto(ardc.drone_command)
+            #     ardc.drone_command["operation"] = "NONE"
 
-            # ---- Mission ----
-            elif mqttClass.drone_mission["operation"] == "MISSION_UPLOAD":
+            # ---- Mission data upload by drone_mission ----
+            if ardc.drone_mission["operation"] == "MISSION_UPLOAD":
                 if flg_MissionUploaded == False:
                     dlog.LOG("DEBUG", "MISSION UPLOAD")
-                    mqttClass.drone_mission["operation"] = "NONE"
+                    ardc.drone_mission["operation"] = "NONE"
 
                     # print("Starting mission")
                     # # 最初の（0）ウェイポイントに設定されたミッションをリセット
@@ -164,7 +152,8 @@ if __name__ == '__main__':
                     ardc.upload_mission(import_mission_filename)
                     flg_MissionUploaded = True
 
-            elif mqttClass.drone_mission["operation"] == "MISSION_START":
+            # ---- Mission start by drone_command ----
+            elif ardc.drone_command["operation"] == "MISSION_START":
                 if flg_MissionUploaded == True:
                     dlog.LOG("DEBUG", "MISSION START")
                     # Set GUIDED mode
@@ -204,7 +193,7 @@ if __name__ == '__main__':
                                 msg = 'ウェイポイント3に到達'
                                 dlog.LOG("DEBUG", msg)
                                 # GUIDEDモードに設定
-                                ardc.set_vehicle_mode("GUIDED")                        
+                                #ardc.set_vehicle_mode("GUIDED")                        
                             cntwaypoint = ardc.vehicle.commands.next
 
                         msg = 'ウェイポイントまでの距離 (%s): %s' % (nextwaypoint, ardc.distance_to_current_waypoint())

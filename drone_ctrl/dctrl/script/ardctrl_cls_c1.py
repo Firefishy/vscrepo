@@ -124,15 +124,40 @@ class ArdCtrlClsC1(ardctrl.ArdCtrlCls):
             time.sleep(1)
         dlog.LOG("DEBUG", "END") 
 
+    ### =============================================================================================
+    ### Send Command by MAVLINK
+    ### =============================================================================================
+    def snd_cmd_mav(self,
+        tsys,   # target system
+        tcmp,   # target component
+        cmd,
+        para1, para2, para3, para4, para5, para6, para7
+    ):
+        dlog.LOG("DEBUG","START")
+        mavmsg = self.vehicle.message_factory.command_long_encode(
+            tsys, tcmp, # target system, target component
+            cmd,    # command
+            0,      # confirmation
+            para1,  # parameter1
+            para2,  # parameter2
+            para3,  # parameter3
+            para4,  # parameter4
+            para5,  # parameter5
+            para6,  # parameter6
+            para7)  # parameter7
+        # send command to vehicle
+        self.vehicle.send_mavlink(mavmsg)
+        dlog.LOG("DEBUG","END")
+
     ### =================================================================================== 
     ### Pause
     ### =================================================================================== 
     def pause_vehicle(self):
-        print("# Mission PAUSE...")
+        dlog.LOG("DEBUG", "Mission PAUSE")
         mavmsg = self.vehicle.message_factory.command_long_encode(
             0, 0,    # target system, target component
             mavutil.mavlink.MAV_CMD_DO_PAUSE_CONTINUE,  # command
-            0,    # Reserved
+            0,    # confirmation
             0,    # 0:Pause current mission
             0,    # Reserved
             0,    # Reserved
@@ -145,16 +170,16 @@ class ArdCtrlClsC1(ardctrl.ArdCtrlCls):
     ### Resume
     ### =================================================================================== 
     def resume_vehicle(self):
-        dlog.LOG("DEBUG", "RESUME")
+        dlog.LOG("DEBUG", "MISSION RESUME")
         mavmsg = self.vehicle.message_factory.command_long_encode(
             0, 0,    # target system, target component
             mavutil.mavlink.MAV_CMD_DO_PAUSE_CONTINUE,  # command
-            0,    # Reserved
+            0,    # confirmation
             1,    # 1:Continue mission
             0,    # Reserved
             0,    # Reserved
             0,    # Reserved
-            0, 0, 0)    # param 2 ~ 7 not used
+            0, 0, 0)    # param 5 ~ 7 not used
         # send command to vehicle
         self.vehicle.send_mavlink(mavmsg)
         dlog.LOG("DEBUG", "END")

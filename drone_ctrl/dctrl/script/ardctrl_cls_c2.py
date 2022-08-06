@@ -65,6 +65,7 @@ class ArdCtrlClsC2(ardctrl.ArdCtrlClsC1):
     ### http://gis.stackexchange.com/questions/2951/algorithm-for-offsetting-a-latitude-longitude-by-some-amount-of-meters
     ### =============================================================================================
     def get_location_metres(self,original_location, dNorth, dEast):
+        dlog.LOG("DEBUG","START")
         #Radius of "spherical" earth
         earth_radius=6378137.0 
         #Coordinate offsets in radians
@@ -74,6 +75,7 @@ class ArdCtrlClsC2(ardctrl.ArdCtrlClsC1):
         #New position in decimal degrees
         newlat = original_location.lat + (dLat * 180/math.pi)
         newlon = original_location.lon + (dLon * 180/math.pi)
+        dlog.LOG("DEBUG","END")
         return LocationGlobal(newlat, newlon,original_location.alt)
 
     ### =============================================================================================
@@ -83,8 +85,10 @@ class ArdCtrlClsC2(ardctrl.ArdCtrlClsC1):
     ###    https://github.com/diydrones/ardupilot/blob/master/Tools/autotest/common.py
     ### =============================================================================================
     def get_distance_metres(self, aLocation1, aLocation2):
+        dlog.LOG("DEBUG","START")
         dlat = aLocation2.lat - aLocation1.lat
         dlong = aLocation2.lon - aLocation1.lon
+        dlog.LOG("DEBUG","END")
         return math.sqrt((dlat*dlat) + (dlong*dlong)) * 1.113195e5
 
     ### =============================================================================================
@@ -92,6 +96,7 @@ class ArdCtrlClsC2(ardctrl.ArdCtrlClsC1):
     ### 最初のウェイポイント（原点）に対しては、Noneを返します。
     ### =============================================================================================
     def distance_to_current_waypoint(self):
+        dlog.LOG("DEBUG","START")
         nextwaypoint = self.vehicle.commands.next
         if nextwaypoint==0:
             return None
@@ -101,15 +106,18 @@ class ArdCtrlClsC2(ardctrl.ArdCtrlClsC1):
         alt = missionitem.z
         targetWaypointLocation = LocationGlobalRelative(lat,lon,alt)
         distancetopoint = self.get_distance_metres(self.vehicle.location.global_frame, targetWaypointLocation)
+        dlog.LOG("DEBUG","END")
         return distancetopoint
 
     ### =============================================================================================
     ### Download mission data from vehicle
     ### =============================================================================================
     def download_mission(self):
+        dlog.LOG("DEBUG","START")
         cmds = self.vehicle.commands
         cmds.download()
         cmds.wait_ready() # wait until download is complete.
+        dlog.LOG("DEBUG","END")
     
     ### =============================================================================================
     ### 現在のミッションに離陸コマンドと4つのウェイポイントコマンドを追加する。
@@ -119,6 +127,7 @@ class ArdCtrlClsC2(ardctrl.ArdCtrlClsC1):
     ###    (セッション中、ミッションをクリアした後に少なくとも一度はdownloadを呼び出す必要があります)    
     ### =============================================================================================
     def adds_square_mission(self, aLocation, aSize):
+        dlog.LOG("DEBUG","START")
         cmds = self.vehicle.commands
         dlog.LOG("DEBUG"," Clear any existing commands")
         cmds.clear() 
@@ -178,6 +187,7 @@ class ArdCtrlClsC2(ardctrl.ArdCtrlClsC1):
         msg = " Upload new commands to vehicle"
         dlog.LOG("DEBUG", msg)
         cmds.upload()
+        dlog.LOG("DEBUG","END")
 
     ### =============================================================================================
     ### ファイルからリストにミッションを読み込む。
@@ -186,6 +196,7 @@ class ArdCtrlClsC2(ardctrl.ArdCtrlClsC1):
     ### この関数は、upload_mission()で使用される。    
     ### =============================================================================================
     def readmission(self, aFileName):
+        dlog.LOG("DEBUG","START")
         msgstr = "Reading mission from file: %s" % aFileName
         dlog.LOG("DEBUG", msgstr)
         missionlist=[]
@@ -226,13 +237,14 @@ class ArdCtrlClsC2(ardctrl.ArdCtrlClsC1):
                     )
                     missionlist.append(mission_cmd)
         f.close()
+        dlog.LOG("DEBUG","END")
         return missionlist
-
 
     ### =============================================================================================
     ### 現在のミッションをダウンロードし、リストで返します。
     ### =============================================================================================
     def download_mission(self, ):
+        dlog.LOG("DEBUG","START")
         """        
         save_mission() で、保存するファイル情報を取得するために使用される。
         """
@@ -243,14 +255,35 @@ class ArdCtrlClsC2(ardctrl.ArdCtrlClsC1):
         cmds.wait_ready()
         for cmd in cmds:
             missionlist.append(cmd)
+        dlog.LOG("DEBUG","END")
         return missionlist
+
+    ### =============================================================================================
+    ### ### T.B.D ###
+    ### ファイルからミッションデータをアップロードする。
+    ### =============================================================================================
+    def upload_mission(self, aFileName):
+        dlog.LOG("DEBUG","START")
+        #Read mission from file
+        missionlist = self.readmission(aFileName)
+        
+        #print("\nUpload mission from a file: %s" % aFileName)
+        #Clear existing mission from vehicle
+        #print(' Clear mission')
+        cmds = self.vehicle.commands
+        cmds.clear()
+        #Add new mission to vehicle
+        for command in missionlist:
+            cmds.add(command)
+        cmds.upload()
+        dlog.LOG("DEBUG","END")
 
     ### =============================================================================================
     ### Save a mission in the Waypoint file format 
     ### (http://qgroundcontrol.org/mavlink/waypoint_protocol#waypoint_file_format).
     ### =============================================================================================
     def save_mission(self, aFileName):
-        #print("\nSave mission from Vehicle to file: %s" % aFileName)    
+        dlog.LOG("DEBUG","START")
         #Download mission from vehicle
         missionlist = self.download_mission()
         #Add file-format information
@@ -263,18 +296,38 @@ class ArdCtrlClsC2(ardctrl.ArdCtrlClsC1):
             commandline="%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (cmd.seq,cmd.current,cmd.frame,cmd.command,cmd.param1,cmd.param2,cmd.param3,cmd.param4,cmd.x,cmd.y,cmd.z,cmd.autocontinue)
             output+=commandline
         with open(aFileName, 'w') as file_:
-            #print(" Write mission to file")
             file_.write(output)
+        dlog.LOG("DEBUG","END")
             
+    ### =============================================================================================
+    ### Clear mission all TBD
+    ### =============================================================================================
+    def clear_mission_all(self):
+        dlog.LOG("DEBUG","START")
+        # T.B.D. 以下のコマンドでミッションクリアを実行可能か要チェック！
+        mavmsg = self.vehicle.message_factory.command_long_encode(
+            0, 0,    # target system, target component
+            mavutil.mavlink.MISSION_CLEAR_ALL,  # command
+            0,    # Reserved
+            255,    # 0:Pause current mission
+            0,    # Reserved
+            0,    # Reserved
+            0,    # Reserved
+            0, 0, 0)    # param 5 ~ 7 not used
+        # send command to vehicle
+        self.vehicle.send_mavlink(mavmsg)
+        dlog.LOG("DEBUG","END")
+
     ### =============================================================================================
     ### Print a mission file to demonstrate "round trip"
     ### =============================================================================================
     def printfile(self, aFileName):
+        dlog.LOG("DEBUG","START")
         #print("\nMission file: %s" % aFileName)
         with open(aFileName) as f:
             for line in f:
                 print(' %s' % line.strip())     
-
+        dlog.LOG("DEBUG","END")
 
     ### #############################################################################################
 
@@ -283,10 +336,9 @@ class ArdCtrlClsC2(ardctrl.ArdCtrlClsC1):
     ### Add square fence to vehicle
     ### =============================================================================================
     def adds_square_fence(self, aLocation, aSize):
+        dlog.LOG("DEBUG","START")
         cmds = self.vehicle.commands
-        print(" Clear any existing commands")
         cmds.clear() 
-        print(" Define/add new commands.")
         # 新しいコマンドを追加します。パラメータの意味/順序はCommandクラスに記載されています。
         # MAV_CMD_NAV_TAKEOFF コマンドを追加しました。すでに空中にいる場合は無視されます。
         cmds.add(
@@ -339,29 +391,8 @@ class ArdCtrlClsC2(ardctrl.ArdCtrlClsC1):
         # 4地点にダミーのウェイポイント "5 "を追加（目的地に到着したことを知ることができる）
         cmds.add(Command( 0, 0, 0, mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_NAV_WAYPOINT, 0, 0, 0, 0, 0, 0, point4.lat, point4.lon, 14))    
 
-        msg = " Upload new commands to vehicle"
-        dlog.LOG("DEBUG", msg)
         cmds.upload()
-
-    ### =============================================================================================
-    ### ### T.B.D ###
-    ### ファイルからミッションデータをアップロードする。
-    ### =============================================================================================
-    def upload_mission(self, aFileName):
-        #Read mission from file
-        missionlist = self.readmission(aFileName)
-        
-        #print("\nUpload mission from a file: %s" % aFileName)
-        #Clear existing mission from vehicle
-        #print(' Clear mission')
-        cmds = self.vehicle.commands
-        cmds.clear()
-        #Add new mission to vehicle
-        for command in missionlist:
-            cmds.add(command)
-        print('Mission upload start')
-        cmds.upload()
-        print('Mission uploaded')
+        dlog.LOG("DEBUG","END")
 
     ### =============================================================================================
     ### ### T.B.D ###
@@ -369,6 +400,7 @@ class ArdCtrlClsC2(ardctrl.ArdCtrlClsC1):
     ### Refer: https://github.com/dronekit/dronekit-python/issues/1092
     ### =============================================================================================
     def upload_fence(self, aFileName):
+        dlog.LOG("DEBUG","START")
         #Read mission from file
         missionlist = self.readmission(aFileName)
         
@@ -382,10 +414,9 @@ class ArdCtrlClsC2(ardctrl.ArdCtrlClsC1):
             # Missionの場合0のため、1に書き換える必要がある。
             command.mission_type = 1
             cmds.add(command)
-        print('Upload fence start...')
         #self.vehicle.commands.upload()
         cmds.upload_fence()
-        print('Upload fence end...')
+        dlog.LOG("DEBUG","END")
 
     ### =============================================================================================
     ### End of file
