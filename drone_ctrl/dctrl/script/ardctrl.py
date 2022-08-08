@@ -7,52 +7,40 @@ main control program for delivery drone.
 Title: Drone(Coptor) control program using dronekit python
 Company: Systena Corporation Inc
 Autor: y.saito
-Date: July, 2022
+Date: Aug, 2022
 """
 import os
 import time
-import json # json.dumps関数を使いたいのでインポート
-import mqtt_cls as mqttcls
+import json
 import dlogger as dlog
-#import ardctrl_cls_c2 as ardctrl
+import drnctrl_cls as arnctrl
 from pymavlink import mavutil
 
-flg_MissionUploaded = False
-
-# read path
+# 接続設定をJSONファイルから取得する
 base_path = os.path.dirname(os.path.abspath(__file__))
 json_path = os.path.normpath(os.path.join(base_path, '../json/setting.json'))
 SETTING_JSON = json_path
 
-
 ### =================================================================================== 
-### ドローンの情報をクライアントにパブリッシュ
+### ドローンの情報をMQTTでクライアントにパブリッシュ
 ### =================================================================================== 
 def pub_drone_info():
     ardc.set_vehicle_info()
-    #--- MQTTの送信 ---
     # 辞書型をJSON型に変換
-    json_message = json.dumps( ardc.drone_info )     
-    #dlog.LOG("DEBUG", json_message)
-    # トピック名は以前と同じ"drone/001"
+    json_message = json.dumps( ardc.drone_info )   
     ardc.client.publish(ardc.topic_dinfo, json_message )
 
 ### =================================================================================== 
-### Main function
+### Main
 ### =================================================================================== 
 if __name__ == '__main__':
 
     ARM_HEIGHT = 3.0
 
-    # Get instance of DroneController(by Dronekit)
-    #ardc = ardctrl.ArdCtrlClsC2()
-    # MQTT通信処理スタート
-    #mqttClass = mqttcls.MqttCtrl.get_instance()
-    ardc = mqttcls.MqttCtrl()
-    #print("instance1", dCtrlClass)
-
+    # Drone Control class instance
+    ardc = arnctrl.DrnCtrl()
     ardc.connect_vehicle(SETTING_JSON)
-    time.sleep(5)
+    time.sleep(3)
 
     try:
 
@@ -78,21 +66,28 @@ if __name__ == '__main__':
             print(message)
 
         # ミッション位置到着デコレータ
+        # ウェイポイントに到着した場合にメッセージを受信
         @ardc.vehicle.on_message('MISSION_ITEM_REACHED')
         def listner( self, name, message ):
             msg = "ウェイポイントに到着:" + str(message)
             dlog.LOG("DEBUG", msg)
-            print(message)
 
-        # Drone init, arm and takeoff
-        # Log: CRITICAL, ERROR < WARNING < INFO < DEBUG 
+            # ------------------------------------------------------
+            # ウェイポイント到着したらGUIDEDモードに設定
+            # ------------------------------------------------------
+            ardc.set_vehicle_mode("GUIDED")
+            # ------------------------------------------------------
+            # ウェイポイントアクションを実行
+            # ------------------------------------------------------
+            ardc.flg_wayPoint = True
+
         dlog.LOG("INFO", "Vehicle初期化完了")
 
         # Get attributes
         ardc.dsp_attributes()
 
         # dlog.LOG("DEBUG", "新規ミッションの作成（現在地用）")
-        # dCtrlClass.adds_square_mission(dCtrlClass.vehicle.location.global_frame,50)        
+        # dCtrlClass.adds_square_mission(dCtrlClass.vehicle.location.global_frame,50) 
 
         # Vehicleの現在モードを取得
         mode = ardc.vehicle.mode
@@ -100,61 +95,12 @@ if __name__ == '__main__':
 
         while True:
             
-            # ---------------------------
-            # Drone flight control   
-            # ---------------------------
-
-            # ---- Simple GOTO ----
-            # if ardc.drone_command["operation"] == "GOTO":
-            #     dlog.LOG("DEBUG", "Start Simple GOTO")
-
-            #     # ガイドモードにセット
-            #     ardc.set_vehicle_mode("GUIDED")
-            #     pub_drone_info()
-
-            #     # アームしていない場合ARMする
-            #     if ardc.vehicle.armed == False:
-            #         pub_drone_info()
-            #         ardc.arm_and_takeoff(ARM_HEIGHT)
-            #         dlog.LOG("DEBUG", "ARMと離陸開始:" + str(ARM_HEIGHT) + 'm')
-            #     # アーム状態をチェック
-            #     while ardc.vehicle.armed == False:
-            #         pub_drone_info()
-            #         dlog.LOG("DEBUG", "ARMと離陸をしています...")
-            #         time.sleep(1)
-            #     dlog.LOG("INFO", "ARMと離陸完了:" + str(ARM_HEIGHT) + 'm')    
-
-            #     ardc.vehicle_goto(ardc.drone_command)
-            #     ardc.drone_command["operation"] = "NONE"
-
-            # ---- Mission data upload by drone_mission ----
-            if ardc.drone_mission["operation"] == "MISSION_UPLOAD":
-                if flg_MissionUploaded == False:
-                    dlog.LOG("DEBUG", "MISSION UPLOAD")
-                    ardc.drone_mission["operation"] = "NONE"
-
-                    # print("Starting mission")
-                    # # 最初の（0）ウェイポイントに設定されたミッションをリセット
-                    ardc.vehicle.commands.next = 0
-
-                    # # ジオフェンスファイル名
-                    # import_fence_filename = '../mission/polygon_fence.txt'
-
-                    # # ジオフェンスデータをファイルからドローンへアップロード : T.B.D.
-                    # ardc.upload_fence(import_fence_filename) 
-                    
-                    # ミッションファイル名
-                    import_mission_filename = '../mission/mpmission.txt'
-                    # エクスポートファイル名
-                    # export_mission_filename = '../mission/exportedmission.txt'
-
-                    # ミッションデータをファイルからドローンへアップロード
-                    ardc.upload_mission(import_mission_filename)
-                    flg_MissionUploaded = True
-
-            # ---- Mission start by drone_command ----
-            elif ardc.drone_command["operation"] == "MISSION_START":
-                if flg_MissionUploaded == True:
+            # ----------------------------------------------------------------
+            # MISSION START
+            # ----------------------------------------------------------------
+            if ardc.drone_command["operation"] == "MISSION_START":
+                # MISSIONファイルがアップロードされている場合にMISSIONを実行
+                if ardc.flg_MissionUploaded == True:
                     dlog.LOG("DEBUG", "MISSION START")
                     # Set GUIDED mode
                     ardc.set_vehicle_mode("GUIDED")
@@ -174,29 +120,26 @@ if __name__ == '__main__':
 
                     # ミッションを実行するため、モードをAUTOにする
                     ardc.set_vehicle_mode("AUTO")
-                    # Publish drone information
+                    # ドローン情報をMQTTでパブリッシュ
                     pub_drone_info()
 
-                    # ミッションを実行
-                    cntwaypoint = ardc.vehicle.commands.next
                     while True:
+
+                        # ドローン情報をMQTTでパブリッシュ
                         pub_drone_info()
 
                         nextwaypoint = ardc.vehicle.commands.next
-                        missionitem = ardc.vehicle.commands[nextwaypoint-1] #commands are zero indexed
+                        #commands are zero indexed
+                        missionitem = ardc.vehicle.commands[nextwaypoint-1] 
                         mcmd = missionitem.command
 
-                        # ウェイポイントの切り替わりをチェック
-                        if cntwaypoint!=nextwaypoint:
-                            # 移動速度の変更や何らかの処理をここで行う。
-                            if nextwaypoint == 3: # 次のウェイポイントへスキップ
-                                msg = 'ウェイポイント3に到達'
-                                dlog.LOG("DEBUG", msg)
-                                # GUIDEDモードに設定
-                                #ardc.set_vehicle_mode("GUIDED")                        
-                            cntwaypoint = ardc.vehicle.commands.next
+                        ###############################################
+                        ardc.vehicle.groundspeed = 7
+                        ###############################################
 
-                        msg = 'ウェイポイントまでの距離 (%s): %s' % (nextwaypoint, ardc.distance_to_current_waypoint())
+                        msg = "現在のウェイポイント: " + str(ardc.vehicle.commands.next-1) + "]です"
+                        dlog.LOG("DEBUG", msg)
+                        msg = '次のウェイポイント(%s)まで[ %s ]' % (nextwaypoint, ardc.distance_to_current_waypoint())
                         dlog.LOG("DEBUG", msg)
 
                         if mcmd==mavutil.mavlink.MAV_CMD_NAV_RETURN_TO_LAUNCH or mcmd==mavutil.mavlink.MAV_CMD_NAV_LAND:
@@ -204,14 +147,20 @@ if __name__ == '__main__':
                             dlog.LOG("DEBUG", msg)
                             break
 
-                        msg = "現在のウェイポイントは["+str(ardc.vehicle.commands.next)+"]です。[Head:" + str(ardc.vehicle.heading) + "]"
-                        dlog.LOG("DEBUG", msg)
+                        # -----------------------------------------------------------
+                        # ウェイポイント到着時の処理
+                        # -----------------------------------------------------------
+                        if ardc.flg_wayPoint == True:
+                            dlog.LOG("DEBUG", "ウェイポイントアクションを実行")
+                            ardc.condition_yaw_vehicle(30, 1, True)
+                            time.sleep(1)
 
                         time.sleep(1)
 
                     # ミッション終了後、離陸地点へ戻る
                     ardc.set_vehicle_mode("RTL") 
-                flg_MissionUploaded == False
+                ardc.flg_MissionUploaded == False
+            # ドローン情報をMQTTでパブリッシュ
             pub_drone_info()
             time.sleep(1)
 

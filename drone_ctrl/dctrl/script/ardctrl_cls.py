@@ -9,7 +9,7 @@ Drone control program for specific drone.
 Title: The part of drone(Coptor) control program using dronekit python
 Company: Systena Corporation Inc
 Autor: y.s
-Date: June, 2022
+Date: Aug, 2022
 
 This program is based on following ... Ardupilot
 ------------------------------------------------------------------------------------------

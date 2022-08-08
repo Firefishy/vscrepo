@@ -9,7 +9,7 @@ Drone control program for specific drone.
 Title: The part of drone(Coptor) control program using dronekit python
 Company: Systena Corporation Inc
 Autor: y.s
-Date: June, 2022
+Date: Aug, 2022
 
 This program is based on following ... Ardupilot
 ------------------------------------------------------------------------------------------
@@ -48,12 +48,8 @@ class ArdCtrlClsC2(ardctrl.ArdCtrlClsC1):
             float(cmd["d_lon"]), 
             float(cmd["d_alt"]) 
         )
-        # point = LocationGlobalRelative(
-        #     cmd["d_lat"], 
-        #     cmd["d_lon"], 
-        #     cmd["d_alt"] 
-        # )
-        self.vehicle.simple_goto(point, groundspeed=5)
+        dlog.LOG("DEBUG", cmd["d_spd"])
+        self.vehicle.simple_goto(point, groundspeed=float(cmd["d_spd"]))
 
     ### =============================================================================================
     ### 指定した「original_location」からの 「LocationGlobal」を応答する。
