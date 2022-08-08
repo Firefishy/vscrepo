@@ -13,22 +13,13 @@ import os
 import time
 import json
 import dlogger as dlog
-import drnctrl_cls as arnctrl
+import drnctrl_cls as drnCtrl
 from pymavlink import mavutil
 
 # 接続設定をJSONファイルから取得する
 base_path = os.path.dirname(os.path.abspath(__file__))
 json_path = os.path.normpath(os.path.join(base_path, '../json/setting.json'))
 SETTING_JSON = json_path
-
-### =================================================================================== 
-### ドローンの情報をMQTTでクライアントにパブリッシュ
-### =================================================================================== 
-def pub_drone_info():
-    ardc.set_vehicle_info()
-    # 辞書型をJSON型に変換
-    json_message = json.dumps( ardc.drone_info )   
-    ardc.client.publish(ardc.topic_dinfo, json_message )
 
 ### =================================================================================== 
 ### Main
@@ -38,28 +29,28 @@ if __name__ == '__main__':
     ARM_HEIGHT = 3.0
 
     # Drone Control class instance
-    ardc = arnctrl.DrnCtrl()
-    ardc.connect_vehicle(SETTING_JSON)
+    drnc = drnCtrl.DrnCtrl()
+    drnc.connect_vehicle(SETTING_JSON)
     time.sleep(3)
 
     try:
 
         # ミションクリア時に取得するデコレータ
-        # @ardc.vehicle.on_message('MISSION_CLEAR_ALL')
+        # @drnc.vehicle.on_message('MISSION_CLEAR_ALL')
         # def listner( self, name, message ):
         #     print(message)
 
         # # システムステータスを取得するデコレータ
-        # @ardc.vehicle.on_message('SYS_STATUS')
+        # @drnc.vehicle.on_message('SYS_STATUS')
         # def listner( self, name, message ):
         #     print(message)
         # # IMU情報を取得するデコレータ
-        # @ardc.vehicle.on_message('RAW_IMU')
+        # @drnc.vehicle.on_message('RAW_IMU')
         # def listner( self, name, message ):
         #     print(message)
 
         # ミッション実行中デコレータ
-        @ardc.vehicle.on_message('MISSION_ACK')
+        @drnc.vehicle.on_message('MISSION_ACK')
         def listner( self, name, message ):
             msg = "ミッション実行中:" + str(message)
             dlog.LOG("DEBUG", msg)
@@ -67,7 +58,7 @@ if __name__ == '__main__':
 
         # ミッション位置到着デコレータ
         # ウェイポイントに到着した場合にメッセージを受信
-        @ardc.vehicle.on_message('MISSION_ITEM_REACHED')
+        @drnc.vehicle.on_message('MISSION_ITEM_REACHED')
         def listner( self, name, message ):
             msg = "ウェイポイントに到着:" + str(message)
             dlog.LOG("DEBUG", msg)
@@ -75,71 +66,71 @@ if __name__ == '__main__':
             # ------------------------------------------------------
             # ウェイポイント到着したらGUIDEDモードに設定
             # ------------------------------------------------------
-            ardc.set_vehicle_mode("GUIDED")
+            drnc.set_vehicle_mode("GUIDED")
             # ------------------------------------------------------
             # ウェイポイントアクションを実行
             # ------------------------------------------------------
-            ardc.flg_wayPoint = True
+            drnc.flg_wayPoint = True
 
         dlog.LOG("INFO", "Vehicle初期化完了")
 
         # Get attributes
-        ardc.dsp_attributes()
+        drnc.dsp_attributes()
 
         # dlog.LOG("DEBUG", "新規ミッションの作成（現在地用）")
         # dCtrlClass.adds_square_mission(dCtrlClass.vehicle.location.global_frame,50) 
 
         # Vehicleの現在モードを取得
-        mode = ardc.vehicle.mode
-        pub_drone_info()
+        mode = drnc.vehicle.mode
+        drnc.pub_drone_info()
 
         while True:
             
             # ----------------------------------------------------------------
             # MISSION START
             # ----------------------------------------------------------------
-            if ardc.drone_command["operation"] == "MISSION_START":
+            if drnc.drone_command["operation"] == "MISSION_START":
                 # MISSIONファイルがアップロードされている場合にMISSIONを実行
-                if ardc.flg_MissionUploaded == True:
+                if drnc.flg_MissionUploaded == True:
                     dlog.LOG("DEBUG", "MISSION START")
                     # Set GUIDED mode
-                    ardc.set_vehicle_mode("GUIDED")
-                    pub_drone_info()
+                    drnc.set_vehicle_mode("GUIDED")
+                    drnc.pub_drone_info()
                     
                     # アームしていない場合ARMする
-                    if ardc.vehicle.armed == False:
-                        pub_drone_info()
-                        ardc.arm_and_takeoff(ARM_HEIGHT)
+                    if drnc.vehicle.armed == False:
+                        drnc.pub_drone_info()
+                        drnc.arm_and_takeoff(ARM_HEIGHT)
                         dlog.LOG("DEBUG", "ARMと離陸開始:" + str(ARM_HEIGHT) + 'm')
                     # Checking arm status
-                    while ardc.vehicle.armed == False:
-                        pub_drone_info()
+                    while drnc.vehicle.armed == False:
+                        drnc.pub_drone_info()
                         dlog.LOG("DEBUG", "ARMと離陸をしています...")
                         time.sleep(1)
                     dlog.LOG("INFO", "ARMと離陸完了:" + str(ARM_HEIGHT) + 'm')                
 
                     # ミッションを実行するため、モードをAUTOにする
-                    ardc.set_vehicle_mode("AUTO")
+                    drnc.set_vehicle_mode("AUTO")
                     # ドローン情報をMQTTでパブリッシュ
-                    pub_drone_info()
+                    drnc.pub_drone_info()
 
                     while True:
 
                         # ドローン情報をMQTTでパブリッシュ
-                        pub_drone_info()
+                        drnc.pub_drone_info()
 
-                        nextwaypoint = ardc.vehicle.commands.next
+                        nextwaypoint = drnc.vehicle.commands.next
                         #commands are zero indexed
-                        missionitem = ardc.vehicle.commands[nextwaypoint-1] 
+                        missionitem = drnc.vehicle.commands[nextwaypoint-1] 
                         mcmd = missionitem.command
 
                         ###############################################
-                        ardc.vehicle.groundspeed = 7
+                        drnc.vehicle.groundspeed = 7
                         ###############################################
 
-                        msg = "現在のウェイポイント: " + str(ardc.vehicle.commands.next-1) + "]です"
+                        msg = "現在のウェイポイント: " + str(drnc.vehicle.commands.next-1) + "]です"
                         dlog.LOG("DEBUG", msg)
-                        msg = '次のウェイポイント(%s)まで[ %s ]' % (nextwaypoint, ardc.distance_to_current_waypoint())
+                        msg = '次のウェイポイント(%s)まで[ %s ]' % (nextwaypoint, drnc.distance_to_current_waypoint())
                         dlog.LOG("DEBUG", msg)
 
                         if mcmd==mavutil.mavlink.MAV_CMD_NAV_RETURN_TO_LAUNCH or mcmd==mavutil.mavlink.MAV_CMD_NAV_LAND:
@@ -150,18 +141,18 @@ if __name__ == '__main__':
                         # -----------------------------------------------------------
                         # ウェイポイント到着時の処理
                         # -----------------------------------------------------------
-                        if ardc.flg_wayPoint == True:
+                        if drnc.flg_wayPoint == True:
                             dlog.LOG("DEBUG", "ウェイポイントアクションを実行")
-                            ardc.condition_yaw_vehicle(30, 1, True)
+                            drnc.condition_yaw_vehicle(30, 1, True)
                             time.sleep(1)
 
                         time.sleep(1)
 
                     # ミッション終了後、離陸地点へ戻る
-                    ardc.set_vehicle_mode("RTL") 
-                ardc.flg_MissionUploaded == False
+                    drnc.set_vehicle_mode("RTL") 
+                drnc.flg_MissionUploaded == False
             # ドローン情報をMQTTでパブリッシュ
-            pub_drone_info()
+            drnc.pub_drone_info()
             time.sleep(1)
 
     # キーボード割り込みで終了
@@ -171,6 +162,6 @@ if __name__ == '__main__':
         msg = "キーボード例外処理発生"
         # スクリプトを終了する前に車両オブジェクトを閉じる
         dlog.LOG("INFO", "Close vehicle object")
-        ardc.vehicle.close() 
+        drnc.vehicle.close() 
         dlog.LOG("INFO", "プログラム終了")
         dlog.LOG("CRITICAL", msg)
