@@ -70,6 +70,9 @@ const setOperation = (flg1, flg2) => {
   console.log(flg2);
 }
 
+
+let mk;
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // 地図上を左クリックするとエディットボックスにその緯度/経度を書き込む
 mymap.on('click', function(e) {
@@ -80,6 +83,11 @@ mymap.on('click', function(e) {
     document.getElementById('lon').value = e.latlng.lng;
     console.log(e.latlng.lat);
     console.log(e.latlng.lng);
+
+    //地図のclickイベント呼び出される
+    //クリック地点の座標にマーカーを追加、マーカーのclickイベントでonMarkerClick関数を呼び出し
+    //mk = L.marker(e.latlng).on('click', onMarkerClick).addTo(mymap);   
+
   }
   // Mission要素が選択されている場合：現状最大5箇所
   else{
@@ -87,7 +95,15 @@ mymap.on('click', function(e) {
     document.getElementById('mwp' +  flg_mission_wp.toString() + '_lon').innerHTML = e.latlng.lng;
     document.getElementById('mwp' +  flg_mission_wp.toString() + '_alt').innerHTML = 30.0;
   }
+
 } );
+
+// function onMarkerClick(e) {
+//   //マーカーのclickイベント呼び出される
+//   //クリックされたマーカーを地図のレイヤから削除する
+//   mymap.removeLayer(e.target);
+// }
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // マーカーにする画像を読み込む
@@ -124,8 +140,9 @@ var client = new Paho.MQTT.Client(
 sub.subscribe(topic_sub);
 // サブスクライバのCallback
 sub.on('message', function (topic_sub, message) {
-  document.getElementById('msg1').innerHTML = "Vehicleに接続しました。";
-  // ドローン名はトピック名とする
+  document.getElementById('msg1').innerHTML = "Vehicle: Connected !";
+  document.getElementById('msg1').style.color = '#FFFF00';
+  // ドローン名はトピック名とする"
   let drone_name = message.destinationName;
   // ドローンのデータを連想配列にして格納
   let drone_data = JSON.parse( message );         
@@ -213,7 +230,7 @@ sub.on('message', function (topic_sub, message) {
 
 // Finish
 setTimeout(function() {
-  clearInterval( pubLoop );
+  //clearInterval( pubLoop );
   pub.end();
   sub.end();
 }, 100000); // stop after 100sec
@@ -222,6 +239,10 @@ setTimeout(function() {
 // イベントハンドラ（HTML上のボタンが押下）
 const droneCtrl = (ope) => {
   let latData, lonData, altData, speed;
+
+  drone_command["d_lat"] = 0;
+  drone_command["d_lon"] = 0;
+  drone_command["d_alt"] = 0; 
   
   // Simple GOTO: 緯度/経度/高度を取得してコマンドをドローンに送信
   if(ope == "GOTO") {
@@ -255,7 +276,6 @@ const droneCtrl = (ope) => {
     let caltData = document.getElementById('calt').innerHTML;
 
     let idx = 0;
-  
     // 現在のウェイポイント
     mission_cmd = makeMissionCmdWithTab(
       idx++,
@@ -267,8 +287,8 @@ const droneCtrl = (ope) => {
     cmdAry.push(mission_cmd) 
 
     // 現在位置で離陸: 離陸高度を5mとする（暫定）
-    mission_cmd = makeMissionCmdWithTab(idx++, 0, 3, 22, clatData, clonData, 5.0, 1);     
-    cmdAry.push(mission_cmd) 
+    // mission_cmd = makeMissionCmdWithTab(idx++, 0, 3, 22, clatData, clonData, 5.0, 1);     
+    // cmdAry.push(mission_cmd) 
 
     // ミッションウェイポイントの設定
     for (let i = 1; i < 6; i++){
@@ -296,14 +316,19 @@ const droneCtrl = (ope) => {
 
     // コマンドの送信
     pubCommand(topic_mission,cmdAry);
+
+    // Goto、Mission以外のコマンド送信時
+    drone_command["operation"] = ope;
+    console.log(drone_command["operation"] = ope)
+
+    // MQTTでパブリッシュする
+    pubCommand(topic_pub,drone_command);
+
   }
   else{
     // Goto、Mission以外のコマンド送信時
     drone_command["operation"] = ope;
     console.log(drone_command["operation"] = ope)
-    drone_command["d_lat"] = 0;
-    drone_command["d_lon"] = 0;
-    drone_command["d_alt"] = 0;  
     // MQTTでパブリッシュする
     pubCommand(topic_pub,drone_command);
   }

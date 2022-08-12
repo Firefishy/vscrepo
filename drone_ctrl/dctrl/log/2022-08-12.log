@@ -1,0 +1,99 @@
+<INFO> 2022-08-12_19:47:15 [__init__] START
+<DEBUG> 2022-08-12_19:47:15 [connect_vehicle] START
+<DEBUG> 2022-08-12_19:47:15 [connect_vehicle] Connect to vehicle object:/home/sayz/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-08-12_19:47:15 [connect_vehicle] /home/sayz/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-08-12_19:47:15 [connect_vehicle] SETTING_JSON: /home/sayz/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-08-12_19:47:15 [connect_vehicle] connection_string: udp:127.0.0.1:14551
+<DEBUG> 2022-08-12_19:47:15 [connect_vehicle] Connecting to vehicle on: udp:127.0.0.1:14551
+<DEBUG> 2022-08-12_19:47:15 [on_connect_mission_test] Connected with result code 0
+<DEBUG> 2022-08-12_19:47:15 [on_connect] Connected with result code 0
+<DEBUG> 2022-08-12_19:47:15 [on_connect_mission] Connected with result code 0
+<DEBUG> 2022-08-12_19:47:16 [connect_vehicle] END
+<INFO> 2022-08-12_19:47:19 [<module>] Vehicle初期化完了
+<DEBUG> 2022-08-12_19:47:19 [dsp_attributes] START
+<INFO> 2022-08-12_19:47:19 [dsp_attributes] 
+---- Vehicle attributes ----------------------------------------
+<INFO> 2022-08-12_19:47:19 [dsp_attributes] Ardupilot Firmware version: APM:Copter-4.3.0-dev0
+<INFO> 2022-08-12_19:47:19 [dsp_attributes] Global Location: LocationGlobal:lat=35.656458,lon=139.7571545,alt=10.08
+<INFO> 2022-08-12_19:47:19 [dsp_attributes] Global Location (relative altitude): LocationGlobalRelative:lat=35.656458,lon=139.7571545,alt=-0.017
+<INFO> 2022-08-12_19:47:19 [dsp_attributes] Local Location: LocationLocal:north=-0.014050655998289585,east=0.012904803268611431,down=0.027586469426751137
+<INFO> 2022-08-12_19:47:19 [dsp_attributes] Attitude: Attitude:pitch=0.0010689726332202554,yaw=0.02161322720348835,roll=0.0012393713695928454
+<INFO> 2022-08-12_19:47:19 [dsp_attributes] Velocity: [-0.01, 0.01, 0.0]
+<INFO> 2022-08-12_19:47:19 [dsp_attributes] GPS: GPSInfo:fix=6,num_sat=10
+<INFO> 2022-08-12_19:47:19 [dsp_attributes] Gimbal status: Gimbal: pitch=None, roll=None, yaw=None
+<INFO> 2022-08-12_19:47:19 [dsp_attributes] Battery: Battery:voltage=12.587,current=0.0,level=100
+<INFO> 2022-08-12_19:47:19 [dsp_attributes] EKF OK?: True
+<INFO> 2022-08-12_19:47:19 [dsp_attributes] Last Heartbeat: 0.10042917800001305
+<INFO> 2022-08-12_19:47:19 [dsp_attributes] Heading: 1
+<INFO> 2022-08-12_19:47:19 [dsp_attributes] Is Armable?: True
+<INFO> 2022-08-12_19:47:19 [dsp_attributes] System status: STANDBY
+<INFO> 2022-08-12_19:47:19 [dsp_attributes] Groundspeed: 0.024184437468647957
+<INFO> 2022-08-12_19:47:19 [dsp_attributes] Airspeed: 0.0
+<INFO> 2022-08-12_19:47:19 [dsp_attributes] Mode: STABILIZE
+<INFO> 2022-08-12_19:47:19 [dsp_attributes] Armed: False
+<INFO> 2022-08-12_19:47:19 [dsp_attributes] ----------------------------------------------------------------
+
+<DEBUG> 2022-08-12_19:47:19 [dsp_attributes] END
+<CRITICAL> 2022-08-12_19:50:18 [<module>] KeyBoard Exception
+<INFO> 2022-08-12_19:50:18 [<module>] Close vehicle object
+<INFO> 2022-08-12_19:50:18 [<module>] プログラム終了
+<CRITICAL> 2022-08-12_19:50:18 [<module>] キーボード例外処理発生
+<INFO> 2022-08-12_19:56:49 [__init__] START
+<DEBUG> 2022-08-12_19:56:49 [on_connect_mission_test] Connected with result code 0
+<DEBUG> 2022-08-12_19:56:49 [on_connect_mission] Connected with result code 0
+<DEBUG> 2022-08-12_19:56:49 [connect_vehicle] START
+<DEBUG> 2022-08-12_19:56:49 [on_connect] Connected with result code 0
+<DEBUG> 2022-08-12_19:56:49 [connect_vehicle] Connect to vehicle object:/home/sayz/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-08-12_19:56:49 [connect_vehicle] /home/sayz/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-08-12_19:56:49 [connect_vehicle] SETTING_JSON: /home/sayz/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-08-12_19:56:49 [connect_vehicle] connection_string: udp:127.0.0.1:14551
+<DEBUG> 2022-08-12_19:56:49 [connect_vehicle] Connecting to vehicle on: udp:127.0.0.1:14551
+<DEBUG> 2022-08-12_19:56:50 [connect_vehicle] END
+<INFO> 2022-08-12_19:56:53 [<module>] Vehicle初期化完了
+<DEBUG> 2022-08-12_19:56:53 [dsp_attributes] START
+<INFO> 2022-08-12_19:56:53 [dsp_attributes] 
+---- Vehicle attributes ----------------------------------------
+<INFO> 2022-08-12_19:56:53 [dsp_attributes] Ardupilot Firmware version: APM:Copter-4.3.0-dev0
+<INFO> 2022-08-12_19:56:53 [dsp_attributes] Global Location: LocationGlobal:lat=35.656458,lon=139.7571545,alt=10.08
+<INFO> 2022-08-12_19:56:53 [dsp_attributes] Global Location (relative altitude): LocationGlobalRelative:lat=35.656458,lon=139.7571545,alt=-0.017
+<INFO> 2022-08-12_19:56:53 [dsp_attributes] Local Location: LocationLocal:north=-0.013455389067530632,east=0.012851758860051632,down=0.027563242241740227
+<INFO> 2022-08-12_19:56:53 [dsp_attributes] Attitude: Attitude:pitch=0.0010413164272904396,yaw=0.023314785212278366,roll=0.0012378767132759094
+<INFO> 2022-08-12_19:56:53 [dsp_attributes] Velocity: [-0.01, 0.01, 0.0]
+<INFO> 2022-08-12_19:56:53 [dsp_attributes] GPS: GPSInfo:fix=6,num_sat=10
+<INFO> 2022-08-12_19:56:53 [dsp_attributes] Gimbal status: Gimbal: pitch=None, roll=None, yaw=None
+<INFO> 2022-08-12_19:56:53 [dsp_attributes] Battery: Battery:voltage=12.587,current=0.0,level=100
+<INFO> 2022-08-12_19:56:53 [dsp_attributes] EKF OK?: True
+<INFO> 2022-08-12_19:56:53 [dsp_attributes] Last Heartbeat: 0.05023608800001966
+<INFO> 2022-08-12_19:56:53 [dsp_attributes] Heading: 1
+<INFO> 2022-08-12_19:56:53 [dsp_attributes] Is Armable?: True
+<INFO> 2022-08-12_19:56:53 [dsp_attributes] System status: STANDBY
+<INFO> 2022-08-12_19:56:53 [dsp_attributes] Groundspeed: 0.02378903143107891
+<INFO> 2022-08-12_19:56:53 [dsp_attributes] Airspeed: 0.0
+<INFO> 2022-08-12_19:56:53 [dsp_attributes] Mode: STABILIZE
+<INFO> 2022-08-12_19:56:53 [dsp_attributes] Armed: False
+<INFO> 2022-08-12_19:56:53 [dsp_attributes] ----------------------------------------------------------------
+
+<DEBUG> 2022-08-12_19:56:53 [dsp_attributes] END
+<DEBUG> 2022-08-12_20:09:42 [on_message] START
+<DEBUG> 2022-08-12_20:09:42 [on_message] GUided and Arm the drone
+<DEBUG> 2022-08-12_20:09:42 [set_vehicle_mode] SET MODE: GUIDED
+<DEBUG> 2022-08-12_20:09:42 [vehicle_arming] ARMING:
+<DEBUG> 2022-08-12_20:09:44 [on_message] START
+<DEBUG> 2022-08-12_20:09:44 [on_message] GUIDED
+<DEBUG> 2022-08-12_20:09:44 [on_message] 8
+<DEBUG> 2022-08-12_20:09:44 [on_message] GUIDED
+<DEBUG> 2022-08-12_20:09:44 [set_vehicle_mode] SET MODE: GUIDED
+<DEBUG> 2022-08-12_20:09:44 [on_message] START
+<DEBUG> 2022-08-12_20:09:44 [on_message] TAKEOFF
+<DEBUG> 2022-08-12_20:09:44 [on_message] 2
+<DEBUG> 2022-08-12_20:09:44 [on_message] Take off
+<DEBUG> 2022-08-12_20:09:44 [vehicle_takeoff] TAKEOFF
+<DEBUG> 2022-08-12_20:19:26 [on_message] START
+<DEBUG> 2022-08-12_20:19:26 [on_message] GOTO
+<DEBUG> 2022-08-12_20:19:26 [on_message] 6
+<DEBUG> 2022-08-12_20:19:26 [on_message] Start Simple GOTO
+<DEBUG> 2022-08-12_20:19:26 [set_vehicle_mode] SET MODE: GUIDED
+<INFO> 2022-08-12_20:19:26 [on_message] ARMと離陸完了:3.0m
+<DEBUG> 2022-08-12_20:19:26 [vehicle_goto] Start Simple-GOTO
+<DEBUG> 2022-08-12_20:19:26 [vehicle_goto] 10.0
+<DEBUG> 2022-08-12_20:19:26 [listner] ミッション実行中:MISSION_ACK {target_system : 255, target_component : 0, type : 0, mission_type : 0}

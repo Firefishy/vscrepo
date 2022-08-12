@@ -108,7 +108,7 @@ class ArdCtrlClsC1(ardctrl.ArdCtrlCls):
 
         msgstr = "Vehicle 離陸しています"
         dlog.LOG("INFO", msgstr) 
-        self.simple_takeoff(aTargetAltitude) # Take off to target altitude
+        self.vehicle.simple_takeoff(aTargetAltitude) # Take off to target altitude
 
         # Wait until the vehicle reaches a safe height before processing the goto (otherwise the command 
         #  after Vehicle.simple_takeoff will execute immediately).

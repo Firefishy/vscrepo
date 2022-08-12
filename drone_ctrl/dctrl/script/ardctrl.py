@@ -91,66 +91,66 @@ if __name__ == '__main__':
             # ----------------------------------------------------------------
             if drnc.drone_command["operation"] == "MISSION_START":
                 # MISSIONファイルがアップロードされている場合にMISSIONを実行
-                if drnc.flg_MissionUploaded == True:
-                    dlog.LOG("DEBUG", "MISSION START")
-                    # Set GUIDED mode
-                    drnc.set_vehicle_mode("GUIDED")
+                drnc.flg_MissionUploaded = True
+                dlog.LOG("DEBUG", "MISSION START")
+                # Set GUIDED mode
+                drnc.set_vehicle_mode("GUIDED")
+                drnc.pub_drone_info()
+                
+                # アームしていない場合ARMする
+                if drnc.vehicle.armed == False:
                     drnc.pub_drone_info()
-                    
-                    # アームしていない場合ARMする
-                    if drnc.vehicle.armed == False:
-                        drnc.pub_drone_info()
-                        drnc.arm_and_takeoff(ARM_HEIGHT)
-                        dlog.LOG("DEBUG", "ARMと離陸開始:" + str(ARM_HEIGHT) + 'm')
-                    # Checking arm status
-                    while drnc.vehicle.armed == False:
-                        drnc.pub_drone_info()
-                        dlog.LOG("DEBUG", "ARMと離陸をしています...")
-                        time.sleep(1)
-                    dlog.LOG("INFO", "ARMと離陸完了:" + str(ARM_HEIGHT) + 'm')                
+                    drnc.arm_and_takeoff(ARM_HEIGHT)
+                    dlog.LOG("DEBUG", "ARMと離陸開始:" + str(ARM_HEIGHT) + 'm')
+                # Checking arm status
+                while drnc.vehicle.armed == False:
+                    drnc.pub_drone_info()
+                    dlog.LOG("DEBUG", "ARMと離陸をしています...")
+                    time.sleep(1)
+                dlog.LOG("INFO", "ARMと離陸完了:" + str(ARM_HEIGHT) + 'm')                
 
-                    # ミッションを実行するため、モードをAUTOにする
-                    drnc.set_vehicle_mode("AUTO")
+                # ミッションを実行するため、モードをAUTOにする
+                drnc.set_vehicle_mode("AUTO")
+                # ドローン情報をMQTTでパブリッシュ
+                drnc.pub_drone_info()
+
+                while True:
+
                     # ドローン情報をMQTTでパブリッシュ
                     drnc.pub_drone_info()
 
-                    while True:
+                    nextwaypoint = drnc.vehicle.commands.next
+                    #commands are zero indexed
+                    missionitem = drnc.vehicle.commands[nextwaypoint-1] 
+                    mcmd = missionitem.command
 
-                        # ドローン情報をMQTTでパブリッシュ
-                        drnc.pub_drone_info()
+                    ###############################################
+                    drnc.vehicle.groundspeed = 10 # Ground Speed is Fix (T.B.D.)
+                    ###############################################
 
-                        nextwaypoint = drnc.vehicle.commands.next
-                        #commands are zero indexed
-                        missionitem = drnc.vehicle.commands[nextwaypoint-1] 
-                        mcmd = missionitem.command
+                    msg = "現在のウェイポイント: " + str(drnc.vehicle.commands.next-1) + "]です"
+                    dlog.LOG("DEBUG", msg)
+                    msg = '次のウェイポイント(%s)まで[ %s ]' % (nextwaypoint, drnc.distance_to_current_waypoint())
+                    dlog.LOG("DEBUG", msg)
 
-                        ###############################################
-                        drnc.vehicle.groundspeed = 7
-                        ###############################################
-
-                        msg = "現在のウェイポイント: " + str(drnc.vehicle.commands.next-1) + "]です"
+                    if mcmd==mavutil.mavlink.MAV_CMD_NAV_RETURN_TO_LAUNCH or mcmd==mavutil.mavlink.MAV_CMD_NAV_LAND:
+                        msg = "ミッションを終了して離陸地点へ戻る"
                         dlog.LOG("DEBUG", msg)
-                        msg = '次のウェイポイント(%s)まで[ %s ]' % (nextwaypoint, drnc.distance_to_current_waypoint())
-                        dlog.LOG("DEBUG", msg)
+                        break
 
-                        if mcmd==mavutil.mavlink.MAV_CMD_NAV_RETURN_TO_LAUNCH or mcmd==mavutil.mavlink.MAV_CMD_NAV_LAND:
-                            msg = "ミッションを終了して離陸地点へ戻る"
-                            dlog.LOG("DEBUG", msg)
-                            break
-
-                        # -----------------------------------------------------------
-                        # ウェイポイント到着時の処理
-                        # -----------------------------------------------------------
-                        if drnc.flg_wayPoint == True:
-                            dlog.LOG("DEBUG", "ウェイポイントアクションを実行")
-                            drnc.condition_yaw_vehicle(30, 1, True)
-                            time.sleep(1)
-
+                    # -----------------------------------------------------------
+                    # ウェイポイント到着時の処理
+                    # -----------------------------------------------------------
+                    if drnc.flg_wayPoint == True:
+                        dlog.LOG("DEBUG", "ウェイポイントアクションを実行")
+                        drnc.condition_yaw_vehicle(30, 1, True)
                         time.sleep(1)
 
-                    # ミッション終了後、離陸地点へ戻る
-                    drnc.set_vehicle_mode("RTL") 
-                drnc.flg_MissionUploaded == False
+                    time.sleep(1)
+
+                # ミッション終了後、離陸地点へ戻る
+                drnc.set_vehicle_mode("RTL") 
+                drnc.flg_MissionUploaded = False
             # ドローン情報をMQTTでパブリッシュ
             drnc.pub_drone_info()
             time.sleep(1)

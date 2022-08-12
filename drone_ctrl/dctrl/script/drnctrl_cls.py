@@ -10,7 +10,6 @@ Title: The part of MQTT data transfer and drone control program on dronekit pyth
 Company: Systena Corporation Inc
 Autor: y.s
 Date: Aug, 2022
-
 This program is based on following ... Ardupilot
 ------------------------------------------------------------------------------------------
 © Copyright 2015-2016, 3D Robotics.
@@ -55,22 +54,25 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
     host = "localhost"
     port = 1883
     # Publisher 座標等のドローン情報
-    topic_dinfo = "drone/dinfo"
+    topic_drone_info = "drone/dinfo"
     # Subscriber コマンド、Simple Goto
-    topic_dctrl = "drone/dctrl"
+    topic_drone_command = "drone/dctrl"
     # Subscriber ミッション
-    topic_mission_old = "drone/mission"
+    topic_drone_mission_test = "drone/mission"
+    # Subscriber ミッション: マップ制御画面対応用
+    topic_drone_mission = "ctrl/001"
 
     # ミッションファイルをアップロードした場合にTrue、ミッション実行後False
     flg_MissionUploaded = False
     # ミッションでWayPointに到着した場合にTrue
     flg_wayPoint = False
 
-    # Subscriber ミッション: マップ制御画面対応用
-    topic_mission = "ctrl/001"
-
+    # info pub / command sub
     client = ""
-    client_m = ""
+    # mission sub
+    client_mission_test = ""
+    # mission sub
+    client_mission = ""
     #msg = ""
 
     ### =================================================================================== 
@@ -120,41 +122,41 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
 
         # クラスのインスタンス(実体)の作成
         self.client = mqtt.Client() 
-        self.client_m = mqtt.Client() 
+        self.client_mission_test = mqtt.Client() 
         self.client_mission = mqtt.Client()
 
         # 接続時のコールバック関数を登録
         self.client.on_connect = self.on_connect              
-        self.client_m.on_connect = self.on_connect_m             
+        self.client_mission_test.on_connect = self.on_connect_mission_test           
         self.client_mission.on_connect = self.on_connect_mission
 
         # 切断時のコールバックを登録
         self.client.on_disconnect = self.on_disconnect        
-        self.client_m.on_disconnect = self.on_disconnect_m        
-        self.client_mission.on_disconnect = self.on_disconnect_m
+        self.client_mission_test.on_disconnect = self.on_disconnect_mission_test       
+        self.client_mission.on_disconnect = self.on_disconnect_mission
 
         #self.client.on_publish = self.on_publish              
-        #self.client_m.on_publish = self.on_publish_m              
+        #self.client_mission_test.on_publish = self.on_publish_m              
         #self.client_mission.on_publish = self.on_publish_m
         #           
         # 接続先は自分自身
         self.client.connect(self.host, self.port, 60)     
-        self.client_m.connect(self.host, self.port, 60)     
+        self.client_mission_test.connect(self.host, self.port, 60)     
         self.client_mission.connect(self.host, self.port, 60)
 
         # メッセージ到着時のコールバック        
         self.client.on_message = self.on_message
-        self.client_m.on_message = self.on_message_m
-        self.client_mission.on_message = self.on_message_m
+        self.client_mission_test.on_message = self.on_message_mission_test
+        self.client_mission.on_message = self.on_message_mission
 
         # subはloop_forever()だが，pubはloop_start()で起動だけさせる
         self.client.loop_start()                                   
-        self.client_m.loop_start()                                   
+        self.client_mission_test.loop_start()                                   
         self.client_mission.loop_start()
 
         # 永久ループして待ち続ける
         #mqttClass.client.loop_forever()
-        #mqttClass.client_m.loop_forever()
+        #mqttClass.client_mission_test.loop_forever()
         #mqttClass.client_mission.loop_forever()
 
     ### =================================================================================== 
@@ -163,17 +165,17 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
     def on_connect(self, client, userdata, flag, rc):
         dlog.LOG("DEBUG", "Connected with result code " + str(rc))  
         # subscribeトピックを設定
-        client.subscribe(self.topic_dctrl)  
+        client.subscribe(self.topic_drone_command)  
 
-    def on_connect_m(self, client_m, userdata, flag, rc):
+    def on_connect_mission_test(self, client_mission_test, userdata, flag, rc):
         dlog.LOG("DEBUG", "Connected with result code " + str(rc))  
         # subscribeトピックを設定
-        client_m.subscribe(self.topic_mission_old)  
+        client_mission_test.subscribe(self.topic_drone_mission_test)  
 
     def on_connect_mission(self, client_mission, userdata, flag, rc):
         dlog.LOG("DEBUG", "Connected with result code " + str(rc))  
         # subscribeトピックを設定
-        client_mission.subscribe(self.topic_mission)  
+        client_mission.subscribe(self.topic_drone_mission)  
 
     ### =================================================================================== 
     ### ブローカーから切断されたときの処理：コールバック
@@ -182,7 +184,7 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
         if rc != 0:
             dlog.LOG("DEBUG", "Unexpected disconnection.")
 
-    def on_disconnect_m(self, client_m, userdata, rc):
+    def on_disconnect_mission_test(self, client_mission_test, userdata, rc):
         if rc != 0:
             dlog.LOG("DEBUG", "Unexpected disconnection.")
 
@@ -200,81 +202,35 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
     #     dlog.LOG("DEBUG", "publish: {0}".format(mid))
 
     ### =================================================================================== 
-    ### ドローン動作コマンドコールバック
+    ### ドローンの情報をMQTTでクライアントにパブリッシュ
+    ### =================================================================================== 
+    def pub_drone_info(self):
+        self.set_vehicle_info()
+        # 辞書型をJSON型に変換
+        json_message = json.dumps( self.drone_info )
+        self.client.publish(self.topic_drone_info, json_message )
+        
+    ### =================================================================================== 
+    ### ドローン動作コマンドサブスクライバコールバック
     ### =================================================================================== 
     def on_message(self, client, userdata, msg):
         dlog.LOG("DEBUG","START")
         # msg.topicにトピック名が，msg.payloadに届いたデータ本体が入っている
         recvData = json.loads(msg.payload)
-        if msg.topic==self.topic_dctrl:
+        
+        if msg.topic==self.topic_drone_command:
+
             # 受信メッセージをコマンド辞書にコピー、その際に変更フラグを付加
             # 届いた際にtrueにし，コマンドを処理したらfalseにする
             self.drone_command["operation"] = recvData["operation"]
 
-            # ARMしていない場合は、GUIDEDにしてARMする
-            if self.vehicle.armed == False:
-                if self.drone_command["operation"] == "ARM":
-                    dlog.LOG("DEBUG", "GUided and Arm the drone")
-                    self.set_vehicle_mode("GUIDED")
-                    self.vehicle_arming()                    
-
-            # ARMしている場合
-            else:
-                if self.drone_command["operation"] == "MAV_MESSAGE":
-                    self.get_custom_message(self.drone_command["subcode"])
-
-                # DISARM
-                elif self.drone_command["operation"] == "DISARM":
-                    dlog.LOG("DEBUG", "Disarm")
-                    self.vehicle_disarming()
-                # TAKE OFF
-                elif self.drone_command["operation"] == "TAKEOFF":
-                    dlog.LOG("DEBUG", "Take off")
-                    self.vehicle_takeoff(20.0)
-
-                # PAUSE
-                elif self.drone_command["operation"] == "PAUSE":
-                    dlog.LOG("DEBUG", "Pause")
-                    self.pause_vehicle()
-                # RESUME
-                elif self.drone_command["operation"] == "RESUME":
-                    dlog.LOG("DEBUG", "Resume")
-                    self.resume_vehicle()
-
-                # ROTATION
-                elif self.drone_command["operation"] == "ROTATION":
-                    dlog.LOG("DEBUG", "Rotation")
-                    self.condition_yaw_vehicle(45, 1, True)
-
-                # ---- Simple GOTO ----
-                elif self.drone_command["operation"] == "GOTO":
-                    dlog.LOG("DEBUG", "Start Simple GOTO")
-                    self.drone_command["d_lat"] = recvData["d_lat"]
-                    self.drone_command["d_lon"] = recvData["d_lon"]
-                    self.drone_command["d_alt"] = recvData["d_alt"]
-                    self.drone_command["d_spd"] = recvData["d_spd"]
-
-                    # ガイドモードにセット
-                    self.set_vehicle_mode("GUIDED")
-                    self.pub_drone_info()
-
-                    # アームしていない場合ARMする
-                    if self.vehicle.armed == False:
-                        self.pub_drone_info()
-                        self.arm_and_takeoff(ARM_HEIGHT)
-                        dlog.LOG("DEBUG", "ARMと離陸開始:" + str(ARM_HEIGHT) + 'm')
-                    # アーム状態をチェック
-                    while self.vehicle.armed == False:
-                        self.pub_drone_info()
-                        dlog.LOG("DEBUG", "ARMと離陸をしています...")
-                        time.sleep(1)
-                    dlog.LOG("INFO", "ARMと離陸完了:" + str(ARM_HEIGHT) + 'm')    
-                    self.vehicle_goto(self.drone_command)
-
-                elif self.drone_mission["operation"] == "MISSION_UPLOAD":
+            if self.drone_command["operation"] == "MISSION_UPLOAD":
+                # MISSION実行中のミッションファイルのアップロードは禁止
+                if self.flg_MissionUploaded == False:
+                # MISSIONのUPLOAD
+                    dlog.LOG("DEBUG", "7")
                     if self.flg_MissionUploaded == False:
-                        dlog.LOG("DEBUG", "MISSION UPLOAD")
-                        self.drone_mission["operation"] = "NONE"
+                        dlog.LOG("DEBUG", "####MISSION UPLOAD####")                        
 
                         # print("Starting mission")
                         # # 最初の（0）ウェイポイントに設定されたミッションをリセット
@@ -293,27 +249,126 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
 
                         # ミッションデータをファイルからドローンへアップロード
                         self.upload_mission(import_mission_filename)
-                        self.flg_MissionUploaded = True
+                        #self.flg_MissionUploaded = True
+                    #self.drone_command["operation"] = "NONE"
 
-                # Drone mode set
-                else:
+            elif self.drone_command["operation"] == "ARM":
+                # ARMしていない場合
+                if self.vehicle.armed == False:
+                    # ARMの場合GUIDEDにしてARMする
+                    dlog.LOG("DEBUG", "GUided and Arm the drone")
+                    self.set_vehicle_mode("GUIDED")
+                    self.vehicle_arming()
+                    self.drone_command["operation"] = "NONE"
+
+            else:
+                # ARMしている場合
+                if self.vehicle.armed == True:
+
                     dlog.LOG("DEBUG", self.drone_command["operation"])
-                    # AUTOモードに設定した場合はウェイポイントフラグをクリアする
-                    if self.drone_command["operation"] == "AUTO":
-                        self.flg_wayPoint = False
-                    self.set_vehicle_mode(self.drone_command["operation"])
+                    if self.drone_command["operation"] == "MAV_MESSAGE":
+                        self.get_custom_message(self.drone_command["subcode"])
+
+                    # DISARM
+                    elif self.drone_command["operation"] == "DISARM":
+                        dlog.LOG("DEBUG", "1")
+                        dlog.LOG("DEBUG", "Disarm")
+                        self.vehicle_disarming()
+                        #self.drone_command["operation"] = "NONE"
+                    # TAKE OFF
+                    elif self.drone_command["operation"] == "TAKEOFF":
+                        dlog.LOG("DEBUG", "2")
+                        dlog.LOG("DEBUG", "Take off")
+                        self.vehicle_takeoff(20.0)
+                        #self.drone_command["operation"] = "NONE"
+
+                    # PAUSE
+                    elif self.drone_command["operation"] == "PAUSE":
+                        dlog.LOG("DEBUG", "3")
+                        dlog.LOG("DEBUG", "Pause")
+                        self.pause_vehicle()
+                        #self.drone_command["operation"] = "NONE"
+                    # RESUME
+                    elif self.drone_command["operation"] == "RESUME":
+                        dlog.LOG("DEBUG", "4")
+                        dlog.LOG("DEBUG", "Resume")
+                        self.resume_vehicle()
+                        #self.drone_command["operation"] = "NONE"
+
+                    # ROTATION
+                    elif self.drone_command["operation"] == "ROTATION":
+                        dlog.LOG("DEBUG", "5")
+                        dlog.LOG("DEBUG", "Rotation")
+                        self.condition_yaw_vehicle(45, 1, True)
+                        #self.drone_command["operation"] = "NONE"
+
+                    # ---- Simple GOTO ----
+                    elif self.drone_command["operation"] == "GOTO":
+                        dlog.LOG("DEBUG", "6")
+                        dlog.LOG("DEBUG", "Start Simple GOTO")
+                        self.drone_command["d_lat"] = recvData["d_lat"]
+                        self.drone_command["d_lon"] = recvData["d_lon"]
+                        self.drone_command["d_alt"] = recvData["d_alt"]
+                        self.drone_command["d_spd"] = recvData["d_spd"]
+
+                        # ガイドモードにセット
+                        self.set_vehicle_mode("GUIDED")
+                        self.pub_drone_info()
+
+                        # アームしていない場合ARMする
+                        if self.vehicle.armed == False:
+                            self.pub_drone_info()
+                            self.arm_and_takeoff(ARM_HEIGHT)
+                            dlog.LOG("DEBUG", "ARMと離陸開始:" + str(ARM_HEIGHT) + 'm')
+                        # アーム状態をチェック
+                        while self.vehicle.armed == False:
+                            self.pub_drone_info()
+                            dlog.LOG("DEBUG", "ARMと離陸をしています...")
+                            time.sleep(1)
+                        dlog.LOG("INFO", "ARMと離陸完了:" + str(ARM_HEIGHT) + 'm')    
+                        self.vehicle_goto(self.drone_command)
+                        #self.drone_command["operation"] = "NONE"
+                    
+                    elif self.drone_command["operation"] == "CMA":
+                        self.clear_mission_all()
+
+                    # Drone mode set / MISSION start
+                    else:
+                        dlog.LOG("DEBUG", "8")
+                        dlog.LOG("DEBUG", self.drone_command["operation"])
+                        # AUTOモードに設定した場合はウェイポイントフラグをクリアする
+                        if self.drone_command["operation"] == "AUTO":
+                            self.flg_wayPoint = False
+
+                        # Deone mode set: MISSION_STARTはモードでは無いため除外する
+                        if self.drone_command["operation"] != "MISSION_START":
+                            self.set_vehicle_mode(self.drone_command["operation"])                
+                            #self.drone_command["operation"] = "NONE"
 
     ### =================================================================================== 
-    ### ドローンの情報をMQTTでクライアントにパブリッシュ
+    ### Missionコマンドサブスクライバコールバック
     ### =================================================================================== 
-    def pub_drone_info(self):
-        self.set_vehicle_info()
-        # 辞書型をJSON型に変換
-        json_message = json.dumps( self.drone_info )
-        self.client.publish(self.topic_dinfo, json_message )
+    def on_message_mission_test(self, client, userdata, msg):
+        dlog.LOG("DEBUG","START")
+
+        path = '../mission/mpmission.txt'
+        f = open(path, 'w')
+        #f.write(self.drone_mission2["sfx"]) # これは送られていない、要チェック！
+        f.write('QGC WPL 110'+'\r\n')
+
+        # msg.topicにトピック名が，msg.payloadに届いたデータ本体が入っている
+        recvData = json.loads(msg.payload)
+
+        # ミッションデータをファイルに保存
+        if msg.topic==self.topic_drone_mission_test:
+          for num in range(len(recvData)):
+            f.write(recvData[num])
+          self.drone_mission["operation"] = "MISSION_UPLOAD"
+        f.close()        
+        dlog.LOG("DEBUG","END")
 
     ### =================================================================================== 
-    ### 本番マップ用Missionコマンドコールバック
+    ### 本番マップ用Missionコマンドサブスクライバコールバック
     ### =================================================================================== 
     def on_message_mission(self, client, userdata, msg):
         dlog.LOG("DEBUG","START")
@@ -349,35 +404,4 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
             self.drone_mission["operation"] = "MISSION_START"
         f.close()        
         dlog.LOG("DEBUG","END")
-
-    ### =================================================================================== 
-    ### Missionコマンドコールバック
-    ### =================================================================================== 
-    def on_message_m(self, client, userdata, msg):
-        dlog.LOG("DEBUG","START")
-
-        path = '../mission/mpmission.txt'
-        f = open(path, 'w')
-        #f.write(self.drone_mission2["sfx"]) # これは送られていない、要チェック！
-        f.write('QGC WPL 110'+'\r\n')
-
-        # msg.topicにトピック名が，msg.payloadに届いたデータ本体が入っている
-        recvData = json.loads(msg.payload)
-
-        # ミッションデータをファイルに保存
-        if msg.topic==self.topic_mission_old:
-          for num in range(len(recvData)):
-            f.write(recvData[num])
-          self.drone_mission["operation"] = "MISSION_UPLOAD"
-        f.close()        
-        dlog.LOG("DEBUG","END")
-
-    ### =================================================================================== 
-    ### topicをpublish
-    ### =================================================================================== 
-    def publish_topic(self, topic):
-        self.client.publish(topic)
-
-    def publish_topic_m(self, topic):
-        self.client_m.publish(topic)
 

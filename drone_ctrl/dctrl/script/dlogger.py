@@ -2,10 +2,14 @@
 # -*- coding: utf-8 -*-
 
 """
-Logger for debugging
  ^----^
   *  * 
-   ~
+This program is ...
+Drone control program for specific drone.
+Title: Logger for debugging
+Company: Systena Corporation Inc
+Autor: y.s
+Date: Aug, 2022
 """
 import inspect
 import datetime
