@@ -43,6 +43,7 @@ class ArdCtrlClsC1(ardctrl.ArdCtrlCls):
     ### =================================================================================== 
     def set_vehicle_mode(self, mode):
         dlog.LOG("DEBUG","SET MODE: " + mode)
+        self.drone_info["status"]["dinfo"] = "SET MODE: " + mode
         self.vehicle.mode = VehicleMode(mode)
 
     ### =================================================================================== 
@@ -64,7 +65,8 @@ class ArdCtrlClsC1(ardctrl.ArdCtrlCls):
     ### Disarm
     ### =================================================================================== 
     def vehicle_disarming(self):
-        dlog.LOG("DEBUG","ARMING:")
+        dlog.LOG("DEBUG","DISARMING:")
+        self.drone_info["status"]["dinfo"] = "DISARMING"
         if not self.vehicle.armed:
             dlog.LOG("DEBUG","すでにDISARM状態です。")
         else:
@@ -75,6 +77,7 @@ class ArdCtrlClsC1(ardctrl.ArdCtrlCls):
     ### =================================================================================== 
     def vehicle_takeoff(self, alt):
         dlog.LOG("DEBUG","TAKEOFF")
+        self.drone_info["status"]["dinfo"] = "TAKEOFF"
         self.vehicle.simple_takeoff(alt)  # Take off to target altitude
         self.dinfo = "Take off しました"
 
@@ -82,7 +85,8 @@ class ArdCtrlClsC1(ardctrl.ArdCtrlCls):
     ### Auto takeoff
     ### =================================================================================== 
     def arm_and_takeoff(self, aTargetAltitude):
-        dlog.LOG("DEBUG", "START")
+        dlog.LOG("DEBUG", "AUTO TAKEOFF")
+        self.drone_info["status"]["dinfo"] = "AUTO TAKEOFF"
         count = 0   
         msgstr = ""
         # Don't let the user try to arm until autopilot is ready

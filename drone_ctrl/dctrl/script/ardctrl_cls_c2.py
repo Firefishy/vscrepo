@@ -327,7 +327,10 @@ class ArdCtrlClsC2(ardctrl.ArdCtrlClsC1):
         # # send command to vehicle
         # self.vehicle.send_mavlink(mavmsg)
         # dlog.LOG("DEBUG","END") 
-        self.vehicle.add_attribute_listener('MISSION_CLEAR_ALL', self.raw_mca_callback)
+        # self.vehicle.add_attribute_listener('MISSION_CLEAR_ALL', self.raw_mca_callback)
+
+        cmds = self.vehicle.commands
+        cmds.clear()
 
 
     ### =============================================================================================

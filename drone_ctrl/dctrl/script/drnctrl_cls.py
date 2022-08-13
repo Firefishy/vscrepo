@@ -204,8 +204,7 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
     ### =================================================================================== 
     ### ドローンの情報をMQTTでクライアントにパブリッシュ
     ### =================================================================================== 
-    def pub_drone_info(self, msg):
-        self.drone_info["status"]["dinfo"] = msg
+    def pub_drone_info(self):
         self.set_vehicle_info()
         # 辞書型をJSON型に変換
         json_message = json.dumps( self.drone_info )
@@ -226,10 +225,10 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
             self.drone_command["operation"] = recvData["operation"]
 
             if self.drone_command["operation"] == "MISSION_UPLOAD":
+                self.drone_info["status"]["dinfo"] = self.drone_command["operation"]
                 # MISSION実行中のミッションファイルのアップロードは禁止
                 if self.flg_MissionUploaded == False:
                 # MISSIONのUPLOAD
-                    dlog.LOG("DEBUG", "7")
                     if self.flg_MissionUploaded == False:
                         # 最初の（0）ウェイポイントに設定されたミッションをリセット
                         self.vehicle.commands.next = 0
@@ -251,6 +250,7 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
                     #self.drone_command["operation"] = "NONE"
 
             elif self.drone_command["operation"] == "ARM":
+                self.drone_info["status"]["dinfo"] = self.drone_command["operation"]
                 # ARMしていない場合
                 if self.vehicle.armed == False:
                     # ARMの場合GUIDEDにしてARMする
@@ -265,45 +265,30 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
 
                     dlog.LOG("DEBUG", self.drone_command["operation"])
                     if self.drone_command["operation"] == "MAV_MESSAGE":
+                        self.drone_info["status"]["dinfo"] = self.drone_command["operation"]
                         self.get_custom_message(self.drone_command["subcode"])
 
                     # DISARM
                     elif self.drone_command["operation"] == "DISARM":
-                        dlog.LOG("DEBUG", "1")
-                        dlog.LOG("DEBUG", "Disarm")
                         self.vehicle_disarming()
-                        #self.drone_command["operation"] = "NONE"
                     # TAKE OFF
                     elif self.drone_command["operation"] == "TAKEOFF":
-                        dlog.LOG("DEBUG", "2")
-                        dlog.LOG("DEBUG", "Take off")
                         self.vehicle_takeoff(20.0)
-                        #self.drone_command["operation"] = "NONE"
 
                     # PAUSE
                     elif self.drone_command["operation"] == "PAUSE":
-                        dlog.LOG("DEBUG", "3")
-                        dlog.LOG("DEBUG", "Pause")
                         self.pause_vehicle()
-                        #self.drone_command["operation"] = "NONE"
                     # RESUME
                     elif self.drone_command["operation"] == "RESUME":
-                        dlog.LOG("DEBUG", "4")
-                        dlog.LOG("DEBUG", "Resume")
                         self.resume_vehicle()
-                        #self.drone_command["operation"] = "NONE"
 
                     # ROTATION
                     elif self.drone_command["operation"] == "ROTATION":
-                        dlog.LOG("DEBUG", "5")
-                        dlog.LOG("DEBUG", "Rotation")
                         self.condition_yaw_vehicle(45, 1, True)
-                        #self.drone_command["operation"] = "NONE"
 
                     # ---- Simple GOTO ----
                     elif self.drone_command["operation"] == "GOTO":
-                        dlog.LOG("DEBUG", "6")
-                        dlog.LOG("DEBUG", "Start Simple GOTO")
+                        self.drone_info["status"]["dinfo"] = self.drone_command["operation"]
                         self.drone_command["d_lat"] = recvData["d_lat"]
                         self.drone_command["d_lon"] = recvData["d_lon"]
                         self.drone_command["d_alt"] = recvData["d_alt"]
@@ -320,17 +305,15 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
                         while self.vehicle.armed == False:
                             dlog.LOG("DEBUG", "ARMと離陸をしています...")
                             time.sleep(1)
-                        dlog.LOG("INFO", "ARMと離陸完了:" + str(ARM_HEIGHT) + 'm')    
+                        dlog.LOG("INFO", "ARMと離陸完了:" + str(ARM_HEIGHT) + 'm')
                         self.vehicle_goto(self.drone_command)
-                        #self.drone_command["operation"] = "NONE"
                     
                     elif self.drone_command["operation"] == "CMA":
+                        self.drone_info["status"]["dinfo"] = "MISSION CLEAR ALL"
                         self.clear_mission_all()
 
                     # Drone mode set / MISSION start
                     else:
-                        dlog.LOG("DEBUG", "8")
-                        dlog.LOG("DEBUG", self.drone_command["operation"])
                         # AUTOモードに設定した場合はウェイポイントフラグをクリアする
                         if self.drone_command["operation"] == "AUTO":
                             self.flg_wayPoint = False
@@ -338,7 +321,6 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
                         # Deone mode set: MISSION_STARTはモードでは無いため除外する
                         if self.drone_command["operation"] != "MISSION_START":
                             self.set_vehicle_mode(self.drone_command["operation"])                
-                            #self.drone_command["operation"] = "NONE"
 
     ### =================================================================================== 
     ### Missionコマンドサブスクライバコールバック
