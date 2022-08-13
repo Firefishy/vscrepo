@@ -200,15 +200,6 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
 
     # def on_publish_m(self, client, userdata, mid):
     #     dlog.LOG("DEBUG", "publish: {0}".format(mid))
-
-    ### =================================================================================== 
-    ### ドローンの情報をMQTTでクライアントにパブリッシュ
-    ### =================================================================================== 
-    def pub_drone_info(self):
-        self.set_vehicle_info()
-        # 辞書型をJSON型に変換
-        json_message = json.dumps( self.drone_info )
-        self.client.publish(self.topic_drone_info, json_message )
         
     ### =================================================================================== 
     ### ドローン動作コマンドサブスクライバコールバック

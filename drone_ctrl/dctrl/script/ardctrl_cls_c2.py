@@ -42,13 +42,14 @@ class ArdCtrlClsC2(ardctrl.ArdCtrlClsC1):
     ### SimpleGoto
     ### =================================================================================== 
     def vehicle_goto(self, cmd):            
-        dlog.LOG("DEBUG","Start Simple-GOTO")
+        dlog.LOG("DEBUG","START")
         point = LocationGlobalRelative(
             float(cmd["d_lat"]), 
             float(cmd["d_lon"]), 
             float(cmd["d_alt"]) 
         )
         dlog.LOG("DEBUG", cmd["d_spd"])
+        self.set_vehicle_csts("Simple Goto")
         self.vehicle.simple_goto(point, groundspeed=float(cmd["d_spd"]))
 
     ### =============================================================================================

@@ -11,7 +11,9 @@ Date: Aug, 2022
 """
 import os
 import time
+import threading
 import json
+import signal
 import dlogger as dlog
 import drnctrl_cls as drnCtrl
 from pymavlink import mavutil
@@ -20,6 +22,17 @@ from pymavlink import mavutil
 base_path = os.path.dirname(os.path.abspath(__file__))
 json_path = os.path.normpath(os.path.join(base_path, '../json/setting.json'))
 SETTING_JSON = json_path
+
+### =================================================================================== 
+### ドローンの情報をMQTTでクライアントにパブリッシュ
+### =================================================================================== 
+def pub_drone_info():
+    while True:
+        drnc.set_vehicle_info()
+        # 辞書型をJSON型に変換
+        json_message = json.dumps( drnc.drone_info )
+        drnc.client.publish(drnc.topic_drone_info, json_message )
+        time.sleep(1)
 
 ### =================================================================================== 
 ### Main
@@ -33,6 +46,8 @@ if __name__ == '__main__':
     drnc = drnCtrl.DrnCtrl()
     drnc.connect_vehicle(SETTING_JSON)
     time.sleep(3)
+
+    thread_pub_info = threading.Thread(target=pub_drone_info, daemon=True)
 
     try:
 
@@ -75,17 +90,13 @@ if __name__ == '__main__':
 
         dlog.LOG("INFO", "Vehicle初期化完了")
 
+        # ドローン情報送信スレッドを開始
+        thread_pub_info.start()
+
         # Get attributes
         drnc.dsp_attributes()
 
-        drnc.drone_info["status"]["dinfo"] = "Vehicle connected!"
-
-        # dlog.LOG("DEBUG", "新規ミッションの作成（現在地用）")
-        # dCtrlClass.adds_square_mission(dCtrlClass.vehicle.location.global_frame,50) 
-
-        # Vehicleの現在モードを取得
-        mode = drnc.vehicle.mode
-        drnc.pub_drone_info()
+        drnc.set_vehicle_csts("Vehicle connected!")
 
         while True:
             
@@ -145,13 +156,11 @@ if __name__ == '__main__':
                         drnc.condition_yaw_vehicle(30, 1, True)
                         time.sleep(1)
 
-                    drnc.pub_drone_info()
                     time.sleep(1)
 
                 # ミッション終了後、離陸地点へ戻る
                 drnc.set_vehicle_mode("RTL") 
                 drnc.flg_MissionUploaded = False
-            drnc.pub_drone_info()
             time.sleep(1)
 
     # キーボード割り込みで終了

@@ -43,7 +43,7 @@ class ArdCtrlClsC1(ardctrl.ArdCtrlCls):
     ### =================================================================================== 
     def set_vehicle_mode(self, mode):
         dlog.LOG("DEBUG","SET MODE: " + mode)
-        self.drone_info["status"]["dinfo"] = "SET MODE: " + mode
+        self.set_vehicle_csts("SET MODE: " + mode)
         self.vehicle.mode = VehicleMode(mode)
 
     ### =================================================================================== 
@@ -54,10 +54,10 @@ class ArdCtrlClsC1(ardctrl.ArdCtrlCls):
         if self.vehicle.is_armable == True:
             if self.vehicle.armed:
                 dlog.LOG("DEBUG","すでにARMしています。")
-                self.drone_info["status"]["dinfo"] = "Already Armed"
+                self.set_vehicle_csts("Already Armed")
             else:
                 self.vehicle.armed = True
-                self.drone_info["status"]["dinfo"] = "Arme dpneしました"
+                self.set_vehicle_csts("Arming")
         else:
             dlog.LOG("DEBUG","ARMできません。")
 
@@ -66,7 +66,7 @@ class ArdCtrlClsC1(ardctrl.ArdCtrlCls):
     ### =================================================================================== 
     def vehicle_disarming(self):
         dlog.LOG("DEBUG","DISARMING:")
-        self.drone_info["status"]["dinfo"] = "DISARMING"
+        self.set_vehicle_csts("Disarming")
         if not self.vehicle.armed:
             dlog.LOG("DEBUG","すでにDISARM状態です。")
         else:
@@ -77,7 +77,7 @@ class ArdCtrlClsC1(ardctrl.ArdCtrlCls):
     ### =================================================================================== 
     def vehicle_takeoff(self, alt):
         dlog.LOG("DEBUG","TAKEOFF")
-        self.drone_info["status"]["dinfo"] = "TAKEOFF"
+        self.set_vehicle_csts("Take off: " + str(alt) + "m")
         self.vehicle.simple_takeoff(alt)  # Take off to target altitude
         self.dinfo = "Take off しました"
 
@@ -85,23 +85,19 @@ class ArdCtrlClsC1(ardctrl.ArdCtrlCls):
     ### Auto takeoff
     ### =================================================================================== 
     def arm_and_takeoff(self, aTargetAltitude):
-        dlog.LOG("DEBUG", "AUTO TAKEOFF")
-        self.drone_info["status"]["dinfo"] = "AUTO TAKEOFF"
+        dlog.LOG("DEBUG", "START")
         count = 0   
         msgstr = ""
         # Don't let the user try to arm until autopilot is ready
         while not self.vehicle.is_armable:
             msgstr = "Vehicle準備中 しばらくお待ちください(30秒程度かかる場合があります): " + str(count) + " 秒経過"
             dlog.LOG("DEBUG", msgstr)
-            #self.pub_state(msgstr)
+            self.set_vehicle_csts(msgstr)
             time.sleep(1)
             count += 1
         msgstr = "Vehicle Arm開始しています"
         dlog.LOG("DEBUG",msgstr)
-        #self.pub_state(msgstr)
-
-        # Arming check: 0 is disable
-        # ArdCtrl.vehicle.parameters['ARMING_CHECK'] = 0
+        self.set_vehicle_csts("Arming")
 
         # Copter should arm in GUIDED mode
         self.vehicle.mode = VehicleMode("GUIDED")
@@ -110,18 +106,19 @@ class ArdCtrlClsC1(ardctrl.ArdCtrlCls):
         while not self.vehicle.armed:      
             msgstr = "Vehicle Armしています"
             dlog.LOG("INFO", msgstr)
-            #self.pub_state(msgstr)
             time.sleep(1)
 
         msgstr = "Vehicle 離陸しています"
         dlog.LOG("INFO", msgstr) 
+        self.set_vehicle_csts("Take off")
         self.vehicle.simple_takeoff(aTargetAltitude) # Take off to target altitude
 
         # Wait until the vehicle reaches a safe height before processing the goto (otherwise the command 
         #  after Vehicle.simple_takeoff will execute immediately).
         while True:
             msgstr = "Vehicle現在高度: " + str(self.vehicle.location.global_relative_frame.alt)
-            dlog.LOG("INFO", msgstr) 
+            dlog.LOG("INFO", msgstr)
+            self.set_vehicle_csts("Alt: " + str(self.vehicle.location.global_relative_frame.alt) + "m")
             #self.pub_state(msgstr)
             if self.vehicle.location.global_relative_frame.alt>=aTargetAltitude*0.95: #Trigger just below target alt.
                 msgstr = "設定高度に到達しました"      
@@ -154,13 +151,12 @@ class ArdCtrlClsC1(ardctrl.ArdCtrlCls):
             para7)  # parameter7
         # send command to vehicle
         self.vehicle.send_mavlink(mavmsg)
-        dlog.LOG("DEBUG","END")
 
     ### =================================================================================== 
     ### Pause
     ### =================================================================================== 
     def pause_vehicle(self):
-        dlog.LOG("DEBUG", "Mission PAUSE")
+        dlog.LOG("DEBUG", "START")
         mavmsg = self.vehicle.message_factory.command_long_encode(
             0, 0,    # target system, target component
             mavutil.mavlink.MAV_CMD_DO_PAUSE_CONTINUE,  # command
@@ -172,12 +168,13 @@ class ArdCtrlClsC1(ardctrl.ArdCtrlCls):
             0, 0, 0)    # param 5 ~ 7 not used
         # send command to vehicle
         self.vehicle.send_mavlink(mavmsg)
+        self.set_vehicle_csts("Flt Pause")
 
     ### =================================================================================== 
     ### Resume
     ### =================================================================================== 
     def resume_vehicle(self):
-        dlog.LOG("DEBUG", "MISSION RESUME")
+        dlog.LOG("DEBUG", "START")
         mavmsg = self.vehicle.message_factory.command_long_encode(
             0, 0,    # target system, target component
             mavutil.mavlink.MAV_CMD_DO_PAUSE_CONTINUE,  # command
@@ -189,7 +186,7 @@ class ArdCtrlClsC1(ardctrl.ArdCtrlCls):
             0, 0, 0)    # param 5 ~ 7 not used
         # send command to vehicle
         self.vehicle.send_mavlink(mavmsg)
-        dlog.LOG("DEBUG", "END")
+        self.set_vehicle_csts("Flt Resume")
 
     ### =================================================================================== 
     ### Brake
@@ -206,6 +203,7 @@ class ArdCtrlClsC1(ardctrl.ArdCtrlCls):
             0, 0, 0, # x, y, z acceleration (not supported yet, ignored in GCS_Mavlink)
             0, 0)    # yaw, yaw_rate (not supported yet, ignored in GCS_Mavlink) 
         self.vehicle.send_mavlink(mavmsg)
+        self.set_vehicle_csts("Flt Brake!")
         dlog.LOG("DEBUG", "END")
 
     ### =================================================================================== 

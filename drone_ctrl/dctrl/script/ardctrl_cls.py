@@ -111,6 +111,12 @@ class ArdCtrlCls():
         self.vehicle.add_attribute_listener(message, self.raw_msg_callback)
 
     ### =================================================================================== 
+    ### Set drone current status
+    ### =================================================================================== 
+    def set_vehicle_csts(self, status):
+        self.drone_info["status"]["dinfo"] = status
+
+    ### =================================================================================== 
     ### Set drone information (use for transfar to server by MQTT)
     ### =================================================================================== 
     def set_vehicle_info(self):
