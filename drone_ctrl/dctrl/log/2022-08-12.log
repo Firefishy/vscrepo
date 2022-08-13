@@ -97,3 +97,668 @@
 <DEBUG> 2022-08-12_20:19:26 [vehicle_goto] Start Simple-GOTO
 <DEBUG> 2022-08-12_20:19:26 [vehicle_goto] 10.0
 <DEBUG> 2022-08-12_20:19:26 [listner] ミッション実行中:MISSION_ACK {target_system : 255, target_component : 0, type : 0, mission_type : 0}
+<INFO> 2022-08-12_21:07:10 [__init__] START
+<DEBUG> 2022-08-12_21:07:10 [connect_vehicle] START
+<DEBUG> 2022-08-12_21:07:10 [connect_vehicle] Connect to vehicle object:/home/sayz/project/sbdrone/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-08-12_21:07:10 [connect_vehicle] /home/sayz/project/sbdrone/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-08-12_21:07:10 [connect_vehicle] SETTING_JSON: /home/sayz/project/sbdrone/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-08-12_21:07:10 [connect_vehicle] connection_string: udp:127.0.0.1:14551
+<DEBUG> 2022-08-12_21:07:10 [connect_vehicle] Connecting to vehicle on: udp:127.0.0.1:14551
+<DEBUG> 2022-08-12_21:07:10 [on_connect_mission_test] Connected with result code 0
+<DEBUG> 2022-08-12_21:07:10 [on_connect] Connected with result code 0
+<DEBUG> 2022-08-12_21:07:10 [on_connect_mission] Connected with result code 0
+<DEBUG> 2022-08-12_21:07:11 [connect_vehicle] END
+<INFO> 2022-08-12_21:07:14 [<module>] Vehicle初期化完了
+<DEBUG> 2022-08-12_21:07:14 [dsp_attributes] START
+<INFO> 2022-08-12_21:07:14 [dsp_attributes] 
+---- Vehicle attributes ----------------------------------------
+<INFO> 2022-08-12_21:07:14 [dsp_attributes] Ardupilot Firmware version: APM:Copter-4.3.0-dev0
+<INFO> 2022-08-12_21:07:14 [dsp_attributes] Global Location: LocationGlobal:lat=35.659552,lon=139.7543805,alt=40.07
+<INFO> 2022-08-12_21:07:14 [dsp_attributes] Global Location (relative altitude): LocationGlobalRelative:lat=35.659552,lon=139.7543805,alt=29.999
+<INFO> 2022-08-12_21:07:14 [dsp_attributes] Local Location: LocationLocal:north=344.4149169921875,east=-250.889404296875,down=-29.969823837280273
+<INFO> 2022-08-12_21:07:14 [dsp_attributes] Attitude: Attitude:pitch=0.0014322459464892745,yaw=-0.6295283436775208,roll=0.0002556039544288069
+<INFO> 2022-08-12_21:07:14 [dsp_attributes] Velocity: [0.0, 0.02, 0.0]
+<INFO> 2022-08-12_21:07:14 [dsp_attributes] GPS: GPSInfo:fix=6,num_sat=10
+<INFO> 2022-08-12_21:07:14 [dsp_attributes] Gimbal status: Gimbal: pitch=None, roll=None, yaw=None
+<INFO> 2022-08-12_21:07:14 [dsp_attributes] Battery: Battery:voltage=12.587,current=28.08,level=0
+<INFO> 2022-08-12_21:07:14 [dsp_attributes] EKF OK?: True
+<INFO> 2022-08-12_21:07:14 [dsp_attributes] Last Heartbeat: 7.146500047383597e-05
+<INFO> 2022-08-12_21:07:14 [dsp_attributes] Heading: 323
+<INFO> 2022-08-12_21:07:14 [dsp_attributes] Is Armable?: True
+<INFO> 2022-08-12_21:07:14 [dsp_attributes] System status: ACTIVE
+<INFO> 2022-08-12_21:07:14 [dsp_attributes] Groundspeed: 0.022613689303398132
+<INFO> 2022-08-12_21:07:14 [dsp_attributes] Airspeed: 0.007000000216066837
+<INFO> 2022-08-12_21:07:14 [dsp_attributes] Mode: GUIDED
+<INFO> 2022-08-12_21:07:14 [dsp_attributes] Armed: True
+<INFO> 2022-08-12_21:07:14 [dsp_attributes] ----------------------------------------------------------------
+
+<DEBUG> 2022-08-12_21:07:14 [dsp_attributes] END
+<DEBUG> 2022-08-12_21:07:39 [on_message_mission_test] START
+<DEBUG> 2022-08-12_21:07:39 [on_message_mission_test] END
+<DEBUG> 2022-08-12_21:07:39 [on_message] START
+<DEBUG> 2022-08-12_21:07:39 [on_message] 7
+<DEBUG> 2022-08-12_21:07:39 [on_message] ####MISSION UPLOAD####
+<DEBUG> 2022-08-12_21:07:39 [upload_mission] START
+<DEBUG> 2022-08-12_21:07:39 [readmission] START
+<DEBUG> 2022-08-12_21:07:39 [readmission] Reading mission from file: ../mission/mpmission.txt
+<DEBUG> 2022-08-12_21:07:39 [readmission] END
+<DEBUG> 2022-08-12_21:07:39 [listner] ミッション実行中:MISSION_ACK {target_system : 255, target_component : 0, type : 0, mission_type : 0}
+<DEBUG> 2022-08-12_21:07:39 [listner] ミッション実行中:MISSION_ACK {target_system : 255, target_component : 0, type : 0, mission_type : 0}
+<DEBUG> 2022-08-12_21:07:39 [upload_mission] END
+<DEBUG> 2022-08-12_21:07:59 [on_message_mission_test] START
+<DEBUG> 2022-08-12_21:07:59 [on_message] START
+<DEBUG> 2022-08-12_21:07:59 [on_message_mission_test] END
+<DEBUG> 2022-08-12_21:07:59 [on_message] 7
+<DEBUG> 2022-08-12_21:07:59 [on_message] ####MISSION UPLOAD####
+<DEBUG> 2022-08-12_21:07:59 [upload_mission] START
+<DEBUG> 2022-08-12_21:07:59 [readmission] START
+<DEBUG> 2022-08-12_21:07:59 [readmission] Reading mission from file: ../mission/mpmission.txt
+<DEBUG> 2022-08-12_21:07:59 [readmission] END
+<DEBUG> 2022-08-12_21:07:59 [listner] ミッション実行中:MISSION_ACK {target_system : 255, target_component : 0, type : 0, mission_type : 0}
+<DEBUG> 2022-08-12_21:07:59 [listner] ミッション実行中:MISSION_ACK {target_system : 255, target_component : 0, type : 0, mission_type : 0}
+<DEBUG> 2022-08-12_21:07:59 [upload_mission] END
+<DEBUG> 2022-08-12_21:08:00 [on_message] START
+<DEBUG> 2022-08-12_21:08:00 [on_message] MISSION_START
+<DEBUG> 2022-08-12_21:08:00 [on_message] 8
+<DEBUG> 2022-08-12_21:08:00 [on_message] MISSION_START
+<DEBUG> 2022-08-12_21:08:00 [<module>] MISSION START
+<DEBUG> 2022-08-12_21:08:00 [set_vehicle_mode] SET MODE: GUIDED
+<INFO> 2022-08-12_21:08:00 [<module>] ARMと離陸完了:3.0m
+<DEBUG> 2022-08-12_21:08:00 [set_vehicle_mode] SET MODE: AUTO
+<DEBUG> 2022-08-12_21:08:00 [<module>] 現在のウェイポイント: -1]です
+<DEBUG> 2022-08-12_21:08:00 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:00 [<module>] 次のウェイポイント(0)まで[ None ]
+<DEBUG> 2022-08-12_21:08:01 [listner] ウェイポイントに到着:MISSION_ITEM_REACHED {seq : 1}
+<DEBUG> 2022-08-12_21:08:01 [set_vehicle_mode] SET MODE: GUIDED
+<DEBUG> 2022-08-12_21:08:01 [<module>] 現在のウェイポイント: 1]です
+<DEBUG> 2022-08-12_21:08:01 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:01 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:01 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:01 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:01 [<module>] 次のウェイポイント(2)まで[ 184.3546883300858 ]
+<DEBUG> 2022-08-12_21:08:01 [<module>] ウェイポイントアクションを実行
+<DEBUG> 2022-08-12_21:08:01 [condition_yaw_vehicle] START
+<DEBUG> 2022-08-12_21:08:01 [condition_yaw_vehicle] END
+<DEBUG> 2022-08-12_21:08:03 [<module>] 現在のウェイポイント: 1]です
+<DEBUG> 2022-08-12_21:08:03 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:03 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:03 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:03 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:03 [<module>] 次のウェイポイント(2)まで[ 184.34398747735437 ]
+<DEBUG> 2022-08-12_21:08:03 [<module>] ウェイポイントアクションを実行
+<DEBUG> 2022-08-12_21:08:03 [condition_yaw_vehicle] START
+<DEBUG> 2022-08-12_21:08:03 [condition_yaw_vehicle] END
+<DEBUG> 2022-08-12_21:08:05 [<module>] 現在のウェイポイント: 1]です
+<DEBUG> 2022-08-12_21:08:05 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:05 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:05 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:05 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:05 [<module>] 次のウェイポイント(2)まで[ 184.3409197927327 ]
+<DEBUG> 2022-08-12_21:08:05 [<module>] ウェイポイントアクションを実行
+<DEBUG> 2022-08-12_21:08:05 [condition_yaw_vehicle] START
+<DEBUG> 2022-08-12_21:08:05 [condition_yaw_vehicle] END
+<DEBUG> 2022-08-12_21:08:07 [<module>] 現在のウェイポイント: 1]です
+<DEBUG> 2022-08-12_21:08:07 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:07 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:07 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:07 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:07 [<module>] 次のウェイポイント(2)まで[ 184.3409197927327 ]
+<DEBUG> 2022-08-12_21:08:07 [<module>] ウェイポイントアクションを実行
+<DEBUG> 2022-08-12_21:08:07 [condition_yaw_vehicle] START
+<DEBUG> 2022-08-12_21:08:07 [condition_yaw_vehicle] END
+<DEBUG> 2022-08-12_21:08:08 [on_message] START
+<DEBUG> 2022-08-12_21:08:08 [on_message] AUTO
+<DEBUG> 2022-08-12_21:08:08 [on_message] 8
+<DEBUG> 2022-08-12_21:08:08 [on_message] AUTO
+<DEBUG> 2022-08-12_21:08:08 [set_vehicle_mode] SET MODE: AUTO
+<DEBUG> 2022-08-12_21:08:09 [<module>] 現在のウェイポイント: 1]です
+<DEBUG> 2022-08-12_21:08:09 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:09 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:09 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:09 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:09 [<module>] 次のウェイポイント(2)まで[ 184.16506798697748 ]
+<DEBUG> 2022-08-12_21:08:10 [<module>] 現在のウェイポイント: 1]です
+<DEBUG> 2022-08-12_21:08:10 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:10 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:10 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:10 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:10 [<module>] 次のウェイポイント(2)まで[ 182.93567315629258 ]
+<DEBUG> 2022-08-12_21:08:11 [<module>] 現在のウェイポイント: 1]です
+<DEBUG> 2022-08-12_21:08:11 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:11 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:11 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:11 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:11 [<module>] 次のウェイポイント(2)まで[ 179.77504318755638 ]
+<DEBUG> 2022-08-12_21:08:12 [<module>] 現在のウェイポイント: 1]です
+<DEBUG> 2022-08-12_21:08:12 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:12 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:12 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:12 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:12 [<module>] 次のウェイポイント(2)まで[ 174.0455451752615 ]
+<DEBUG> 2022-08-12_21:08:13 [<module>] 現在のウェイポイント: 1]です
+<DEBUG> 2022-08-12_21:08:13 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:13 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:13 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:13 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:13 [<module>] 次のウェイポイント(2)まで[ 165.73491256003874 ]
+<DEBUG> 2022-08-12_21:08:14 [<module>] 現在のウェイポイント: 1]です
+<DEBUG> 2022-08-12_21:08:14 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:14 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:14 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:14 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:14 [<module>] 次のウェイポイント(2)まで[ 155.461013548109 ]
+<DEBUG> 2022-08-12_21:08:15 [<module>] 現在のウェイポイント: 1]です
+<DEBUG> 2022-08-12_21:08:15 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:15 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:15 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:15 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:15 [<module>] 次のウェイポイント(2)まで[ 144.19769856209388 ]
+<DEBUG> 2022-08-12_21:08:16 [<module>] 現在のウェイポイント: 1]です
+<DEBUG> 2022-08-12_21:08:16 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:16 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:16 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:16 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:16 [<module>] 次のウェイポイント(2)まで[ 129.69885184743393 ]
+<DEBUG> 2022-08-12_21:08:17 [<module>] 現在のウェイポイント: 1]です
+<DEBUG> 2022-08-12_21:08:17 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:17 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:17 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:17 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:17 [<module>] 次のウェイポイント(2)まで[ 117.88815341162615 ]
+<DEBUG> 2022-08-12_21:08:18 [<module>] 現在のウェイポイント: 1]です
+<DEBUG> 2022-08-12_21:08:18 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:18 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:18 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:18 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:18 [<module>] 次のウェイポイント(2)まで[ 105.97194313021969 ]
+<DEBUG> 2022-08-12_21:08:19 [<module>] 現在のウェイポイント: 1]です
+<DEBUG> 2022-08-12_21:08:19 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:19 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:19 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:19 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:19 [<module>] 次のウェイポイント(2)まで[ 94.01293239878281 ]
+<DEBUG> 2022-08-12_21:08:20 [<module>] 現在のウェイポイント: 1]です
+<DEBUG> 2022-08-12_21:08:20 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:20 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:20 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:20 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:20 [<module>] 次のウェイポイント(2)まで[ 82.04015223247342 ]
+<DEBUG> 2022-08-12_21:08:21 [<module>] 現在のウェイポイント: 1]です
+<DEBUG> 2022-08-12_21:08:21 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:21 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:21 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:21 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:21 [<module>] 次のウェイポイント(2)まで[ 70.0918454602845 ]
+<DEBUG> 2022-08-12_21:08:22 [<module>] 現在のウェイポイント: 1]です
+<DEBUG> 2022-08-12_21:08:22 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:22 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:22 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:22 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:22 [<module>] 次のウェイポイント(2)まで[ 58.062501047415715 ]
+<DEBUG> 2022-08-12_21:08:23 [<module>] 現在のウェイポイント: 1]です
+<DEBUG> 2022-08-12_21:08:23 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:23 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:23 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:23 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:23 [<module>] 次のウェイポイント(2)まで[ 46.01938566003973 ]
+<DEBUG> 2022-08-12_21:08:24 [<module>] 現在のウェイポイント: 1]です
+<DEBUG> 2022-08-12_21:08:24 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:24 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:24 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:24 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:24 [<module>] 次のウェイポイント(2)まで[ 33.96558045361505 ]
+<DEBUG> 2022-08-12_21:08:25 [<module>] 現在のウェイポイント: 1]です
+<DEBUG> 2022-08-12_21:08:25 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:25 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:25 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:25 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:25 [<module>] 次のウェイポイント(2)まで[ 22.454604289740175 ]
+<DEBUG> 2022-08-12_21:08:26 [<module>] 現在のウェイポイント: 1]です
+<DEBUG> 2022-08-12_21:08:26 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:26 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:26 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:26 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:26 [<module>] 次のウェイポイント(2)まで[ 12.51862681260902 ]
+<DEBUG> 2022-08-12_21:08:27 [<module>] 現在のウェイポイント: 1]です
+<DEBUG> 2022-08-12_21:08:27 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:27 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:27 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:27 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:27 [<module>] 次のウェイポイント(2)まで[ 5.236996315116878 ]
+<DEBUG> 2022-08-12_21:08:28 [<module>] 現在のウェイポイント: 1]です
+<DEBUG> 2022-08-12_21:08:28 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:28 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:28 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:28 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:28 [<module>] 次のウェイポイント(2)まで[ 1.7026946775394562 ]
+<DEBUG> 2022-08-12_21:08:28 [listner] ウェイポイントに到着:MISSION_ITEM_REACHED {seq : 2}
+<DEBUG> 2022-08-12_21:08:28 [set_vehicle_mode] SET MODE: GUIDED
+<DEBUG> 2022-08-12_21:08:29 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:08:29 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:29 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:29 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:29 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:29 [<module>] 次のウェイポイント(3)まで[ 436.82608644472407 ]
+<DEBUG> 2022-08-12_21:08:29 [<module>] ウェイポイントアクションを実行
+<DEBUG> 2022-08-12_21:08:29 [condition_yaw_vehicle] START
+<DEBUG> 2022-08-12_21:08:29 [condition_yaw_vehicle] END
+<DEBUG> 2022-08-12_21:08:31 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:08:31 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:31 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:31 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:31 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:31 [<module>] 次のウェイポイント(3)まで[ 436.35359201033896 ]
+<DEBUG> 2022-08-12_21:08:31 [<module>] ウェイポイントアクションを実行
+<DEBUG> 2022-08-12_21:08:31 [condition_yaw_vehicle] START
+<DEBUG> 2022-08-12_21:08:31 [condition_yaw_vehicle] END
+<DEBUG> 2022-08-12_21:08:33 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:08:33 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:33 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:33 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:33 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:33 [<module>] 次のウェイポイント(3)まで[ 437.31177021973883 ]
+<DEBUG> 2022-08-12_21:08:33 [<module>] ウェイポイントアクションを実行
+<DEBUG> 2022-08-12_21:08:33 [condition_yaw_vehicle] START
+<DEBUG> 2022-08-12_21:08:33 [condition_yaw_vehicle] END
+<DEBUG> 2022-08-12_21:08:35 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:08:35 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:35 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:35 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:35 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:35 [<module>] 次のウェイポイント(3)まで[ 437.49070316206087 ]
+<DEBUG> 2022-08-12_21:08:35 [<module>] ウェイポイントアクションを実行
+<DEBUG> 2022-08-12_21:08:35 [condition_yaw_vehicle] START
+<DEBUG> 2022-08-12_21:08:35 [condition_yaw_vehicle] END
+<DEBUG> 2022-08-12_21:08:37 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:08:37 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:37 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:37 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:37 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:37 [<module>] 次のウェイポイント(3)まで[ 437.5016050571774 ]
+<DEBUG> 2022-08-12_21:08:37 [<module>] ウェイポイントアクションを実行
+<DEBUG> 2022-08-12_21:08:37 [condition_yaw_vehicle] START
+<DEBUG> 2022-08-12_21:08:37 [condition_yaw_vehicle] END
+<DEBUG> 2022-08-12_21:08:39 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:08:39 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:39 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:39 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:39 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:39 [<module>] 次のウェイポイント(3)まで[ 437.5038566044229 ]
+<DEBUG> 2022-08-12_21:08:39 [<module>] ウェイポイントアクションを実行
+<DEBUG> 2022-08-12_21:08:39 [condition_yaw_vehicle] START
+<DEBUG> 2022-08-12_21:08:39 [condition_yaw_vehicle] END
+<DEBUG> 2022-08-12_21:08:41 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:08:41 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:41 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:41 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:41 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:41 [<module>] 次のウェイポイント(3)まで[ 437.5061084233238 ]
+<DEBUG> 2022-08-12_21:08:41 [<module>] ウェイポイントアクションを実行
+<DEBUG> 2022-08-12_21:08:41 [condition_yaw_vehicle] START
+<DEBUG> 2022-08-12_21:08:41 [condition_yaw_vehicle] END
+<DEBUG> 2022-08-12_21:08:43 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:08:43 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:43 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:43 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:43 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:43 [<module>] 次のウェイポイント(3)まで[ 437.51286550975595 ]
+<DEBUG> 2022-08-12_21:08:43 [<module>] ウェイポイントアクションを実行
+<DEBUG> 2022-08-12_21:08:43 [condition_yaw_vehicle] START
+<DEBUG> 2022-08-12_21:08:43 [condition_yaw_vehicle] END
+<DEBUG> 2022-08-12_21:08:45 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:08:45 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:45 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:45 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:45 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:45 [<module>] 次のウェイポイント(3)まで[ 437.51286550975595 ]
+<DEBUG> 2022-08-12_21:08:45 [<module>] ウェイポイントアクションを実行
+<DEBUG> 2022-08-12_21:08:45 [condition_yaw_vehicle] START
+<DEBUG> 2022-08-12_21:08:45 [condition_yaw_vehicle] END
+<DEBUG> 2022-08-12_21:08:47 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:08:47 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:47 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:47 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:47 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:47 [<module>] 次のウェイポイント(3)まで[ 437.5282731061974 ]
+<DEBUG> 2022-08-12_21:08:47 [<module>] ウェイポイントアクションを実行
+<DEBUG> 2022-08-12_21:08:47 [condition_yaw_vehicle] START
+<DEBUG> 2022-08-12_21:08:47 [condition_yaw_vehicle] END
+<DEBUG> 2022-08-12_21:08:49 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:08:49 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:49 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:49 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:49 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:49 [<module>] 次のウェイポイント(3)まで[ 437.5609777204589 ]
+<DEBUG> 2022-08-12_21:08:49 [<module>] ウェイポイントアクションを実行
+<DEBUG> 2022-08-12_21:08:49 [condition_yaw_vehicle] START
+<DEBUG> 2022-08-12_21:08:49 [condition_yaw_vehicle] END
+<DEBUG> 2022-08-12_21:08:51 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:08:51 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:51 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:51 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:51 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:51 [<module>] 次のウェイポイント(3)まで[ 437.57187928071767 ]
+<DEBUG> 2022-08-12_21:08:51 [<module>] ウェイポイントアクションを実行
+<DEBUG> 2022-08-12_21:08:51 [condition_yaw_vehicle] START
+<DEBUG> 2022-08-12_21:08:51 [condition_yaw_vehicle] END
+<DEBUG> 2022-08-12_21:08:53 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:08:53 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:53 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:53 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:53 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:53 [<module>] 次のウェイポイント(3)まで[ 437.58052801226626 ]
+<DEBUG> 2022-08-12_21:08:53 [<module>] ウェイポイントアクションを実行
+<DEBUG> 2022-08-12_21:08:53 [condition_yaw_vehicle] START
+<DEBUG> 2022-08-12_21:08:53 [condition_yaw_vehicle] END
+<DEBUG> 2022-08-12_21:08:55 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:08:55 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:55 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:55 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:55 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:55 [<module>] 次のウェイポイント(3)まで[ 437.5782754435526 ]
+<DEBUG> 2022-08-12_21:08:55 [<module>] ウェイポイントアクションを実行
+<DEBUG> 2022-08-12_21:08:55 [condition_yaw_vehicle] START
+<DEBUG> 2022-08-12_21:08:55 [condition_yaw_vehicle] END
+<DEBUG> 2022-08-12_21:08:57 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:08:57 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:08:57 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:08:57 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:08:57 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:08:57 [<module>] 次のウェイポイント(3)まで[ 437.57602314644026 ]
+<DEBUG> 2022-08-12_21:08:57 [<module>] ウェイポイントアクションを実行
+<DEBUG> 2022-08-12_21:08:57 [condition_yaw_vehicle] START
+<DEBUG> 2022-08-12_21:08:57 [condition_yaw_vehicle] END
+<DEBUG> 2022-08-12_21:08:59 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:00 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:00 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:00 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:00 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:00 [<module>] 次のウェイポイント(3)まで[ 437.5715193671966 ]
+<DEBUG> 2022-08-12_21:09:00 [<module>] ウェイポイントアクションを実行
+<DEBUG> 2022-08-12_21:09:00 [condition_yaw_vehicle] START
+<DEBUG> 2022-08-12_21:09:00 [condition_yaw_vehicle] END
+<DEBUG> 2022-08-12_21:09:02 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:02 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:02 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:02 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:02 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:02 [<module>] 次のウェイポイント(3)まで[ 437.54971567391783 ]
+<DEBUG> 2022-08-12_21:09:02 [<module>] ウェイポイントアクションを実行
+<DEBUG> 2022-08-12_21:09:02 [condition_yaw_vehicle] START
+<DEBUG> 2022-08-12_21:09:02 [condition_yaw_vehicle] END
+<DEBUG> 2022-08-12_21:09:02 [on_message] START
+<DEBUG> 2022-08-12_21:09:02 [on_message] AUTO
+<DEBUG> 2022-08-12_21:09:02 [on_message] 8
+<DEBUG> 2022-08-12_21:09:02 [on_message] AUTO
+<DEBUG> 2022-08-12_21:09:02 [set_vehicle_mode] SET MODE: AUTO
+<DEBUG> 2022-08-12_21:09:04 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:04 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:04 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:04 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:04 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:04 [<module>] 次のウェイポイント(3)まで[ 437.47340310631 ]
+<DEBUG> 2022-08-12_21:09:05 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:05 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:05 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:05 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:05 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:05 [<module>] 次のウェイポイント(3)まで[ 436.66784887272826 ]
+<DEBUG> 2022-08-12_21:09:06 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:06 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:06 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:06 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:06 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:06 [<module>] 次のウェイポイント(3)まで[ 434.16811744101585 ]
+<DEBUG> 2022-08-12_21:09:07 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:07 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:07 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:07 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:07 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:07 [<module>] 次のウェイポイント(3)まで[ 429.1359498824297 ]
+<DEBUG> 2022-08-12_21:09:08 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:08 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:08 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:08 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:08 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:08 [<module>] 次のウェイポイント(3)まで[ 421.5119720210279 ]
+<DEBUG> 2022-08-12_21:09:09 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:09 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:09 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:09 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:09 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:09 [<module>] 次のウェイポイント(3)まで[ 411.64386717174784 ]
+<DEBUG> 2022-08-12_21:09:10 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:10 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:10 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:10 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:10 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:10 [<module>] 次のウェイポイント(3)まで[ 400.4401708869109 ]
+<DEBUG> 2022-08-12_21:09:11 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:11 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:11 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:11 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:11 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:11 [<module>] 次のウェイポイント(3)まで[ 388.7598592863826 ]
+<DEBUG> 2022-08-12_21:09:12 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:12 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:12 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:12 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:12 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:12 [<module>] 次のウェイポイント(3)まで[ 376.8900810401482 ]
+<DEBUG> 2022-08-12_21:09:13 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:13 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:13 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:13 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:13 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:13 [<module>] 次のウェイポイント(3)まで[ 364.9304713097783 ]
+<DEBUG> 2022-08-12_21:09:14 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:14 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:14 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:14 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:14 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:14 [<module>] 次のウェイポイント(3)まで[ 349.9734389531834 ]
+<DEBUG> 2022-08-12_21:09:15 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:15 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:15 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:15 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:15 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:15 [<module>] 次のウェイポイント(3)まで[ 337.9025618338466 ]
+<DEBUG> 2022-08-12_21:09:16 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:16 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:16 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:16 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:16 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:16 [<module>] 次のウェイポイント(3)まで[ 325.76402285564086 ]
+<DEBUG> 2022-08-12_21:09:17 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:17 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:17 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:17 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:17 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:17 [<module>] 次のウェイポイント(3)まで[ 313.62548418082434 ]
+<DEBUG> 2022-08-12_21:09:18 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:18 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:18 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:18 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:18 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:18 [<module>] 次のウェイポイント(3)まで[ 301.5087479605478 ]
+<DEBUG> 2022-08-12_21:09:19 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:19 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:19 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:19 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:19 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:19 [<module>] 次のウェイポイント(3)まで[ 289.3811108414519 ]
+<DEBUG> 2022-08-12_21:09:20 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:20 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:20 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:20 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:20 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:20 [<module>] 次のウェイポイント(3)まで[ 277.277532000198 ]
+<DEBUG> 2022-08-12_21:09:21 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:21 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:21 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:21 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:21 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:21 [<module>] 次のウェイポイント(3)まで[ 265.1280940795209 ]
+<DEBUG> 2022-08-12_21:09:22 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:22 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:22 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:22 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:22 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:22 [<module>] 次のウェイポイント(3)まで[ 252.9654989411198 ]
+<DEBUG> 2022-08-12_21:09:23 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:23 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:23 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:23 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:23 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:23 [<module>] 次のウェイポイント(3)まで[ 240.78336054145905 ]
+<DEBUG> 2022-08-12_21:09:24 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:24 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:24 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:24 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:24 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:24 [<module>] 次のウェイポイント(3)まで[ 228.6557260031001 ]
+<DEBUG> 2022-08-12_21:09:25 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:25 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:25 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:25 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:25 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:25 [<module>] 次のウェイポイント(3)まで[ 216.50629157029564 ]
+<DEBUG> 2022-08-12_21:09:26 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:26 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:26 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:26 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:26 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:26 [<module>] 次のウェイポイント(3)まで[ 204.3218980477449 ]
+<DEBUG> 2022-08-12_21:09:27 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:27 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:27 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:27 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:27 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:27 [<module>] 次のウェイポイント(3)まで[ 192.16156641454845 ]
+<DEBUG> 2022-08-12_21:09:28 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:28 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:28 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:28 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:28 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:28 [<module>] 次のウェイポイント(3)まで[ 179.97717554598663 ]
+<DEBUG> 2022-08-12_21:09:29 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:29 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:29 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:29 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:29 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:29 [<module>] 次のウェイポイント(3)まで[ 167.84954666208185 ]
+<DEBUG> 2022-08-12_21:09:30 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:30 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:30 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:30 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:30 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:30 [<module>] 次のウェイポイント(3)まで[ 155.7001212035744 ]
+<DEBUG> 2022-08-12_21:09:31 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:31 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:31 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:31 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:31 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:31 [<module>] 次のウェイポイント(3)まで[ 143.55069924447454 ]
+<DEBUG> 2022-08-12_21:09:32 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:32 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:32 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:32 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:32 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:32 [<module>] 次のウェイポイント(3)まで[ 131.38811504539842 ]
+<DEBUG> 2022-08-12_21:09:33 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:33 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:33 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:33 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:33 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:33 [<module>] 次のウェイポイント(3)まで[ 119.18421215164675 ]
+<DEBUG> 2022-08-12_21:09:34 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:34 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:34 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:34 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:34 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:34 [<module>] 次のウェイポイント(3)まで[ 107.0457062216254 ]
+<DEBUG> 2022-08-12_21:09:35 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:35 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:35 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:35 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:35 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:35 [<module>] 次のウェイポイント(3)まで[ 94.92900262708635 ]
+<DEBUG> 2022-08-12_21:09:36 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:36 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:36 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:36 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:36 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:36 [<module>] 次のウェイポイント(3)まで[ 82.7905178208519 ]
+<DEBUG> 2022-08-12_21:09:37 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:37 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:37 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:37 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:37 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:37 [<module>] 次のウェイポイント(3)まで[ 70.61708215188497 ]
+<DEBUG> 2022-08-12_21:09:38 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:38 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:38 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:38 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:38 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:38 [<module>] 次のウェイポイント(3)まで[ 58.43507703851991 ]
+<DEBUG> 2022-08-12_21:09:39 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:39 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:39 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:39 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:39 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:39 [<module>] 次のウェイポイント(3)まで[ 46.2508401099365 ]
+<DEBUG> 2022-08-12_21:09:40 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:40 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:40 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:40 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:40 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:40 [<module>] 次のウェイポイント(3)まで[ 34.11259272883409 ]
+<DEBUG> 2022-08-12_21:09:41 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:41 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:41 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:41 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:41 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:41 [<module>] 次のウェイポイント(3)まで[ 22.247560441964396 ]
+<DEBUG> 2022-08-12_21:09:42 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:42 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:42 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:42 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:42 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:42 [<module>] 次のウェイポイント(3)まで[ 11.872391262151792 ]
+<DEBUG> 2022-08-12_21:09:43 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:43 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:43 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:43 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:43 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:43 [<module>] 次のウェイポイント(3)まで[ 4.185201364706158 ]
+<DEBUG> 2022-08-12_21:09:44 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:44 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:44 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:44 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:44 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:44 [<module>] 次のウェイポイント(3)まで[ 0.4487687895329447 ]
+<DEBUG> 2022-08-12_21:09:45 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:45 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:45 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:45 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:45 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:45 [<module>] 次のウェイポイント(3)まで[ 2.005005765183331 ]
+<DEBUG> 2022-08-12_21:09:46 [listner] ウェイポイントに到着:MISSION_ITEM_REACHED {seq : 3}
+<DEBUG> 2022-08-12_21:09:46 [set_vehicle_mode] SET MODE: GUIDED
+<DEBUG> 2022-08-12_21:09:46 [<module>] 現在のウェイポイント: 2]です
+<DEBUG> 2022-08-12_21:09:46 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:46 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:46 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:46 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:46 [<module>] 次のウェイポイント(3)まで[ 1.9827868086078015 ]
+<DEBUG> 2022-08-12_21:09:46 [<module>] ウェイポイントアクションを実行
+<DEBUG> 2022-08-12_21:09:46 [condition_yaw_vehicle] START
+<DEBUG> 2022-08-12_21:09:46 [condition_yaw_vehicle] END
+<DEBUG> 2022-08-12_21:09:48 [<module>] 現在のウェイポイント: 3]です
+<DEBUG> 2022-08-12_21:09:48 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-12_21:09:48 [get_distance_metres] START
+<DEBUG> 2022-08-12_21:09:48 [get_distance_metres] END
+<DEBUG> 2022-08-12_21:09:48 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-12_21:09:48 [<module>] 次のウェイポイント(4)まで[ 290.44418722848883 ]
+<DEBUG> 2022-08-12_21:09:48 [<module>] ミッションを終了して離陸地点へ戻る
+<DEBUG> 2022-08-12_21:09:48 [set_vehicle_mode] SET MODE: RTL

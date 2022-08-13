@@ -204,7 +204,8 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
     ### =================================================================================== 
     ### ドローンの情報をMQTTでクライアントにパブリッシュ
     ### =================================================================================== 
-    def pub_drone_info(self):
+    def pub_drone_info(self, msg):
+        self.drone_info["status"]["dinfo"] = msg
         self.set_vehicle_info()
         # 辞書型をJSON型に変換
         json_message = json.dumps( self.drone_info )
@@ -230,16 +231,13 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
                 # MISSIONのUPLOAD
                     dlog.LOG("DEBUG", "7")
                     if self.flg_MissionUploaded == False:
-                        dlog.LOG("DEBUG", "####MISSION UPLOAD####")                        
-
-                        # print("Starting mission")
-                        # # 最初の（0）ウェイポイントに設定されたミッションをリセット
+                        # 最初の（0）ウェイポイントに設定されたミッションをリセット
                         self.vehicle.commands.next = 0
 
-                        # # ジオフェンスファイル名
+                        # ジオフェンスファイル名
                         # import_fence_filename = '../mission/polygon_fence.txt'
 
-                        # # ジオフェンスデータをファイルからドローンへアップロード : T.B.D.
+                        # ジオフェンスデータをファイルからドローンへアップロード : T.B.D.
                         # self.upload_fence(import_fence_filename) 
                         
                         # ミッションファイル名
@@ -313,16 +311,13 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
 
                         # ガイドモードにセット
                         self.set_vehicle_mode("GUIDED")
-                        self.pub_drone_info()
 
                         # アームしていない場合ARMする
                         if self.vehicle.armed == False:
-                            self.pub_drone_info()
                             self.arm_and_takeoff(ARM_HEIGHT)
                             dlog.LOG("DEBUG", "ARMと離陸開始:" + str(ARM_HEIGHT) + 'm')
                         # アーム状態をチェック
                         while self.vehicle.armed == False:
-                            self.pub_drone_info()
                             dlog.LOG("DEBUG", "ARMと離陸をしています...")
                             time.sleep(1)
                         dlog.LOG("INFO", "ARMと離陸完了:" + str(ARM_HEIGHT) + 'm')    
@@ -358,13 +353,15 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
 
         # msg.topicにトピック名が，msg.payloadに届いたデータ本体が入っている
         recvData = json.loads(msg.payload)
-
+        dlog.LOG("DEBUG", "Mission data size: " + str(len(recvData)))
+        
         # ミッションデータをファイルに保存
         if msg.topic==self.topic_drone_mission_test:
           for num in range(len(recvData)):
+            print (recvData[num])
             f.write(recvData[num])
-          self.drone_mission["operation"] = "MISSION_UPLOAD"
         f.close()        
+        self.drone_mission["operation"] = "MISSION_UPLOAD"
         dlog.LOG("DEBUG","END")
 
     ### =================================================================================== 

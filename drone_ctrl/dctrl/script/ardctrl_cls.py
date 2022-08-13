@@ -34,6 +34,7 @@ import dlogger as dlog
 class ArdCtrlCls():
     
     vehicle = ""
+    dinfo = ""
 
     ### =================================================================================== 
     ### MQTTで送信するドローンの情報:クライアントへ送信
@@ -43,7 +44,8 @@ class ArdCtrlCls():
         "status":{  
             "isArmable":"false",
             "Arm":"false",
-            "FlightMode":"false"
+            "FlightMode":"false",
+            "dinfo":""
         },
         "battery":{
             "voltage":"0.0",
@@ -134,6 +136,8 @@ class ArdCtrlCls():
         self.drone_info["position"]["speed"] = str(self.vehicle.groundspeed) 
         # GPS count
         #self.drone_info["gps"]["count"] = str(self.vehicle.gps_0.num_sat)
+
+        self.drone_info["status"]["info"] = self.dinfo 
     
     ### =============================================================================================
     ### ドローンの属性を取得しコンソールに表示する（のみ）

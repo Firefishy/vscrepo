@@ -53,8 +53,10 @@ class ArdCtrlClsC1(ardctrl.ArdCtrlCls):
         if self.vehicle.is_armable == True:
             if self.vehicle.armed:
                 dlog.LOG("DEBUG","すでにARMしています。")
+                self.drone_info["status"]["dinfo"] = "Already Armed"
             else:
                 self.vehicle.armed = True
+                self.drone_info["status"]["dinfo"] = "Arme dpneしました"
         else:
             dlog.LOG("DEBUG","ARMできません。")
 
@@ -74,6 +76,7 @@ class ArdCtrlClsC1(ardctrl.ArdCtrlCls):
     def vehicle_takeoff(self, alt):
         dlog.LOG("DEBUG","TAKEOFF")
         self.vehicle.simple_takeoff(alt)  # Take off to target altitude
+        self.dinfo = "Take off しました"
 
     ### =================================================================================== 
     ### Auto takeoff

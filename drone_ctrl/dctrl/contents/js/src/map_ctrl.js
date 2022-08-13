@@ -140,8 +140,6 @@ var client = new Paho.MQTT.Client(
 sub.subscribe(topic_sub);
 // サブスクライバのCallback
 sub.on('message', function (topic_sub, message) {
-  document.getElementById('msg1').innerHTML = "Vehicle: Connected !";
-  document.getElementById('msg1').style.color = '#FFFF00';
   // ドローン名はトピック名とする"
   let drone_name = message.destinationName;
   // ドローンのデータを連想配列にして格納
@@ -166,6 +164,9 @@ sub.on('message', function (topic_sub, message) {
   let bcrnt = parseFloat( drone_data.battery.current );
   // GPS数
   let gpscnt = parseFloat( drone_data.gps.count );
+
+  document.getElementById('vehicle_current_state').innerHTML = drone_data.status.dinfo;
+  document.getElementById('vehicle_current_state').style.color = '#FFFF00';
 
   document.getElementById('carm').innerHTML = arm;
   if (arm == 'True'){

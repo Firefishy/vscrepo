@@ -102,6 +102,7 @@ class ArdCtrlClsC2(ardctrl.ArdCtrlClsC1):
         alt = missionitem.z
         targetWaypointLocation = LocationGlobalRelative(lat,lon,alt)
         distancetopoint = self.get_distance_metres(self.vehicle.location.global_frame, targetWaypointLocation)
+        distancetopoint = round(distancetopoint,2)
         dlog.LOG("DEBUG","END")
         return distancetopoint
 
