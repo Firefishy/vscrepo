@@ -267,10 +267,10 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
                         self.vehicle_takeoff(20.0)
 
                     # PAUSE
-                    elif self.drone_command["operation"] == "PAUSE":
+                    elif self.drone_command["operation"] == "MISSION_PAUSE":
                         self.pause_vehicle()
                     # RESUME
-                    elif self.drone_command["operation"] == "RESUME":
+                    elif self.drone_command["operation"] == "MISSION_RESUME":
                         self.resume_vehicle()
 
                     # ROTATION
@@ -299,7 +299,7 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
                         dlog.LOG("INFO", "ARMと離陸完了:" + str(ARM_HEIGHT) + 'm')
                         self.vehicle_goto(self.drone_command)
                     
-                    elif self.drone_command["operation"] == "CMA":
+                    elif self.drone_command["operation"] == "MISSION_CLEAR":
                         self.drone_info["status"]["dinfo"] = "MISSION CLEAR ALL"
                         self.clear_mission_all()
 

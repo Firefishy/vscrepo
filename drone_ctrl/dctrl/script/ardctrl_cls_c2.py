@@ -271,7 +271,9 @@ class ArdCtrlClsC2(ardctrl.ArdCtrlClsC1):
         cmds = self.vehicle.commands
         cmds.clear()
         #Add new mission to vehicle
+        print("Mission upload")
         for command in missionlist:
+            print(command)
             cmds.add(command)
         cmds.upload()
         dlog.LOG("DEBUG","END")
@@ -297,42 +299,14 @@ class ArdCtrlClsC2(ardctrl.ArdCtrlClsC1):
             file_.write(output)
         dlog.LOG("DEBUG","END")
             
-
     ### =============================================================================================
-    ### Clear mission all TBD
+    ### アップロードしたミッションをクリア
     ### =============================================================================================
-    def raw_mca_callback(self, attr_name, value):
-        # attr_name == 'raw_imu'
-        # value == vehicle.raw_imu
-        print(value)
-
     def clear_mission_all(self):
         dlog.LOG("DEBUG","START")
-
-        # mavutil.mavlink.MISSION_CLEAR_ALL
-        # #mavutil.mav.mission_clear_all_send(system=0, component=0)
-        # #self.vehicle.send_mavlink("45")
-        # cmds = self.vehicle.flush()
-
-        # dlog.LOG("DEBUG","END")
-
-        # mavmsg = self.vehicle.message_factory.command_long_encode(
-        #     0, 0,    # target system, target component
-        #     mavutil.mavlink.MISSION_CLEAR_ALL,  # command
-        #     0,    # confirmation
-        #     0,    # 0:Pause current mission
-        #     0,    # Reserved
-        #     0,    # Reserved
-        #     0,    # Reserved
-        #     0, 0, 0)    # param 5 ~ 7 not used
-        # # send command to vehicle
-        # self.vehicle.send_mavlink(mavmsg)
-        # dlog.LOG("DEBUG","END") 
-        # self.vehicle.add_attribute_listener('MISSION_CLEAR_ALL', self.raw_mca_callback)
-
         cmds = self.vehicle.commands
         cmds.clear()
-
+        cmds.upload()
 
     ### =============================================================================================
     ### Print a mission file to demonstrate "round trip"

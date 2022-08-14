@@ -5,7 +5,7 @@
 */
 
 // WebSocket connection
-let sub = mqtt.connect('ws://127.0.0.1:9001');
+let sub = mqtt.connect('ws://127.0.0.1:15676');
 
 // Topic definition
 let topic_pub = "drone/dctrl";        // 操作コマンド、Simple Goto
@@ -125,7 +125,7 @@ let quad_x_Icon = L.icon({ iconUrl: '../img/quad_x-90.png', iconRetinaUrl: 'img/
 //var wsbroker = location.hostname;   
 var wsbroker = "127.0.0.1";   
 // MQTTの標準ポート番号は1883だが，WebSocketは15675とした(RabbitMQと同じ仕様)
-var wsport = 9001; 
+var wsport = 15676; 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // MQTTのクライアントを作成する クライアントID名はランダムに作る
@@ -176,8 +176,8 @@ sub.on('message', function (topic_sub, message) {
     document.getElementById('carm').style.color = '#777777';
   }
   document.getElementById('cmode').innerHTML = mode;
-  document.getElementById('clat').innerHTML = dlat.toString();
-  document.getElementById('clon').innerHTML = dlon.toString();
+  document.getElementById('clat').innerHTML = dlat.toFixed(4).toString();
+  document.getElementById('clon').innerHTML = dlon.toFixed(4).toString();
   document.getElementById('calt').innerHTML = alt.toString();
   if (alt > 1.0){
     document.getElementById('calt').style.color = '#ffff00';
@@ -189,7 +189,7 @@ sub.on('message', function (topic_sub, message) {
   document.getElementById('cvlt').innerHTML = bvolt.toString();
   document.getElementById('ccnt').innerHTML = bcrnt.toString();
   document.getElementById('cgps').innerHTML = gpscnt.toString();
-  document.getElementById('cspd').innerHTML = spd.toString();
+  document.getElementById('cspd').innerHTML = spd.toFixed(4).toString();
 
   // ポップアップ用に文字列を作る +=で追加していく
   let drone_popmessage = drone_name + '<br>';
@@ -278,14 +278,14 @@ const droneCtrl = (ope) => {
 
     let idx = 0;
     // 現在のウェイポイント
-    mission_cmd = makeMissionCmdWithTab(
-      idx++,
-      1,
-      3,
-      document.getElementById('mwp1_cmd').value, 
-      clatData, clonData, caltData, 1
-    );         
-    cmdAry.push(mission_cmd) 
+    // mission_cmd = makeMissionCmdWithTab(
+    //   idx++,
+    //   1,
+    //   3,
+    //   document.getElementById('mwp1_cmd').value, 
+    //   clatData, clonData, caltData, 1
+    // );         
+    // cmdAry.push(mission_cmd) 
 
     // 現在位置で離陸: 離陸高度を5mとする（暫定）
     // mission_cmd = makeMissionCmdWithTab(idx++, 0, 3, 22, clatData, clonData, 5.0, 1);     

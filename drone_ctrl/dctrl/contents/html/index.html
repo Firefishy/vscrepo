@@ -67,11 +67,11 @@
         <!-- 折り畳み展開ポインタ -->
         <div onclick="obj=document.getElementById('open_sgoto').style; obj.display=(obj.display=='none')?'block':'none';
           document.getElementById('open_mission').style.display='none'; javascript:setOperation(0,0);">
-          <h2><a style="cursor:pointer;" class="border_content color_gray">Simple Goto (Click to open/close)</a></h2>
+          <h2><a style="cursor:pointer;" class="border_content color_gray">Simple Goto (Click open/close)</a></h2>
         </div>
         <!-- Control button -->
         <div id="open_sgoto" style="display:none;clear:both;" class="border_control">
-          <h3>Clicked point (Destination)</h3>
+          <h3>-- Click the map to set flight destination --</h3>
           <table>
             <tbody>
               <tr>
@@ -104,11 +104,11 @@
         <div onclick="
           obj=document.getElementById('open_mission').style; obj.display=(obj.display=='none')?'block':'none';
           document.getElementById('open_sgoto').style.display='none';">
-          <h2><a style="cursor:pointer;" class="border_content color_gray">Mission (Click to open/close)</a></h2>
+          <h2><a style="cursor:pointer;" class="border_content color_gray">Mission (Click open/close)</a></h2>
         </div>
         <!-- Control button -->
         <div id="open_mission" style="display:none;clear:both;" class="border_control">
-          <h3>Mission way point</h3>
+          <h3>-- Click the map to set each mission waypoint --</h3>
           <table>
             <thead>
               <tr>
@@ -138,8 +138,8 @@
                     <option value="22">22:TOFF</option>
                   </select>
                 </td>
-                <td id="mwp1_lat">35.89</td>
-                <td id="mwp1_lon">139.95</td>
+                <td id="mwp1_lat">35.6607</td>
+                <td id="mwp1_lon">139.7538</td>
                 <td id="mwp1_alt">30</td>
                 <td>1</td>
                 <td>
@@ -164,8 +164,8 @@
                     <option value="22">22:TOFF</option>
                   </select>
                 </td>
-                <td id="mwp2_lat">35.89</td>
-                <td id="mwp2_lon">139.95</td>
+                <td id="mwp2_lat">35.6611</td>
+                <td id="mwp2_lon">139.7593</td>
                 <td id="mwp2_alt">30</td>
                 <td>1</td>
                 <td>
@@ -190,8 +190,8 @@
                     <option value="22">22:TOFF</option>
                   </select>
                 </td>
-                <td id="mwp3_lat">35.89</td>
-                <td id="mwp3_lon">139.95</td>
+                <td id="mwp3_lat">35.6582</td>
+                <td id="mwp3_lon">139.7600</td>
                 <td id="mwp3_alt">30</td>
                 <td>1</td>
                 <td>
@@ -216,8 +216,8 @@
                     <option value="22">22:TOFF</option>
                   </select>
                 </td>
-                <td id="mwp4_lat">35.89</td>
-                <td id="mwp4_lon">139.95</td>
+                <td id="mwp4_lat">35.6577</td>
+                <td id="mwp4_lon">139.7574</td>
                 <td id="mwp4_alt">30</td>
                 <td>1</td>
                 <td>
@@ -242,8 +242,8 @@
                     <option value="22">22:TOFF</option>
                   </select>
                 </td>
-                <td id="mwp5_lat">35.89</td>
-                <td id="mwp5_lon">139.95</td>
+                <td id="mwp5_lat">35.6590</td>
+                <td id="mwp5_lon">139.7546</td>
                 <td id="mwp5_alt">30</td>
                 <td>1</td>
                 <td>
@@ -270,6 +270,9 @@
           <div class="wrap_btn">
             <input type="button" class="ctrlbtn button30pct color_green" id="bnt_mission_upload" value="MISSION UPLOAD" onclick="javascript:droneCtrl('MISSION_UPLOAD');"/>
             <input type="button" class="ctrlbtn button30pct color_green" id="bnt_mission_start" value="MISSION START" onclick="javascript:droneCtrl('MISSION_START');"/>
+            <input type="button" class="ctrlbtn button30pct color_red" id="bnt_mission_clear" value="MISSION_CLEAR"  onclick="javascript:droneCtrl('MISSION_CLEAR');"/>
+            <input type="button" class="ctrlbtn button30pct color_yellow" id="bnt_mission_pause" value="MISSION_PAUSE"  onclick="javascript:droneCtrl('MISSION_PAUSE');"/>
+            <input type="button" class="ctrlbtn button30pct color_yellow" id="bnt_mission_resume" value="MISSION_RESUME"  onclick="javascript:droneCtrl('MISSION_RESUME');"/>
           </div>
         </div>
       </div>
@@ -280,7 +283,7 @@
         <div onclick="
           obj=document.getElementById('open_chkmsg').style; obj.display=(obj.display=='none')?'block':'none';
           document.getElementById('open_sgoto').style.display='none';">
-          <h2><a style="cursor:pointer;" class="border_content color_gray">MAVLINK message check (Click to open/close)</a></h2>
+          <h2><a style="cursor:pointer;" class="border_content color_gray">MAVLINK message check (Click open/close) T.B.D.</a></h2>
         </div>
         <div id="open_chkmsg" style="display:none;clear:both;" class="border_control">
           <input type="text" class="input_style3" name="" id="msgid" placeholder="" value="" />
@@ -294,7 +297,7 @@
         <div onclick="
           obj=document.getElementById('open_sndmcom').style; obj.display=(obj.display=='none')?'block':'none';
           document.getElementById('open_sgoto').style.display='none';">
-          <h2><a style="cursor:pointer;" class="border_content color_gray">MAVLINK command send (Click to open/close)</a></h2>
+          <h2><a style="cursor:pointer;" class="border_content color_gray">MAVLINK command send (Click open/close) T.B.D.</a></h2>
         </div>
         <div id="open_sndmcom" style="display:none;clear:both;" class="border_control">
 
@@ -410,14 +413,6 @@
 				<div class="wrap_btn">
 					<input type="button" class="ctrlbtn button30pct color_green" id="bnt_takeoff" value="TAKEOFF"  onclick="javascript:droneCtrl('TAKEOFF');"/>
 					<input type="button" class="ctrlbtn button30pct color_green" id="bnt_land" value="LAND"  onclick="javascript:droneCtrl('LAND');"/>
-        </div>
-				<div class="wrap_btn">
-					<input type="button" class="ctrlbtn button30pct color_green" id="bnt_pause" value="PAUSE"  onclick="javascript:droneCtrl('PAUSE');"/>
-					<input type="button" class="ctrlbtn button30pct color_green" id="bnt_resume" value="RESUME"  onclick="javascript:droneCtrl('RESUME');"/>
-        </div>
-				<div class="wrap_btn">
-					<input type="button" class="ctrlbtn button30pct color_green" id="bnt_rotation" value="ROT45"  onclick="javascript:droneCtrl('ROTATION');"/>
-					<input type="button" class="ctrlbtn button30pct color_green" id="bnt_rotation" value="CMA"  onclick="javascript:droneCtrl('CMA');"/>
         </div>
         <!-- 移動停止 -->
         <div class="wrap_btn">

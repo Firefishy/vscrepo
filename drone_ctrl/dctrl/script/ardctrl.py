@@ -142,11 +142,23 @@ if __name__ == '__main__':
                     dlog.LOG("DEBUG", msg)
                     msg = "MISSION FLT: [ CntWP: " + str(drnc.vehicle.commands.next-1) + " --> NxtWP: " + str(nextwaypoint) + " (Dist: " + str(drnc.distance_to_current_waypoint()) + "m)]"
                     drnc.drone_info["status"]["dinfo"] = msg
-                    if mcmd==mavutil.mavlink.MAV_CMD_NAV_RETURN_TO_LAUNCH or mcmd==mavutil.mavlink.MAV_CMD_NAV_LAND:
+                    if mcmd == mavutil.mavlink.MAV_CMD_NAV_RETURN_TO_LAUNCH:
                         msg = "ミッションを終了して離陸地点へ戻る"
                         dlog.LOG("DEBUG", msg)
+                        # ミッションをクリア
+                        # drnc.clear_mission_all()
+                        drnc.set_vehicle_mode("RTL")
+                        break
+                    elif mcmd == mavutil.mavlink.MAV_CMD_NAV_LAND:
+                        msg = "ミッションを終了して離陸地点へ戻る"
+                        dlog.LOG("DEBUG", msg)
+                        # ミッションをクリア
+                        drnc.clear_mission_all()
+                        drnc.set_vehicle_mode("LAND")
                         break
 
+                    # if drnc.mission_wp_count <= 0:
+                    #     break
                     # -----------------------------------------------------------
                     # ウェイポイント到着時の処理
                     # -----------------------------------------------------------
@@ -158,9 +170,10 @@ if __name__ == '__main__':
 
                     time.sleep(1)
 
-                # ミッション終了後、離陸地点へ戻る
-                drnc.set_vehicle_mode("RTL") 
                 drnc.flg_MissionUploaded = False
+                # ミッションをクリア
+                drnc.clear_mission_all()
+
             time.sleep(1)
 
     # キーボード割り込みで終了

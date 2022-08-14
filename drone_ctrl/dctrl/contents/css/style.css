@@ -264,6 +264,7 @@ td {
 }
 .button30pct {
   width: 30%;
+  margin-bottom: 0.4em;
 }
 .button35pct {
   width: 35%;

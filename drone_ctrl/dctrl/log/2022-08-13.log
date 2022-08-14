@@ -17936,3 +17936,134 @@
 <DEBUG> 2022-08-13_17:01:11 [<module>] ウェイポイントアクションを実行
 <DEBUG> 2022-08-13_17:01:11 [condition_yaw_vehicle] START
 <DEBUG> 2022-08-13_17:01:11 [condition_yaw_vehicle] END
+<DEBUG> 2022-08-13_17:01:13 [<module>] 現在のウェイポイント: 1]です
+<DEBUG> 2022-08-13_17:01:13 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-13_17:01:13 [get_distance_metres] START
+<DEBUG> 2022-08-13_17:01:13 [get_distance_metres] END
+<DEBUG> 2022-08-13_17:01:13 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-13_17:01:13 [<module>] 次のウェイポイント(2)まで[ 486.52 ]
+<DEBUG> 2022-08-13_17:01:13 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-13_17:01:13 [get_distance_metres] START
+<DEBUG> 2022-08-13_17:01:13 [get_distance_metres] END
+<DEBUG> 2022-08-13_17:01:13 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-13_17:01:13 [<module>] ウェイポイントアクションを実行
+<DEBUG> 2022-08-13_17:01:13 [condition_yaw_vehicle] START
+<DEBUG> 2022-08-13_17:01:13 [condition_yaw_vehicle] END
+<DEBUG> 2022-08-13_17:01:15 [<module>] 現在のウェイポイント: 1]です
+<DEBUG> 2022-08-13_17:01:15 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-13_17:01:15 [get_distance_metres] START
+<DEBUG> 2022-08-13_17:01:15 [get_distance_metres] END
+<DEBUG> 2022-08-13_17:01:15 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-13_17:01:15 [<module>] 次のウェイポイント(2)まで[ 486.51 ]
+<DEBUG> 2022-08-13_17:01:15 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-13_17:01:15 [get_distance_metres] START
+<DEBUG> 2022-08-13_17:01:15 [get_distance_metres] END
+<DEBUG> 2022-08-13_17:01:15 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-13_17:01:15 [<module>] ウェイポイントアクションを実行
+<DEBUG> 2022-08-13_17:01:15 [condition_yaw_vehicle] START
+<DEBUG> 2022-08-13_17:01:15 [condition_yaw_vehicle] END
+<DEBUG> 2022-08-13_17:01:17 [<module>] 現在のウェイポイント: 1]です
+<DEBUG> 2022-08-13_17:01:17 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-13_17:01:17 [get_distance_metres] START
+<DEBUG> 2022-08-13_17:01:17 [get_distance_metres] END
+<DEBUG> 2022-08-13_17:01:17 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-13_17:01:17 [<module>] 次のウェイポイント(2)まで[ 486.49 ]
+<DEBUG> 2022-08-13_17:01:17 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-13_17:01:17 [get_distance_metres] START
+<DEBUG> 2022-08-13_17:01:17 [get_distance_metres] END
+<DEBUG> 2022-08-13_17:01:17 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-13_17:01:17 [<module>] ウェイポイントアクションを実行
+<DEBUG> 2022-08-13_17:01:17 [condition_yaw_vehicle] START
+<DEBUG> 2022-08-13_17:01:17 [condition_yaw_vehicle] END
+<DEBUG> 2022-08-13_17:01:19 [<module>] 現在のウェイポイント: 1]です
+<DEBUG> 2022-08-13_17:01:19 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-13_17:01:19 [get_distance_metres] START
+<DEBUG> 2022-08-13_17:01:19 [get_distance_metres] END
+<DEBUG> 2022-08-13_17:01:19 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-13_17:01:19 [<module>] 次のウェイポイント(2)まで[ 486.49 ]
+<DEBUG> 2022-08-13_17:01:19 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-13_17:01:19 [get_distance_metres] START
+<DEBUG> 2022-08-13_17:01:19 [get_distance_metres] END
+<DEBUG> 2022-08-13_17:01:19 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-13_17:01:19 [<module>] ウェイポイントアクションを実行
+<DEBUG> 2022-08-13_17:01:19 [condition_yaw_vehicle] START
+<DEBUG> 2022-08-13_17:01:19 [condition_yaw_vehicle] END
+<DEBUG> 2022-08-13_17:01:21 [<module>] 現在のウェイポイント: 1]です
+<DEBUG> 2022-08-13_17:01:21 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-13_17:01:21 [get_distance_metres] START
+<DEBUG> 2022-08-13_17:01:21 [get_distance_metres] END
+<DEBUG> 2022-08-13_17:01:21 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-13_17:01:21 [<module>] 次のウェイポイント(2)まで[ 486.49 ]
+<DEBUG> 2022-08-13_17:01:21 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-13_17:01:21 [get_distance_metres] START
+<DEBUG> 2022-08-13_17:01:21 [get_distance_metres] END
+<DEBUG> 2022-08-13_17:01:21 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-13_17:01:21 [<module>] ウェイポイントアクションを実行
+<DEBUG> 2022-08-13_17:01:21 [condition_yaw_vehicle] START
+<DEBUG> 2022-08-13_17:01:21 [condition_yaw_vehicle] END
+<DEBUG> 2022-08-13_17:01:23 [<module>] 現在のウェイポイント: 1]です
+<DEBUG> 2022-08-13_17:01:23 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-13_17:01:23 [get_distance_metres] START
+<DEBUG> 2022-08-13_17:01:23 [get_distance_metres] END
+<DEBUG> 2022-08-13_17:01:23 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-13_17:01:23 [<module>] 次のウェイポイント(2)まで[ 486.49 ]
+<DEBUG> 2022-08-13_17:01:23 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-13_17:01:23 [get_distance_metres] START
+<DEBUG> 2022-08-13_17:01:23 [get_distance_metres] END
+<DEBUG> 2022-08-13_17:01:23 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-13_17:01:23 [<module>] ウェイポイントアクションを実行
+<DEBUG> 2022-08-13_17:01:23 [condition_yaw_vehicle] START
+<DEBUG> 2022-08-13_17:01:23 [condition_yaw_vehicle] END
+<DEBUG> 2022-08-13_17:01:25 [<module>] 現在のウェイポイント: 1]です
+<DEBUG> 2022-08-13_17:01:25 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-13_17:01:25 [get_distance_metres] START
+<DEBUG> 2022-08-13_17:01:25 [get_distance_metres] END
+<DEBUG> 2022-08-13_17:01:25 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-13_17:01:25 [<module>] 次のウェイポイント(2)まで[ 486.51 ]
+<DEBUG> 2022-08-13_17:01:25 [distance_to_current_waypoint] START
+<DEBUG> 2022-08-13_17:01:25 [get_distance_metres] START
+<DEBUG> 2022-08-13_17:01:25 [get_distance_metres] END
+<DEBUG> 2022-08-13_17:01:25 [distance_to_current_waypoint] END
+<DEBUG> 2022-08-13_17:01:25 [<module>] ウェイポイントアクションを実行
+<DEBUG> 2022-08-13_17:01:25 [condition_yaw_vehicle] START
+<DEBUG> 2022-08-13_17:01:25 [condition_yaw_vehicle] END
+<CRITICAL> 2022-08-13_17:01:27 [<module>] KeyBoard Exception
+<INFO> 2022-08-13_17:01:27 [<module>] Close vehicle object
+<INFO> 2022-08-13_17:01:27 [<module>] プログラム終了
+<CRITICAL> 2022-08-13_17:01:27 [<module>] キーボード例外処理発生
+<INFO> 2022-08-13_21:06:50 [__init__] START
+<DEBUG> 2022-08-13_21:06:50 [on_connect_mission] Connected with result code 0
+<DEBUG> 2022-08-13_21:06:50 [on_connect] Connected with result code 0
+<DEBUG> 2022-08-13_21:06:50 [connect_vehicle] START
+<DEBUG> 2022-08-13_21:06:50 [on_connect_mission_test] Connected with result code 0
+<DEBUG> 2022-08-13_21:06:50 [connect_vehicle] Connect to vehicle object:/home/sayz/project/sbdrone/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-08-13_21:06:50 [connect_vehicle] /home/sayz/project/sbdrone/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-08-13_21:06:50 [connect_vehicle] SETTING_JSON: /home/sayz/project/sbdrone/vscrepo/drone_ctrl/dctrl/json/setting.json
+<DEBUG> 2022-08-13_21:06:50 [connect_vehicle] connection_string: udp:127.0.0.1:14551
+<DEBUG> 2022-08-13_21:06:50 [connect_vehicle] Connecting to vehicle on: udp:127.0.0.1:14551
+<DEBUG> 2022-08-13_21:06:51 [connect_vehicle] END
+<INFO> 2022-08-13_21:06:54 [<module>] Vehicle初期化完了
+<DEBUG> 2022-08-13_21:06:54 [dsp_attributes] START
+<INFO> 2022-08-13_21:06:54 [dsp_attributes] 
+---- Vehicle attributes ----------------------------------------
+<INFO> 2022-08-13_21:06:54 [dsp_attributes] Ardupilot Firmware version: APM:Copter-4.3.0-dev0
+<INFO> 2022-08-13_21:06:54 [dsp_attributes] Global Location: LocationGlobal:lat=0.0,lon=0.0,alt=-0.02
+<INFO> 2022-08-13_21:06:54 [dsp_attributes] Global Location (relative altitude): LocationGlobalRelative:lat=0.0,lon=0.0,alt=-0.027
+<INFO> 2022-08-13_21:06:54 [dsp_attributes] Local Location: LocationLocal:north=None,east=None,down=None
+<INFO> 2022-08-13_21:06:54 [dsp_attributes] Attitude: Attitude:pitch=-4.64232980448287e-05,yaw=0.1308811753988266,roll=0.0001254034141311422
+<INFO> 2022-08-13_21:06:54 [dsp_attributes] Velocity: [0.0, 0.0, 0.03]
+<INFO> 2022-08-13_21:06:54 [dsp_attributes] GPS: GPSInfo:fix=0,num_sat=0
+<INFO> 2022-08-13_21:06:54 [dsp_attributes] Gimbal status: Gimbal: pitch=None, roll=None, yaw=None
+<INFO> 2022-08-13_21:06:54 [dsp_attributes] Battery: Battery:voltage=12.587,current=0.0,level=100
+<INFO> 2022-08-13_21:06:54 [dsp_attributes] EKF OK?: False
+<INFO> 2022-08-13_21:06:54 [dsp_attributes] Last Heartbeat: 0.050291578998439945
+<INFO> 2022-08-13_21:06:54 [dsp_attributes] Heading: 7
+<INFO> 2022-08-13_21:06:54 [dsp_attributes] Is Armable?: False
+<INFO> 2022-08-13_21:06:54 [dsp_attributes] System status: STANDBY
+<INFO> 2022-08-13_21:06:54 [dsp_attributes] Groundspeed: 0.0003327916783746332
+<INFO> 2022-08-13_21:06:54 [dsp_attributes] Airspeed: 0.0
+<INFO> 2022-08-13_21:06:54 [dsp_attributes] Mode: STABILIZE
+<INFO> 2022-08-13_21:06:54 [dsp_attributes] Armed: False
+<INFO> 2022-08-13_21:06:54 [dsp_attributes] ----------------------------------------------------------------
+
+<DEBUG> 2022-08-13_21:06:54 [dsp_attributes] END
