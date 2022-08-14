@@ -55,7 +55,7 @@ let mymap = L.map('mapid').setView([dlat,dlon],dzoom);
 // OpenStreetMapのタイルレイヤーを作る
 let tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
     attribution: '© <a href="http://osm.org/copyright">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-    maxZoom: 19
+    maxZoom: 20
 });
 tileLayer.addTo(mymap); // 作成したtileLayerをmymapに追加する
 
@@ -278,14 +278,14 @@ const droneCtrl = (ope) => {
 
     let idx = 0;
     // 現在のウェイポイント
-    // mission_cmd = makeMissionCmdWithTab(
-    //   idx++,
-    //   1,
-    //   3,
-    //   document.getElementById('mwp1_cmd').value, 
-    //   clatData, clonData, caltData, 1
-    // );         
-    // cmdAry.push(mission_cmd) 
+    mission_cmd = makeMissionCmdWithTab(
+      idx++,
+      1,
+      3,
+      document.getElementById('mwp1_cmd').value, 
+      clatData, clonData, caltData, 1
+    );         
+    cmdAry.push(mission_cmd) 
 
     // 現在位置で離陸: 離陸高度を5mとする（暫定）
     // mission_cmd = makeMissionCmdWithTab(idx++, 0, 3, 22, clatData, clonData, 5.0, 1);     

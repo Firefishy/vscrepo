@@ -95,7 +95,7 @@ class ArdCtrlClsC2(ardctrl.ArdCtrlClsC1):
     def distance_to_current_waypoint(self):
         dlog.LOG("DEBUG","START")
         nextwaypoint = self.vehicle.commands.next
-        if nextwaypoint==0:
+        if nextwaypoint == 0:
             return None
         missionitem=self.vehicle.commands[nextwaypoint-1] #commands are zero indexed
         lat = missionitem.x
@@ -271,9 +271,9 @@ class ArdCtrlClsC2(ardctrl.ArdCtrlClsC1):
         cmds = self.vehicle.commands
         cmds.clear()
         #Add new mission to vehicle
-        print("Mission upload")
+        dlog.LOG("DEBG","Mission upload")
         for command in missionlist:
-            print(command)
+            dlog.LOG("DEBG", str(command))
             cmds.add(command)
         cmds.upload()
         dlog.LOG("DEBUG","END")

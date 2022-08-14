@@ -75,6 +75,8 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
     client_mission = ""
     #msg = ""
 
+    mission_wp_count = 0
+
     ### =================================================================================== 
     ### MQTTで受信するドローン操作コマンド:クライアントから受信
     ###     コマンドおよび移動先の「緯度、経度、高度」情報
@@ -222,6 +224,7 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
                 # MISSIONのUPLOAD
                     if self.flg_MissionUploaded == False:
                         # 最初の（0）ウェイポイントに設定されたミッションをリセット
+
                         self.vehicle.commands.next = 0
 
                         # ジオフェンスファイル名
@@ -296,7 +299,7 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
                         while self.vehicle.armed == False:
                             dlog.LOG("DEBUG", "ARMと離陸をしています...")
                             time.sleep(1)
-                        dlog.LOG("INFO", "ARMと離陸完了:" + str(ARM_HEIGHT) + 'm')
+                        dlog.LOG("INFO", "GOTO: ARMと離陸完了:" + str(ARM_HEIGHT) + 'm')
                         self.vehicle_goto(self.drone_command)
                     
                     elif self.drone_command["operation"] == "MISSION_CLEAR":
@@ -331,8 +334,11 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
         # ミッションデータをファイルに保存
         if msg.topic==self.topic_drone_mission_test:
           for num in range(len(recvData)):
-            print (recvData[num])
+            print(str(recvData[num]))
+            #dlog.LOG("DEBUG", "MissionData: " + str(recvData[num]))
             f.write(recvData[num])
+        # MISSIONのWP数を保存（WP0はカウントしない）    
+        self.mission_wp_count = len(recvData) - 1
         f.close()        
         self.drone_mission["operation"] = "MISSION_UPLOAD"
         dlog.LOG("DEBUG","END")
