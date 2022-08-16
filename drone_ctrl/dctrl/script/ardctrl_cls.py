@@ -60,6 +60,17 @@ class ArdCtrlCls():
             "altitude":"20",
             "heading":"0",
             "speed":"0"
+        },
+        "attitude":{
+            "roll":"0.0",
+            "pitch":"0.0",
+            "yaw":"0.0"
+        },
+        "servo":{
+            "1":"0.0",
+            "2":"0.0",
+            "3":"0.0",
+            "4":"0.0"
         }
     } 
     
@@ -84,10 +95,16 @@ class ArdCtrlCls():
         dlog.LOG("DEBUG", "SETTING_JSON: " + self.SETTING_JSON)
         dlog.LOG("DEBUG", "connection_string: " + connection_string)
 
-        # Connect to Vehicle
-        dlog.LOG("DEBUG", "Connecting to vehicle on: " + str(connection_string))
-        self.vehicle = connect(connection_string, wait_ready=True)
-        self.vehicle.wait_ready('autopilot_version')
+        while True:
+            # Connect to Vehicle
+            try:
+                dlog.LOG("DEBUG", "Connecting to vehicle on: " + str(connection_string))
+                self.vehicle = connect(connection_string, wait_ready=True)
+                self.vehicle.wait_ready('autopilot_version')
+                break
+            except:
+                dlog.LOG("DEBUG", "Connection refused !")
+                time.sleep(1)
 
         dlog.LOG("DEBUG", "END")
 
@@ -129,7 +146,7 @@ class ArdCtrlCls():
         # Battery voltage
         self.drone_info["battery"]["voltage"] = str(self.vehicle.battery.voltage)             
         # Battery current
-        self.drone_info["battery"]["voltage"] = str(self.vehicle.battery.current)             
+        self.drone_info["battery"]["current"] = str(self.vehicle.battery.current)             
         # latitude
         self.drone_info["position"]["latitude"] = str(self.vehicle.location.global_frame.lat) 
         # longitude

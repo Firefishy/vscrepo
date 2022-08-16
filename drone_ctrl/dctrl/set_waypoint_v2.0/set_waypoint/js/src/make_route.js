@@ -414,7 +414,7 @@ function send_message(msg) {
 //==============MQTT over WebSocketの設定・初期化・接続==========================
 // MQTT over WebSocketの初期化
 var wsbroker = location.hostname;   // MQTTブローカーは自分自身
-var wsport = 15676; // MQTTの標準ポート番号は1883だが，WebSocketは15675とした(RabbitMQと同じ仕様)
+var wsport = 15675; // MQTTの標準ポート番号は1883だが，WebSocketは15675とした(RabbitMQと同じ仕様)
 var clientId = "myclientid_" + parseInt(Math.random() * 100,10)//クライアントID名はランダムに作る
 
 var client = new Paho.MQTT.Client(wsbroker, Number(wsport), "/ws", clientId);// MQTTのクライアントを作成する

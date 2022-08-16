@@ -51,9 +51,9 @@ class ArdCtrlClsC1(ardctrl.ArdCtrlCls):
     ### =================================================================================== 
     def vehicle_arming(self):
         dlog.LOG("DEBUG","ARMING:")
-        if self.vehicle.is_armable == True:
+        if self.vehicle.is_armable:
             if self.vehicle.armed:
-                dlog.LOG("DEBUG","すでにARMしています。")
+                dlog.LOG("DEBUG","すでにARMしています")
                 self.set_vehicle_csts("Already Armed")
             else:
                 self.vehicle.armed = True
@@ -68,7 +68,7 @@ class ArdCtrlClsC1(ardctrl.ArdCtrlCls):
         dlog.LOG("DEBUG","DISARMING:")
         self.set_vehicle_csts("Disarming")
         if not self.vehicle.armed:
-            dlog.LOG("DEBUG","すでにDISARM状態です。")
+            dlog.LOG("DEBUG","すでにDISARM状態です")
         else:
             self.vehicle.armed = False
 
@@ -76,10 +76,14 @@ class ArdCtrlClsC1(ardctrl.ArdCtrlCls):
     ### Take off
     ### =================================================================================== 
     def vehicle_takeoff(self, alt):
-        dlog.LOG("DEBUG","TAKEOFF")
-        self.set_vehicle_csts("Take off: " + str(alt) + "m")
-        self.vehicle.simple_takeoff(alt)  # Take off to target altitude
-        self.dinfo = "Take off しました"
+        if self.vehicle.is_armable:
+            dlog.LOG("DEBUG","TAKEOFF")
+            self.set_vehicle_csts("Take off: " + str(alt) + "m")
+            # Take off to target altitude
+            self.vehicle.simple_takeoff(alt)  
+            self.dinfo = "Take off しました"
+        else:
+            dlog.LOG("DEBUG","ARMしていないためTAKEOFFできません")
 
     ### =================================================================================== 
     ### Auto takeoff

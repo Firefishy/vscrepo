@@ -257,11 +257,11 @@ class ArdCtrlClsC2(ardctrl.ArdCtrlClsC1):
         return missionlist
 
     ### =============================================================================================
-    ### ### T.B.D ###
     ### ファイルからミッションデータをアップロードする。
     ### =============================================================================================
     def upload_mission(self, aFileName):
         dlog.LOG("DEBUG","START")
+        mission_count = 0
         #Read mission from file
         missionlist = self.readmission(aFileName)
         
@@ -275,8 +275,11 @@ class ArdCtrlClsC2(ardctrl.ArdCtrlClsC1):
         for command in missionlist:
             dlog.LOG("DEBG", str(command))
             cmds.add(command)
+            mission_count = mission_count + 1
         cmds.upload()
+        time.sleep(2)
         dlog.LOG("DEBUG","END")
+        return mission_count
 
     ### =============================================================================================
     ### Save a mission in the Waypoint file format 

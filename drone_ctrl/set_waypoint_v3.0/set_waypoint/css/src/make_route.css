@@ -1,0 +1,143 @@
+@charset "UTF-8";
+
+.edit-btn{
+	margin-left:auto ;
+	position:relative;
+	top:5%;
+    margin-right :5px;
+}
+
+.circle{
+	margin:0.5em;
+	height: 44px;
+	width: 44px;
+    border-radius:50%;
+	background-color: white;
+	text-align:center;
+    line-height: 30px;
+    border-width:2px;
+    border-style:solid;
+    border-color:black;
+}
+.icons{
+	line-height: 40px;
+}
+
+
+
+.numberinput_unit{
+	float: right;
+	position:relative;
+}
+
+.numberinput_unit.number_input{
+	width: 100px;
+}
+
+.sideber_title{
+	position:relative;
+	height: 130px;
+	width: 100%;
+}
+
+.sideber_item_center{
+	position:abslute;
+}
+
+
+.flt_op_sidebar_seg {
+	position:relative;
+	top:10px;
+	height: 1px;
+	width: 100%;
+	background-color: #808080;
+}
+
+.sidebar_item_tittle{
+	position:relative;
+	left:10px;
+	top:10px;
+	font-weight: bold;
+}
+
+.btnDiv {
+	display:inline-block;
+	position:relative;
+	left:10px;
+	width:190px
+}
+
+.sidebar_select {
+	border: 2px solid #c0c0c0;
+	width: 90%;
+	position:relative;
+	left:10px;
+	top:10px;
+	margin-bottom:10px;
+}
+
+.form-control{
+	width:180px;
+	padding:0px;
+}
+
+
+.non_active {
+    display:none;
+}
+
+.active {
+    display:block;
+}
+
+
+.column {
+	line-height:3em;
+	border:1px solid #cccccc;
+	cursor:pointer;
+	border-radius:5%;
+}
+[draggable] {
+    user-select: none;
+}
+
+#columns {
+	list-style-type: none;
+	padding: 0;
+}
+
+
+
+.column details {
+    color: black;
+    background-color: #eeeeee;
+	border:1px solid black;
+	border-radius:5%;
+}
+.column details summary{
+	padding-left:5px;
+	line-height:3em;
+	cursor:pointer;
+}
+.column details .action_contents{
+	all:initial;
+}
+
+li.over {
+  border-top: 2px solid blue;
+}
+
+
+.flight_info{
+	display:inline-block;
+	position:relative;
+	width:200px
+}
+.number_input_action{
+	float: right;
+	position:relative;
+}
+.number_input_action input{
+	height:40px;
+	margin-left:auto;
+}

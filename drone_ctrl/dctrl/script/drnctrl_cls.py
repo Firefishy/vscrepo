@@ -66,6 +66,8 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
     flg_MissionUploaded = False
     # ミッションでWayPointに到着した場合にTrue
     flg_wayPoint = False
+    # ミッション実行中にTrue
+    flg_MissionDoing = False
 
     # info pub / command sub
     client = ""
@@ -219,29 +221,35 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
 
             if self.drone_command["operation"] == "MISSION_UPLOAD":
                 self.drone_info["status"]["dinfo"] = self.drone_command["operation"]
-                # MISSION実行中のミッションファイルのアップロードは禁止
-                if self.flg_MissionUploaded == False:
-                # MISSIONのUPLOAD
-                    if self.flg_MissionUploaded == False:
-                        # 最初の（0）ウェイポイントに設定されたミッションをリセット
+                # # MISSION実行中のミッションファイルのアップロードは禁止
+                # if self.flg_MissionUploaded == False:
+                # # MISSIONのUPLOAD
+                #     if self.flg_MissionUploaded == False:
+                # # 最初の（0）ウェイポイントに設定されたミッションをリセット
 
-                        self.vehicle.commands.next = 0
+                self.vehicle.commands.next = 0
 
-                        # ジオフェンスファイル名
-                        # import_fence_filename = '../mission/polygon_fence.txt'
+                # ジオフェンスファイル名
+                # import_fence_filename = '../mission/polygon_fence.txt'
 
-                        # ジオフェンスデータをファイルからドローンへアップロード : T.B.D.
-                        # self.upload_fence(import_fence_filename) 
-                        
-                        # ミッションファイル名
-                        import_mission_filename = '../mission/mpmission.txt'
-                        # エクスポートファイル名
-                        # export_mission_filename = '../mission/exportedmission.txt'
+                # ジオフェンスデータをファイルからドローンへアップロード : T.B.D.
+                # self.upload_fence(import_fence_filename) 
+                
+                # ミッションファイル名
+                import_mission_filename = '../mission/mpmission.txt'
+                # エクスポートファイル名
+                # export_mission_filename = '../mission/exportedmission.txt'
+                
+                mission_count = -1
+                # Note: 何故かミッションアップロード１発目でデータが１少ない
+                # この現象の対策のためデータ数をチェックする
+                while mission_count != self.vehicle.commands.count or self.vehicle.commands.count == 0:
+                    # ミッションデータをファイルからドローンへアップロード
+                    mission_count = self.upload_mission(import_mission_filename)
+                    dlog.LOG("DEBUG", "Misssion upload   data count = " + str(mission_count))
+                    dlog.LOG("DEBUG", "Misssion uploaded data count = " + str(self.vehicle.commands.count))
 
-                        # ミッションデータをファイルからドローンへアップロード
-                        self.upload_mission(import_mission_filename)
-                        #self.flg_MissionUploaded = True
-                    #self.drone_command["operation"] = "NONE"
+                self.flg_MissionUploaded = True
 
             elif self.drone_command["operation"] == "ARM":
                 self.drone_info["status"]["dinfo"] = self.drone_command["operation"]
@@ -276,6 +284,10 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
                     elif self.drone_command["operation"] == "MISSION_RESUME":
                         self.resume_vehicle()
 
+                    # MISSION_ABORT
+                    elif self.drone_command["operation"] == "MISSION_ABORT":
+                        self.resume_vehicle()
+
                     # ROTATION
                     elif self.drone_command["operation"] == "ROTATION":
                         self.condition_yaw_vehicle(45, 1, True)
@@ -304,16 +316,19 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
                     
                     elif self.drone_command["operation"] == "MISSION_CLEAR":
                         self.drone_info["status"]["dinfo"] = "MISSION CLEAR ALL"
+                        self.flg_wayPoint = False
                         self.clear_mission_all()
 
                     # Drone mode set / MISSION start
                     else:
                         # AUTOモードに設定した場合はウェイポイントフラグをクリアする
                         if self.drone_command["operation"] == "AUTO":
-                            self.flg_wayPoint = False
+                            if self.flg_MissionDoing == True:
+                                self.set_vehicle_mode(self.drone_command["operation"])                
+                                self.flg_wayPoint = False
 
                         # Deone mode set: MISSION_STARTはモードでは無いため除外する
-                        if self.drone_command["operation"] != "MISSION_START":
+                        elif self.drone_command["operation"] != "MISSION_START":
                             self.set_vehicle_mode(self.drone_command["operation"])                
 
     ### =================================================================================== 
@@ -335,10 +350,10 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
         if msg.topic==self.topic_drone_mission_test:
           for num in range(len(recvData)):
             print(str(recvData[num]))
-            #dlog.LOG("DEBUG", "MissionData: " + str(recvData[num]))
+            #dlog.LOG("DEBUG", str(num) + "MissionData: " + str(recvData[num]))
             f.write(recvData[num])
         # MISSIONのWP数を保存（WP0はカウントしない）    
-        self.mission_wp_count = len(recvData) - 1
+        self.mission_wp_count = len(recvData)
         f.close()        
         self.drone_mission["operation"] = "MISSION_UPLOAD"
         dlog.LOG("DEBUG","END")

@@ -7,14 +7,17 @@ const MISSION_STATUS = {
 	"BREAK":2,
 	"RESUME":3,
 	"RETURN_HOME":4,
-	"EMERGENCY_LANDING":5
+	"EMERGENCY_LANDING":5,
+	"SMART_RTH":6,
 };// ミッションのステータス
 
 const MISSION_CONTROL_NAME = {
-	"1":"ホーム帰還",
+	"1":"ホーム帰還(最短距離)",
 	"2":"緊急着陸",
 	"3":"ミッション再開",
+	"4":"ホーム帰還(ルート沿い)",
 };// ミッション中断時の操作名
+
 
 /////////// ワイプ・マップ切り替え用 start//////////////////
 const SMALL_MAP_WIDTH = '370px';// 小サイズマップの長さ(px)
@@ -38,7 +41,7 @@ var routePointIndex = 0;// 飛行中ルートのポイントインデクス
 var initDroneLngLat; // 初期表示ドローン経緯度
 var initMapFlg = false;
 
-const FLIGHT_ROUTE_SRC = "flightRoute";
+const FLIGHT_ROUTE_SRC = "flight_route_src";
 const FLIGHT_ROUTE_LAYER = "routeOutline";
 
 const geojsonFlightRoute = {// フライトルート表示用ソース
@@ -54,7 +57,13 @@ const geojsonFlightRoute = {// フライトルート表示用ソース
 var flightRoute;
 var flight_path=[];//飛行経路保存用リスト
 var drones=new Array();   // 緯度経度などの受信したデータを保存する連想配列
-
+//各操作の際に送るMQTTメッセージ  それっぽいのをmap_r_click.htmlから持ってきただけなので多分修正がいる
+var MQTT_command= {
+	"command":"ARM",
+	"d_lat":"0",
+	"d_lon":"0",
+	"d_alt":"0",
+}
 
 
 
@@ -68,9 +77,10 @@ $(function() {
 	// マップをロード
 	map.on('load', function () {
 		loadMap();
+		showMapWithRoute()
 	})
-	console.log(MISSION_CONTROL_NAME[flightRoute['missionControl']])
 	setMissionControlBtn(MISSION_CONTROL_NAME[flightRoute['missionControl']]);
+	
 });
 
 
@@ -99,7 +109,7 @@ function setEvent() {
 		$('#modal-confirm').modal('toggle');
 	});
 	
-	// ホーム帰還オプションを選択
+	// ホーム帰還(最短距離)オプションを選択
 	$("#mission_rth").click(function() {
 		setMissionControlBtn(MISSION_CONTROL_NAME['1']);
 	});
@@ -111,7 +121,10 @@ function setEvent() {
 	$("#mission_fr").click(function() {
 		setMissionControlBtn(MISSION_CONTROL_NAME['3']);
 	});
-	
+	//  ホーム帰還(ルート沿い)オプションを選択
+	$("#mission_smart_rth").click(function() {
+		setMissionControlBtn(MISSION_CONTROL_NAME['4']);
+	});
 	// ミッション制御
 	$('#mission_control').click(function() {
 		console.log('ミッション制御:', $(this).text());
@@ -121,6 +134,8 @@ function setEvent() {
 			buttonDisplayControl(MISSION_STATUS.EMERGENCY_LANDING);
 		} else if ($(this).text() == MISSION_CONTROL_NAME['3']) {
 			buttonDisplayControl(MISSION_STATUS.RESUME);
+		} else if ($(this).text() == MISSION_CONTROL_NAME['4']) {
+			buttonDisplayControl(MISSION_STATUS.SMART_RTH);
 		}
 	});
 	
@@ -222,7 +237,7 @@ function switchMapWipeSize() {
 function setMissionControlBtn(missionControlName) {
 	switch (missionControlName) {
 		case MISSION_CONTROL_NAME['1']:
-			$('#mission_control').text(MISSION_CONTROL_NAME['1']);
+			$('#mission_control').html("ホーム帰還<br>(最短距離)");
 			if ($('#mission_control').attr('class') != 'btn btn-primary') {
 				$('#mission_control').removeClass();
 				$('#mission_control_dropdown').removeClass();
@@ -248,6 +263,15 @@ function setMissionControlBtn(missionControlName) {
 				$('#mission_control_dropdown').addClass('btn btn-success dropdown-toggle dropdown-toggle-split border-left');
 			}
 			break;
+		case MISSION_CONTROL_NAME['4']:
+			$('#mission_control').html("ホーム帰還<br>(ルート沿い)");
+			if ($('#mission_control').attr('class') != 'btn btn-info') {
+				$('#mission_control').removeClass();
+				$('#mission_control_dropdown').removeClass();
+				$('#mission_control').addClass('btn btn-info');
+				$('#mission_control_dropdown').addClass('btn btn-info dropdown-toggle dropdown-toggle-split border-left');
+			}
+			break;
 		default:
 			break;
 	}
@@ -258,11 +282,14 @@ function showMapWithRoute(start_lat,start_lon) {
 	let routeCoordinates = [];
 	let mapZoom = 0;
 	if(flightRoute != ""){
-		centerLngLat = flightRoute['centerLngLat'];
-		mapZoom = flightRoute['mapZoom'];
-		
-		// ミッション中断後のボタン名を設定
-		setMissionControlBtn(MISSION_CONTROL_NAME[flightRoute['missionControl']]);
+		if(!initMapFlg){
+			//map初期化時に設定画面での中心とズームに設定
+			centerLngLat = flightRoute['centerLngLat'];
+			mapZoom = flightRoute['mapZoom'];
+			map.setCenter(centerLngLat);
+			map.setZoom(mapZoom);
+			
+		}
 	
 		/*ジオフェンスのデータの持ち方がわからないので書き直しになると思う
 		// フライトルートを再選択する前ジオフェンス数を保存する
@@ -276,21 +303,22 @@ function showMapWithRoute(start_lat,start_lon) {
 				}
 			})
 		});*/
-	
+		
 		// フライトルート座標取得
-		routeCoordinates.push([start_lon,start_lat]) //開始地点の追加
-		routeCoordinates.push(flightRoute['routeCoordinates']);
-		if(flightRoute['missionCompleteAction'=="RTH"]){ //完了時動作がホーム帰還の時ホームまでの経路も追加
+		if(start_lon!=undefined){
+			routeCoordinates.push([start_lon,start_lat]) //開始地点の追加
+		}
+		
+		$.each(flightRoute['routeCoordinates'],function(index, value){
+			routeCoordinates.push(value);
+		})
+		if(flightRoute['missionCompleteAction'] ==1 &&start_lon!=undefined){
+			//完了時動作がホーム帰還の時ホームまでの経路も追加
 			routeCoordinates.push([start_lon,start_lat])
 		}
 		
-		if(lnglat_list==false){
-			map.setCenter(centerLngLat);
-			if (mapZoom > 0) {
-				map.setZoom(mapZoom);
-			}
-		}
 	}
+	addRouteGeofencePolygon();
 	
 	// フライトルートとジオフェンスを描画するメソッド
 	function addRouteGeofencePolygon() {
@@ -317,50 +345,43 @@ function showMapWithRoute(start_lat,start_lon) {
 				}
 			});
 		}); */
-		geojsonFlightRoute.geometry.coordinates = routeCoordinates;
-		map.addSource(FLIGHT_ROUTE_SRC, {
+		if(map.getSource(FLIGHT_ROUTE_SRC)){
+		map.getSource(FLIGHT_ROUTE_SRC).setData({
 			'type': 'geojson',
-			'data': geojsonFlightRoute
-		});
-		
-		map.addLayer({
-			'id': FLIGHT_ROUTE_LAYER,
-			'type': 'line',
-			'source': FLIGHT_ROUTE_SRC,
-			'layout': {},
-			'paint': {
-				'line-color': '#3061b2',
+			'data': {
+			'type': 'Feature',
+			'properties': {},
+			'geometry': {
+				'type': 'LineString',
+				'coordinates': routeCoordinates
+		}}}.data)
+		}else{
+			map.addSource(FLIGHT_ROUTE_SRC, {
+				'type': 'geojson',
+				'data': {
+					'type': 'Feature',
+					'properties': {},
+					'geometry': {
+						'type': 'LineString',
+						'coordinates': routeCoordinates
+					}
+				}
+			});
+			map.addLayer({
+				'id': FLIGHT_ROUTE_LAYER,
+				'type': 'line',
+				'source': FLIGHT_ROUTE_SRC,
+				'layout': {
+					'line-join': 'round',
+					'line-cap': 'round'
+				},
+				'paint': {
+					'line-color': '#3061b2',
 				'line-width': 3
-			}
-		});
-		initMapFlg = true;
-	}
-	// ドローン飛行ルートを作る
-	if (routeSelectedFlg) {
-		/*  let i = 0;
-		while(i< geoCnt) {
-			if (map.getLayer("geofenceFill" + i)) {
-				map.removeLayer("geofenceFill" + i);
-			}
-			if (map.getSource("geofence" + i)) {
-				map.removeSource("geofence" + i);
-			}
-			i++;
-		}  */
-
-		if (map.getLayer(FLIGHT_ROUTE_LAYER)) {
-			map.removeLayer(FLIGHT_ROUTE_LAYER);
+				}
+			});
+			initMapFlg=true;
 		}
-
-		if (map.getSource(FLIGHT_ROUTE_SRC)) {
-			map.removeSource(FLIGHT_ROUTE_SRC);
-		}
-		addRouteGeofencePolygon();
-		
-		// ドローンアイコンをフライトルートの上に移動する
-		//map.moveLayer(FLIGHT_ROUTE_LAYER, DRONE_ICON_LAYER);
-	} else {
-		map.on('load', addRouteGeofencePolygon);
 	}
 }
 
@@ -368,20 +389,26 @@ function showMapWithRoute(start_lat,start_lon) {
 // 画面のボタン表示・非表示の制御
 function buttonDisplayControl(missionStatus) {
 	switch (missionStatus) {
-		case MISSION_STATUS.OVER:
-			// ドローンが捉えている映像を消す
-			$('#alert_area').css('display', 'none');
+		case MISSION_STATUS.OVER:  //ミッション完了
 			//ミッション実行ボタン:表示 ミッション中断ボタン:非表示
 			$('#mission_break_btn_group').addClass("d-none");
 			$('#mission_break').addClass("d-none");
 			$('#mission_execute').removeClass("d-none");
+			$('#mission_ready').removeClass("d-none");
 
 			// 初期表示に戻る
-			$('#mission_execute').prop('disabled', false);
+			$('#mission_execute').prop('disabled', true);
 			$('#mission_execute').removeClass();
 			$('#mission_execute').addClass("btn btn-success rounded ml-4 mt-2");
-			$("#flight_route_select").css('pointer-events', 'auto');
+			$('#mission_ready').prop('disabled', false);
+			$('#mission_ready').removeClass();
+			$('#mission_ready').addClass("btn btn-success rounded ml-4 mt-2");
+			//$("#flight_route_select").css('pointer-events', 'auto');
 			setMissionControlBtn(MISSION_CONTROL_NAME[flightRoute['missionControl']]);
+			
+			
+			
+			//mission_complete==true;
 			break;
 		case MISSION_STATUS.BREAK:  //ミッション中断
 			if (mission_complete==false) {
@@ -393,11 +420,11 @@ function buttonDisplayControl(missionStatus) {
 				$('#mission_control').prop('disabled', false);
 				$('#mission_control_dropdown').prop('disabled', false);
 				
-				MQQTT_publish("MISSION_BREAK_HOVERING")
+				MQQTT_publish("MISSION_PAUSE")
 				
 			} else { // ミッション終了後にミッション中断できない
 				buttonDisplayControl(MISSION_STATUS.OVER);
-
+				
 			}
 			break;
 		case MISSION_STATUS.RESUME:  //ミッション再開
@@ -409,7 +436,7 @@ function buttonDisplayControl(missionStatus) {
 			MQQTT_publish("MISSION_RESUME")
 			
 			break;
-		case MISSION_STATUS.RETURN_HOME:  //ホームに帰還
+		case MISSION_STATUS.RETURN_HOME:  //ホームに帰還（最短距離）
 			//ミッション実行ボタン:表示 ミッション中断ボタン:非表示
 			$('#mission_break_btn_group').prop('disabled', true);
 			$('#mission_control').prop('disabled', true);
@@ -419,7 +446,7 @@ function buttonDisplayControl(missionStatus) {
 			$("#flight_route_select").css('pointer-events', 'none');
 			//ミッション中断＞RTHの時の処理  ここから
 			
-			MQQTT_publish("MISSION_STOP_RTL")
+			MQQTT_publish("RTL")
 			break;
 		/* 緊急着陸は実装しない
 		case MISSION_STATUS.EMERGENCY_LANDING:
@@ -433,6 +460,18 @@ function buttonDisplayControl(missionStatus) {
 			//ミッション中断＞緊急着陸の時の処理  ここから
 			break;
 		*/
+		case MISSION_STATUS.SMART_RTH:  //ホームに帰還(ルートに沿って移動)
+			//ミッション実行ボタン:表示 ミッション中断ボタン:非表示
+			$('#mission_break_btn_group').prop('disabled', true);
+			$('#mission_control').prop('disabled', true);
+			$('#mission_control_dropdown').prop('disabled', true);
+			$('#mission_break').addClass("d-none");
+			$('#mission_execute').addClass("d-none");
+			$("#flight_route_select").css('pointer-events', 'none');
+			//ミッション中断＞RTHの時の処理  ここから
+			
+			MQQTT_publish("samrtRTL")
+			break;
 		default:
 			break;
 	}
@@ -448,6 +487,7 @@ function flightReady() {
 function flightExecuteConfirm() {
 	//機体のアラートがある場合は非活性とする  アラートチェックは一時削除 飛行準備のチェックがいるならここでする
 	let checked_text=""
+	//飛行準備のチェック（現状ARMのみ）  コメントアウト中  確認する要素の追加の必要性やそもそも確認がいるかは不明（エラー出たとしてどうするのか)
 //	if(mission_ready != true){
 //		checked_text = `<td class="text-danger"><i class="fas fa-times-circle ml-1"></i>ARM</td>
 //						<td class="">NG</td>`
@@ -495,25 +535,17 @@ function excuteFilght(isInit) {
 
 
 
-// ##############################################################################
-
-
-
 //==============MQTT over WebSocketの設定・初期化・接続==========================
 
 //function init_MQTT(){
 	// MQTT over WebSocketの初期化
-	//var wsbroker = location.hostname;   // MQTTブローカーは自分自身
-	var wsbroker = "127.0.0.1";   
+	// var wsbroker = location.hostname;   // MQTTブローカーは自分自身
+	var wsbroker = "127.0.0.1";   // MQTTブローカーは自分自身
+	
 	var wsport = 15675; // MQTTの標準ポート番号は1883だが，WebSocketは15675とした(RabbitMQと同じ仕様)
 	var clientId = "myclientid_" + parseInt(Math.random() * 100,10)//クライアントID名はランダムに作る
 	
-	var client = new Paho.MQTT.Client(
-		wsbroker, 
-		Number(wsport), 
-		"/ws", 
-		clientId
-		);// MQTTのクライアントを作成する
+	var client = new Paho.MQTT.Client(wsbroker, Number(wsport), "/ws", clientId);// MQTTのクライアントを作成する
 	
 	// コールバックの設定
 	client.onConnectionLost = onConnectionLost;
@@ -561,48 +593,28 @@ function onMessageArrived(message) {
 	let drone_name = message.destinationName;   // ドローン名はトピック名とする
 	var drone_data = JSON.parse( message.payloadString );   // ドローンのデータを連想配列にして格納
 	
-	let arm = drone_data.status.Arm;           // ARM/DISARM
-	let mode  = drone_data.status.FlightMode;    // フライトモード
+	let arm = drone_data.status.Arm;           // ARM/DISARM（TRUE/FALSE）
 	let lat  = parseFloat( drone_data["position"]["latitude"] );   // 緯度
 	let lon  = parseFloat( drone_data["position"]["longitude"] );  // 経度
-	let alt  = parseFloat( drone_data["position"]["altitude"] );   // 高度
 	let ang  = parseFloat( drone_data["position"]["heading"] );    // 方位
-	console.log("11111");
 	write_drone(lat,lon,ang)//ドローン描画
-	flight_path.push([lon,lat]) //飛行経路描画用のリストに追加
-	write_flight_path()//飛行経路の描画
-	console.log("22222");
 	
-	/////////////////表示情報の更新 ここから///////////////////////
-	// 機体名が空->表示中の機体名の更新  ある->何もしない
-	if( $('#aircraftName').text === "" ) {
-		$('#aircraftName').text(drone_name);
+
+	
+	//電波強度など画面上データ表示の更新  
+	show_sidber_flight_info(drone_data)
+	
+	
+	if(mission_ready==false){  //飛行前の場合 現在の位置に応じてルートの描画を更新(離陸地点が変わるため)
+		showMapWithRoute(lat,lon)
+		if(arm==true){  //離陸準備の確認（仮） これ以外に確認する事項があれば要追加  441行あたりのfunction flightExecuteConfirm()もセットで修正
+			mission_ready=true
+		}
+	}else{ //飛行準備後なら経路の描画を開始
+		flight_path.push([lon,lat]) //飛行経路描画用のリストに追加
+		write_flight_path()//飛行経路の描画
 	}
-	$('#flightLat').text(lat.toFixed(4));  //緯度経度
-	$('#flightLng').text(lon.toFixed(4));  //緯度経度
-	$('#flightHeight').text(alt.toFixed(2) + "m");  //高度
-	//$('#flightSpeed').text(speed.toFixed(2) + "m/s");  //速度  速度があるかわからなかったのでコメントアウト中
-	$('#flightAngle').text(ang.toFixed(2) + "度");  //方位
 	
-
-	console.log("333333");
-
-
-	//電波強度などの更新  データ形式など不明なのでコメントアウト
-	//show_sidber_flight_info(drone_data)
-	
-	//飛行前の場合 現在の位置に応じてルートの描画を更新(離陸地点が変わるため)
-	//// if(mission_ready==false){
-	//// 	showMapWithRoute(lat,lon)
-	//// 	if(mode=="ARM"){  //離陸準備の確認（仮） これ以外に確認する事項があれば要追加  441行あたりのfunction flightExecuteConfirm()もセットで修正
-	//// 		mission_ready=true
-	//// 	}
-	//// }
-	
-
-	console.log("444444");
-
-
 	/////////////////表示情報の更新 ここまで///////////////////////
 	
 	drones[drone_name] = drone_data; // ドローンデータ用連想配列の情報を最新のメッセージに更新
@@ -611,47 +623,11 @@ function onMessageArrived(message) {
 
 
 //==============メッセージ送信==============
-//各操作の際に送るMQTTメッセージ  それっぽいのをmap_r_click.htmlから持ってきただけなので多分修正がいる
-var MQTT_comand= {
-	//離陸準備の時(ミッション開始を２段階に分けたときの１段階目)
-	"ARM":{
-		"command":"ARM",
-		"d_lat":"0",
-		"d_lon":"0",
-		"d_alt":"0",
-	},
-	//ミッション開始(ミッション開始を２段階に分けたときの２段階目)
-	"MISSION_START":{ 
-		"command":"TAKEOFF",
-		"d_lat":"0",
-		"d_lon":"0",
-		"d_alt":"0",
-	},
-	//ミッション中断
-	"MISSION_BREAK_HOVERING":{
-		"command":"PAUSE",
-		"d_lat":"0",
-		"d_lon":"0",
-		"d_alt":"0",
-	},
-	//ミッション中断＞ホーム帰還の時
-	"MISSION_STOP_RTL":{
-		"command":"RTL",
-		"d_lat":"0",
-		"d_lon":"0",
-		"d_alt":"0",
-	},
-	//ミッション中断＞ミッション再開の時
-	"MISSION_RESUME":{
-		"command":"RESUME",
-		"d_lat":"0",
-		"d_lon":"0",
-		"d_alt":"0",
-	}
-}
-function MQQTT_publish(str){	
-	let msg=MQTT_comand[str]
-	
+
+function MQQTT_publish(str){
+	MQTT_command["command"]= str;
+	let msg=JSON.stringify(MQTT_command)
+	console.log(msg)
 	message = new Paho.MQTT.Message(msg);      // MQTTのメッセージパケットを作る
 	message.destinationName = "ctrl/001";   // トピック名を設定
 	client.send(message);   // MQTTでPubする
@@ -662,21 +638,17 @@ function MQQTT_publish(str){
 
 //ドローンの描画
 function write_drone(lat,lon,ang){
-	if(!$('div').hasClass('drone_marker')){//ドローンのマーカーがないとき、新しく作る
-		console.log("1")
+	if(!$('div').hasClass('drone-marker')){//ドローンのマーカーがないとき、新しく作る
 		const el = document.createElement('div');
-		console.log("2")
-		el.className = 'drone_marker';
-		console.log("3")
-		////elDiv.id = 'droneIcon';
-		console.log("4")
-		//// drone_marker = new mapboxgl.Marker(el)
-		//// 	.setLngLat([lon, lat])
-		//// 	.setRotation(ang)
-		//// 	.addTo(map);  //マーカーをマップに追加
+		el.className = 'drone-marker';
+		el.id = 'droneIcon';
+		drone_marker = new mapboxgl.Marker(el)
+			.setLngLat([lon, lat])
+			.setRotation(ang)
+			.addTo(map);  //マーカーをマップに追加
 		map.setCenter([lon, lat]) //初期表示時にドローンをマップ中心にする？
 	}else{
-		drone_marker.set.setLngLat([lon, lat])
+		drone_marker.setLngLat([lon, lat])
 		drone_marker.setRotation(ang)
 	}
 }
@@ -686,7 +658,7 @@ function MQTTconnect(MQTTconect){
 	if(MQTTconect){//MQTT接続時処理
 		$('#fl-video').css('display', 'block');
 		$("#wipeMapDisplayControl").css('display', 'block');
-	}else{MQTT切断時処理
+	}else{  //MQTT切断時処理
 		//(仮)ドローンとの接続切断時、映像表示を消す
 		$('#fl-video').css('display', 'none');
 		$("#wipeMapDisplayControl").css('display', 'none');
@@ -731,34 +703,64 @@ function write_flight_path(){
 }
 function show_sidber_flight_info(drone_data){ 
 	//////// テレメトリ情報表示 ////////
-	// 電波強度
-	$('#LTESignalStrength').text(LTE_SIGNAL_STRENGTH[drone_data['LTESignalStrength']]);
-	if (Number(drone_data['LTESignalStrength']) <= 2) {
+	
+	let arm = drone_data.status.Arm;           // ARM/DISARM（TRUE/FALSE）
+	let mode  = drone_data.status.FlightMode;    // フライトモード
+	let lat  = parseFloat( drone_data["position"]["latitude"] );   // 緯度
+	let lon  = parseFloat( drone_data["position"]["longitude"] );  // 経度
+	let alt  = parseFloat( drone_data["position"]["altitude"] );   // 高度
+	let ang  = parseFloat( drone_data["position"]["heading"] );    // 方位
+	let speed= parseFloat( drone_data["position"]["speed"] );      // 速度
+	//let LTESignalStrength =   //電波強度
+	//let RTK_status =          // RTK接続数
+	let GPS_cnt =parseInt( drone_data["gps"]["count"]);   // GPS接続数
+	let battery_voltage= parseFloat( drone_data["battery"]["voltage"] ); //バッテリー電圧
+	
+	/////////////////表示情報の更新 ここから///////////////////////
+	// 機体名が空->表示中の機体名の更新  ある->何もしない
+	if($('#aircraftName').text === "" ){
+		$('#aircraftName').text(drone_name);
+	}
+	
+	$('#flightLat').text(lat);  // 緯度
+	$('#flightLng').text(lon);  // 経度  分割して表示
+	$('#flightHeight').text(alt.toFixed(4) + "m");  // 高度
+	$('#flightSpeed').text(speed.toFixed(4) + "m/s");  // 速度 
+	$('#flightAngle').text(ang + "度");  // 方位
+	$('#flightmode').text(mode);  //フライトモード
+	$('#ARM').text(arm);  // ARM/DISARM
+	
+	//以下数値によって色を変える（アラートを出す？）項目
+	
+	/* 電波強度は現段階では表示しない
+	$('#LTESignalStrength').text(LTESignalStrength);
+	if (Number(LTESignalStrength) <= 2){
 		$('#LTESignalStrengthLine').addClass("telemetry-danger");
 	} else {
 		$('#LTESignalStrengthLine').addClass("telemetry-normal");
-	}
+	}*/
 	
-	// 電池残量
-	$('#batteryRemaining').text(new Intl.NumberFormat('ja', { style: 'percent' }).format(drone_data['batteryRemaining']));
-	if (Number(drone_data['batteryRemaining']) <= 0.3) {
+	//電池残量（電圧）
+	$('#batteryRemaining').text(battery_voltage);
+	if (Number(battery_voltage) <= 10) {
 		$('#batteryRemainingLine').addClass("telemetry-danger");
 	} else {
 		$('#batteryRemainingLine').addClass("telemetry-normal");
 	}
 	
-	// GPS接続数
-	$('#GPSSatellitesCnt').text(drone_data['GPSSatellitesCnt']);
-	if (Number(drone_data['GPSSatellitesCnt']) <= 2) {
+	//GPS接続数
+	$('#GPSSatellitesCnt').text(GPS_cnt);
+	if (Number(GPS_cnt) <= 2) {
 		$('#GPSSatellitesCntLine').addClass("telemetry-danger");
 	} else {
 		$('#GPSSatellitesCntLine').addClass("telemetry-normal");
 	}
-	// RTK接続数
-	$('#RTKStatus').text(drone_data['RTKStatus']);
-	if (Number(drone_data['RTKStatus']) <= 2) {
+	/* RTK接続数の表示 現段階では表示しない
+	$('#RTKStatus').text(RTK_status);
+	if (Number(RTK_status) <= 2) {
 		$('#RTKStatusLine').addClass("telemetry-danger");
 	} else {
 		$('#RTKStatusLine').addClass("telemetry-normal");
-	}
+	}*/
 }
+
