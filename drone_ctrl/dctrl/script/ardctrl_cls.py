@@ -45,7 +45,8 @@ class ArdCtrlCls():
             "isArmable":"false",
             "Arm":"false",
             "FlightMode":"false",
-            "dinfo":""
+            "dinfo":"",
+            "dmsg":""
         },
         "battery":{
             "voltage":"0.0",
@@ -134,6 +135,12 @@ class ArdCtrlCls():
         self.drone_info["status"]["dinfo"] = status
 
     ### =================================================================================== 
+    ### Set drone message
+    ### =================================================================================== 
+    def set_vehicle_cmsg(self, msg):
+        self.drone_info["status"]["dmsg"] = msg
+
+    ### =================================================================================== 
     ### Set drone information (use for transfar to server by MQTT)
     ### =================================================================================== 
     def set_vehicle_info(self):
@@ -189,14 +196,14 @@ class ArdCtrlCls():
         # dlog.LOG("INFO","  Supports the flight termination command: " + str(self.vehicle.capabilities.flight_termination))
         # dlog.LOG("INFO","  Supports mission_float message type: " + str(self.vehicle.capabilities.mission_float))
         # dlog.LOG("INFO","  Supports onboard compass calibration: " + str(self.vehicle.capabilities.compass_calibration))
-        dlog.LOG("INFO","Global Location: " + str(self.vehicle.location.global_frame))
-        dlog.LOG("INFO","Global Location (relative altitude): " + str(self.vehicle.location.global_relative_frame))
-        dlog.LOG("INFO","Local Location: " + str(self.vehicle.location.local_frame))
-        dlog.LOG("INFO","Attitude: " + str(self.vehicle.attitude))
+        # dlog.LOG("INFO","Global Location: " + str(self.vehicle.location.global_frame))
+        dlog.LOG("INFO", str(self.vehicle.location.global_relative_frame))
+        dlog.LOG("INFO", str(self.vehicle.location.local_frame))
+        dlog.LOG("INFO", str(self.vehicle.attitude))
         dlog.LOG("INFO","Velocity: " + str(self.vehicle.velocity))
-        dlog.LOG("INFO","GPS: " + str(self.vehicle.gps_0))
-        dlog.LOG("INFO","Gimbal status: " + str(self.vehicle.gimbal))
-        dlog.LOG("INFO","Battery: " + str(self.vehicle.battery))
+        dlog.LOG("INFO", str(self.vehicle.gps_0))
+        dlog.LOG("INFO", str(self.vehicle.gimbal))
+        dlog.LOG("INFO", str(self.vehicle.battery))
         dlog.LOG("INFO","EKF OK?: " + str(self.vehicle.ekf_ok))
         dlog.LOG("INFO","Last Heartbeat: " + str(self.vehicle.last_heartbeat))
         # dlog.LOG("INFO","Rangefinder: " + str(self.vehicle.rangefinder))

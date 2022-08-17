@@ -120,8 +120,8 @@ if __name__ == '__main__':
         def listner( self, name, message ):
             msg = "COMMAND_ACK: " + str(message)
             dlog.LOG("DEBUG", msg)
-            msg = "COMMAND: " + str(message.command) + ( (" is Accepted") if message.result==0 else " Error" )
-            drnc.set_vehicle_csts(msg)
+            msg = "MAV:COMMAND_ACK: " + str(message.command) + ( (" is Accepted") if message.result==0 else " Error" )
+            drnc.set_vehicle_cmsg(msg)
 
         # ---- for test -----------------------------------------
         @drnc.vehicle.on_message('PARAM_SET')
@@ -150,14 +150,16 @@ if __name__ == '__main__':
         def listner( self, name, message ):
             # message.type : ミッションの結果
             # message.mission_type: 
-            msg = "MISSION_ACK受信: " + str(message)
+            msg = "MAV:MISSION_ACK: " + str(message)
+            drnc.set_vehicle_cmsg(msg)
             dlog.LOG("DEBUG", msg)
 
         # ミッション位置到着デコレータ
         # ウェイポイントに到着した場合にメッセージを受信
         @drnc.vehicle.on_message('MISSION_ITEM_REACHED')
         def listner( self, name, message ):
-            msg = "MISSION_ITEM_REACHED受信: " + str(message)
+            msg = "MAV:MISSION_ITEM_REACHED: " + str(message)
+            drnc.set_vehicle_cmsg(msg)
             dlog.LOG("DEBUG", msg)
 
             if drnc.vehicle.commands.next >= 1:
@@ -208,7 +210,10 @@ if __name__ == '__main__':
                     while drnc.vehicle.armed == False:
                         dlog.LOG("DEBUG", "ARMと離陸をしています...")
                         time.sleep(1)
-                    dlog.LOG("INFO", "ARMと離陸完了:" + str(ARM_HEIGHT) + 'm')                
+                    dlog.LOG("INFO", "ARMと離陸完了:" + str(ARM_HEIGHT) + 'm')
+
+                    # Reset mission set to first (0) waypoint
+                    drnc.vehicle.commands.next=0                
 
                     # ミッションを実行するため、モードをAUTOにする
                     drnc.set_vehicle_mode("AUTO")
@@ -217,8 +222,15 @@ if __name__ == '__main__':
                     while True:
 
                         nextwaypoint = drnc.vehicle.commands.next
-                        #commands are zero indexed
-                        if nextwaypoint>0:
+                        #print('Distance to waypoint (%s): %s' % (nextwaypoint, drnc.distance_to_current_waypoint()))
+                        mcmd = 0
+
+                        if nextwaypoint == 0:
+                            dlog.LOG("DEBUG", "ウェイポイントが設定されていないため、実行できません")
+                            #drnc.flg_MissionDoing = False
+                            drnc.flg_MissionUploaded == False
+                            #break                     
+                        else:
                             missionitem = drnc.vehicle.commands[nextwaypoint-1] 
                             mcmd = missionitem.command
 
@@ -226,7 +238,7 @@ if __name__ == '__main__':
                         drnc.vehicle.groundspeed = 10 # Ground Speed is Fix (T.B.D.)
                         ###############################################
 
-                        msg = 'Next WP(%s) --> [ %s m]' % (nextwaypoint, drnc.distance_to_current_waypoint())
+                        msg = 'Goto WP( %s ) Dist [ %s m ]' % (nextwaypoint, drnc.distance_to_current_waypoint())
                         dlog.LOG("DEBUG", msg)
                         drnc.set_vehicle_csts(msg)
                         if drnc.vehicle.commands.count == 0:
@@ -236,40 +248,44 @@ if __name__ == '__main__':
                             msg = "ミッションを終了して離陸地点へ戻る"
                             dlog.LOG("DEBUG", msg)
                             # ミッションをクリア
-                            drnc.clear_mission_all()
                             drnc.set_vehicle_mode("RTL")
                             break
                         elif mcmd == mavutil.mavlink.MAV_CMD_NAV_LAND:
                             msg = "ミッションを終了して現在位置へLANDする"
                             dlog.LOG("DEBUG", msg)
                             # ミッションをクリア
-                            drnc.clear_mission_all()
                             drnc.set_vehicle_mode("LAND")
                             break
 
-                        if drnc.mission_wp_count <= 0:
-                            drnc.clear_mission_all()
+                        elif drnc.mission_wp_count <= 0:
+                            msg = "ミッション完了で終了"
+                            dlog.LOG("DEBUG", msg)
                             break
+
+                        elif drnc.flg_abortMission == True:
+                            break
+
                         # -----------------------------------------------------------
                         # ウェイポイント到着時の処理
+                        # 暫定処理：その場で永遠に回転する
                         # -----------------------------------------------------------
                         if drnc.flg_wayPoint == True:
-                            dlog.LOG("DEBUG", "ウェイポイントアクションを実行")
+                            dlog.LOG("DEBUG", "ウェイポイントアクションを実行しています")
                             dlog.LOG("DEBUG", "Remain WP: " + str(drnc.mission_wp_count))                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
                             drnc.set_vehicle_csts("WP Action")
-                            drnc.condition_yaw_vehicle(30, 1, True)
-                            time.sleep(0.3)
+                            drnc.condition_yaw_vehicle(10, 1, True)
+                            time.sleep(0.5)
                         
-                        #print( "WP count = " + str(drnc.mission_wp_count))
                         time.sleep(1)
                     
-                    dlog.LOG("DEBUG", "ミッションを終了しました")
+                    dlog.LOG("DEBUG", "ミッション動作を終了")
                     drnc.flg_MissionDoing = False
                     drnc.set_vehicle_csts("MISSION END")
                     # ミッションをクリア
                     drnc.clear_mission_all()
                     drnc.mission_wp_count = 0
                     drnc.flg_MissionUploaded = False
+                    drnc.flg_abortMission = False
 
                 else:
                     drnc.set_vehicle_csts("Mission is not uploaded")

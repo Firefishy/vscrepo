@@ -78,6 +78,7 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
     #msg = ""
 
     mission_wp_count = 0
+    flg_abortMission = False
 
     ### =================================================================================== 
     ### MQTTで受信するドローン操作コマンド:クライアントから受信
@@ -251,6 +252,13 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
 
                 self.flg_MissionUploaded = True
 
+            elif self.drone_command["operation"] == "MISSION_ABORT":
+                self.drone_info["status"]["dmsg"] = self.drone_command["operation"]
+                self.set_vehicle_cmsg(str(msg))
+                self.flg_abortMission = True
+                self.flg_wayPoint = False
+
+
             elif self.drone_command["operation"] == "ARM":
                 self.drone_info["status"]["dinfo"] = self.drone_command["operation"]
                 # ARMしていない場合
@@ -324,7 +332,7 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
                         # AUTOモードに設定した場合はウェイポイントフラグをクリアする
                         if self.drone_command["operation"] == "AUTO":
                             if self.flg_MissionDoing == True:
-                                self.set_vehicle_mode(self.drone_command["operation"])                
+                                self.set_vehicle_mode("AUTO")                
                                 self.flg_wayPoint = False
 
                         # Deone mode set: MISSION_STARTはモードでは無いため除外する

@@ -166,6 +166,8 @@ sub.on('message', function (topic_sub, message) {
 
   document.getElementById('vehicle_current_state').innerHTML = drone_data.status.dinfo;
   document.getElementById('vehicle_current_state').style.color = '#FFFF00';
+  document.getElementById('vehicle_current_msg').innerHTML = drone_data.status.dmsg;
+  document.getElementById('vehicle_current_msg').style.color = '#FFFF00';
 
   document.getElementById('carm').innerHTML = arm;
   if (arm == 'True'){
@@ -314,17 +316,23 @@ const droneCtrl = (ope) => {
       cmdAry.push(mission_cmd)  
     }
 
-    // コマンドの送信
+    // MISSIONをパブリッシュ
     pubCommand(topic_mission,cmdAry);
 
     // Goto、Mission以外のコマンド送信時
     drone_command["operation"] = ope;
     console.log(drone_command["operation"] = ope)
-
-    // MQTTでパブリッシュする
+    // コマンドの送信
     pubCommand(topic_pub,drone_command);
 
   }
+
+  // Mission: ミッションポイントを強制終了
+  else if(ope == "MISSION_ABORT"){
+    drone_command["operation"] = ope;
+    pubCommand(topic_pub,drone_command);
+  }
+
   else{
     // Goto、Mission以外のコマンド送信時
     drone_command["operation"] = ope;

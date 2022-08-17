@@ -277,7 +277,6 @@ class ArdCtrlClsC2(ardctrl.ArdCtrlClsC1):
             cmds.add(command)
             mission_count = mission_count + 1
         cmds.upload()
-        time.sleep(2)
         dlog.LOG("DEBUG","END")
         return mission_count
 

@@ -81,7 +81,7 @@ class ArdCtrlClsC1(ardctrl.ArdCtrlCls):
             self.set_vehicle_csts("Take off: " + str(alt) + "m")
             # Take off to target altitude
             self.vehicle.simple_takeoff(alt)  
-            self.dinfo = "Take off しました"
+            self.dinfo = "Take off done"
         else:
             dlog.LOG("DEBUG","ARMしていないためTAKEOFFできません")
 
