@@ -164,6 +164,16 @@ sub.on('message', function (topic_sub, message) {
   // GPS数
   let gpscnt = parseFloat( drone_data.gps.count );
 
+  // ロール
+  let droll = parseFloat( drone_data.attitude.roll );
+  droll = (180/Math.PI*droll).toFixed(3);
+  // ピッチ
+  let dpitch = parseFloat( drone_data.attitude.pitch );
+  dpitch = (180/Math.PI*dpitch).toFixed(3);
+  // ヨー
+  let dyaw = parseFloat( drone_data.attitude.yaw );
+  dyaw = (180/Math.PI*dyaw).toFixed(2);
+
   document.getElementById('vehicle_current_state').innerHTML = drone_data.status.dinfo;
   document.getElementById('vehicle_current_state').style.color = '#FFFF00';
   document.getElementById('vehicle_current_msg').innerHTML = drone_data.status.dmsg;
@@ -187,6 +197,12 @@ sub.on('message', function (topic_sub, message) {
     document.getElementById('calt').style.color = '#777777';
   }
   document.getElementById('cang').innerHTML = ang.toString();
+
+  document.getElementById('croll').innerHTML = droll.toString();
+  document.getElementById('cpitch').innerHTML = dpitch.toString();
+  document.getElementById('cyaw').innerHTML = dyaw.toString();
+
+
   document.getElementById('cvlt').innerHTML = bvolt.toString();
   document.getElementById('ccnt').innerHTML = bcrnt.toString();
   document.getElementById('cgps').innerHTML = gpscnt.toString();
@@ -284,7 +300,9 @@ const droneCtrl = (ope) => {
     //   1,
     //   3,
     //   document.getElementById('mwp1_cmd').value, 
-    //   clatData, clonData, caltData, 1
+    //   clatData, clonData, caltData, 
+    //   10,
+    //   1
     // );         
     // cmdAry.push(mission_cmd) 
 
@@ -303,7 +321,9 @@ const droneCtrl = (ope) => {
                         0, 
                         3,
                         document.getElementById('mwp' + i.toString() + '_cmd').value, 
-                        latData, lonData, altData, 1
+                        latData, lonData, altData, 
+                        10,
+                        1
         );
         console.log(mission_cmd);
         cmdAry.push(mission_cmd);
@@ -312,7 +332,7 @@ const droneCtrl = (ope) => {
 
     // RTL
     if(document.getElementById("achke").checked == true){
-      mission_cmd = makeMissionCmdWithTab(idx, 0, 3, 20, clatData, clonData, caltData, 1); 
+      mission_cmd = makeMissionCmdWithTab(idx, 0, 3, 20, 0, 0, 0, 10, 1); 
       cmdAry.push(mission_cmd)  
     }
 
@@ -350,11 +370,12 @@ const makeMissionCmdWithTab = (
   frame,            // 0: global+MSL, 3:global+rel
   cmd,              // command: 16, 22
   lat , lon, alt,
+  speed,
   cnt
 ) => {
   missionData =   idx + '\t' 
                 + cwp + '\t' + frame + '\t' + cmd + '\t' 
-                + 0 + '\t' + 0 + '\t' + 0 + '\t'  + 0 + '\t'
+                + 0 + '\t' + speed + '\t' + 0 + '\t'  + 0 + '\t'
                 + lat + '\t' 
                 + lon + '\t' 
                 + alt + '\t'

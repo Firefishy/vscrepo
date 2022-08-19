@@ -3,6 +3,9 @@
 
 """
 ^----^
+ *  * ^----^
+ *  * ^----^
+ *  * ^----^
  *  * 
 This program is ...
 Drone control program for specific drone.
@@ -173,7 +176,7 @@ class ArdCtrlCls():
     def dsp_attributes(self):
         dlog.LOG("DEBUG", "START")
         # Get all vehicle attributes (state)
-        dlog.LOG("INFO","\n---- Vehicle attributes ----------------------------------------")
+        dlog.LOG("INFO","\n---- Vehicle attributes ----------------------------------------------------")
         dlog.LOG("INFO","Ardupilot Firmware version: " + str(self.vehicle.version))
         # dlog.LOG("INFO","  Major version number: " + str(self.vehicle.version.major))
         # dlog.LOG("INFO","  Minor version number: " + str(self.vehicle.version.minor))

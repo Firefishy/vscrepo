@@ -42,7 +42,7 @@ def pub_drone_info():
 if __name__ == '__main__':
 
     ARM_HEIGHT = 3.0
-    mcmd = ""
+    mav_cmd = ""
 
     # Drone Control class instance
     drnc = drnCtrl.DrnCtrl()
@@ -150,16 +150,16 @@ if __name__ == '__main__':
         def listner( self, name, message ):
             # message.type : ミッションの結果
             # message.mission_type: 
+            drnc.set_vehicle_cmsg("MISSION_ACK")
             msg = "MAV:MISSION_ACK: " + str(message)
-            drnc.set_vehicle_cmsg(msg)
             dlog.LOG("DEBUG", msg)
 
         # ミッション位置到着デコレータ
         # ウェイポイントに到着した場合にメッセージを受信
         @drnc.vehicle.on_message('MISSION_ITEM_REACHED')
         def listner( self, name, message ):
+            drnc.set_vehicle_cmsg("MISSION_ITEM_REACHED")
             msg = "MAV:MISSION_ITEM_REACHED: " + str(message)
-            drnc.set_vehicle_cmsg(msg)
             dlog.LOG("DEBUG", msg)
 
             if drnc.vehicle.commands.next >= 1:
@@ -186,6 +186,9 @@ if __name__ == '__main__':
         # tlog解析テスト用 T.B.D.
         # tloga.position_messages_from_tlog("mav.tlog")
 
+        # ----------------------------------------------------------------
+        # Main Loop
+        # ----------------------------------------------------------------
         while True:
            
             # ----------------------------------------------------------------
@@ -217,40 +220,44 @@ if __name__ == '__main__':
 
                     # ミッションを実行するため、モードをAUTOにする
                     drnc.set_vehicle_mode("AUTO")
-                    # ドローン情報をMQTTでパブリッシュ
 
                     while True:
 
                         nextwaypoint = drnc.vehicle.commands.next
-                        #print('Distance to waypoint (%s): %s' % (nextwaypoint, drnc.distance_to_current_waypoint()))
-                        mcmd = 0
+                        # init to MAV_CMD_NAV_WAYPOINT(16): Navigate to waypoint 
+                        mav_cmd = mavutil.mavlink.MAV_CMD_NAV_WAYPOINT
 
                         if nextwaypoint == 0:
                             dlog.LOG("DEBUG", "ウェイポイントが設定されていないため、実行できません")
-                            #drnc.flg_MissionDoing = False
                             drnc.flg_MissionUploaded == False
-                            #break                     
                         else:
                             missionitem = drnc.vehicle.commands[nextwaypoint-1] 
-                            mcmd = missionitem.command
+                            mav_cmd = missionitem.command
+                            print(nextwaypoint-1)
+                            print(mav_cmd)
 
                         ###############################################
                         drnc.vehicle.groundspeed = 10 # Ground Speed is Fix (T.B.D.)
                         ###############################################
 
-                        msg = 'Goto WP( %s ) Dist [ %s m ]' % (nextwaypoint, drnc.distance_to_current_waypoint())
+                        msg = 'Goto WP(%s) Remain [%s(m)]' % (nextwaypoint, drnc.distance_to_current_waypoint())
                         dlog.LOG("DEBUG", msg)
                         drnc.set_vehicle_csts(msg)
+
                         if drnc.vehicle.commands.count == 0:
                             dlog.LOG("DEBUG", "Count=0のためMISSION実行できません")
                             break
-                        if mcmd == mavutil.mavlink.MAV_CMD_NAV_RETURN_TO_LAUNCH:
+                        
+                        # MAV_CMD_NAV_RETURN_TO_LAUNCH(20): Return to launch location
+                        elif mav_cmd == mavutil.mavlink.MAV_CMD_NAV_RETURN_TO_LAUNCH:
                             msg = "ミッションを終了して離陸地点へ戻る"
                             dlog.LOG("DEBUG", msg)
                             # ミッションをクリア
                             drnc.set_vehicle_mode("RTL")
                             break
-                        elif mcmd == mavutil.mavlink.MAV_CMD_NAV_LAND:
+                        
+                        # MAV_CMD_NAV_LAND(21): Land at location.
+                        elif mav_cmd == mavutil.mavlink.MAV_CMD_NAV_LAND:
                             msg = "ミッションを終了して現在位置へLANDする"
                             dlog.LOG("DEBUG", msg)
                             # ミッションをクリア
@@ -263,6 +270,9 @@ if __name__ == '__main__':
                             break
 
                         elif drnc.flg_abortMission == True:
+                            msg = "ミッション中断コマンドで終了"
+                            dlog.LOG("DEBUG", msg)
+                            drnc.flg_wayPoint = False
                             break
 
                         # -----------------------------------------------------------
@@ -272,7 +282,7 @@ if __name__ == '__main__':
                         if drnc.flg_wayPoint == True:
                             dlog.LOG("DEBUG", "ウェイポイントアクションを実行しています")
                             dlog.LOG("DEBUG", "Remain WP: " + str(drnc.mission_wp_count))                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
-                            drnc.set_vehicle_csts("WP Action")
+                            drnc.set_vehicle_csts("WP(" + str(nextwaypoint-1) + ")") 
                             drnc.condition_yaw_vehicle(10, 1, True)
                             time.sleep(0.5)
                         
