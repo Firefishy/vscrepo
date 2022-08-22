@@ -24,7 +24,7 @@ h3 {
   font-size: 16px;
   color: #fff;
   background: transparent; /* 背景を透明に変更 */
-  padding: 0 0 0 0;
+  padding: 0em 0 0 0;
   border: 0px dotted;
 }
 
@@ -98,9 +98,9 @@ main {
 
 .wrap_0 {
   text-align: center;
-  margin: 0em 0.2em;
+  margin: 0.8em 0.2em;
   padding-bottom: 0em;
-  border: 0px solid rgb(218, 207, 207);
+  border: 1px dotted rgb(15, 15, 15);
 }
 
 .acpbtn {
@@ -264,7 +264,8 @@ td {
 }
 .button30pct {
   width: 30%;
-  margin-bottom: 0.4em;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
 }
 .button35pct {
   width: 35%;
@@ -393,6 +394,28 @@ img {
   padding: 0.6em 0.4em 0 0.4em;
   width: 150px;
   border: 0px solid rgb(218, 207, 207);
+}
+
+.input_style0{
+  width:60px;
+  height:26px;
+  font-size:14px;
+  text-align: right;
+  color: black;
+  border: solid 1px rgb(49, 49, 49);
+  background:white;
+  padding: 0 0.4em 0 0em;
+}
+
+.input_style4{
+  width:40px;
+  height:26px;
+  font-size:14px;
+  text-align: right;
+  color: black;
+  border: solid 1px rgb(49, 49, 49);
+  background: white;
+  padding: 0 0.4em 0 0em;
 }
 
 .input_style1{

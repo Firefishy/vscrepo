@@ -30,8 +30,6 @@ import json
 import os
 import ardctrl_cls_c2 as ardctrl
 
-ARM_HEIGHT = 3.0
-
 ##################################################################
 ### Class as singleton
 ##################################################################
@@ -80,6 +78,12 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
     mission_wp_count = 0
     flg_abortMission = False
 
+    # 離陸高度のイニシャル値(m)
+    arm_height = 5.0
+
+    wp_action_no = 0
+
+
     ### =================================================================================== 
     ### MQTTで受信するドローン操作コマンド:クライアントから受信
     ###     コマンドおよび移動先の「緯度、経度、高度」情報
@@ -117,6 +121,69 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
         "d_alt":"0",
         "acnt":"0"
     }
+
+    drone_wp_action = {
+        "WP1_actions" : {
+            "waypoint":1,                       # ウェイポイント番号
+            "action_num" :2,                    # ウェイポイントに紐づくアクション数
+            # 1つめのアクションの詳細
+            "WP1_action1" : {
+            "action_type" : "hovering",         # アクションタイプ（ホバリング）
+            "hovering_time" : 10,               # ホバリング秒数（アクションタイプがホバリングの場合）
+            },
+            # 2つめのアクションの詳細
+            "WP1_action2" : {
+            "action_type" : "aircraft_rotate",  # アクションタイプ（機体回転）
+            "aircraft_yaw" :90,                 # 機体回転角度（アクションタイプが機体回転の場合）
+            }
+        }
+    }
+
+    wp_action_msg = {
+        "WP1_actions" : {
+            "waypoint":1,                           # ウェイポイント番号
+            "action_num" :2,                        # ウェイポイントに紐づくアクション数
+            # 1つめのアクションの詳細
+            "WP1_action1" : {
+            "action_type" : "hovering",           # アクションタイプ（ホバリング）
+            "value" : 5,                 # ホバリング秒数（アクションタイプがホバリングの場合）
+            },
+            # 2つめのアクションの詳細
+            "WP1_action2" : {
+            "action_type" : "aircraft_rotate",    # アクションタイプ（機体回転）
+            "value" :90,                   # 機体回転角度（アクションタイプが機体回転の場合）
+            }
+        },
+        "WP2_actions" : {
+            "waypoint" : 2,
+            "action_num" : 1,
+            "WP2_action1" : {
+            "action_type" : "aircraft_rotate",
+            "value" : 90,
+            }
+        },
+        "WP3_actions" : {
+            "waypoint" : 3,
+            "action_num" : 4,
+            "WP3_action1" : {
+            "action_type" : "hovering",
+            "value" : 10,
+            },
+            "WP3_action2" : {
+            "action_type" : "aircraft_rotate",
+            "value" : 360,
+            },
+            "WP3_action3" : {
+            "action_type" : "aircraft_rotate",
+            "value" : -10,
+            },
+            "WP3_action4" : {
+            "action_type" : "hovering",
+            "value" : 10,
+            }
+        },
+    }
+
 
     ### =================================================================================== 
     ### コンストラクタ
@@ -163,6 +230,8 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
         #mqttClass.client.loop_forever()
         #mqttClass.client_mission_test.loop_forever()
         #mqttClass.client_mission.loop_forever()
+
+        wp_action_no = 0
 
     ### =================================================================================== 
     ### ブローカーに接続できたときの処理：コールバック
@@ -283,7 +352,13 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
                         self.vehicle_disarming()
                     # TAKE OFF
                     elif self.drone_command["operation"] == "TAKEOFF":
-                        self.vehicle_takeoff(20.0)
+                        self.arm_height = float(recvData["d_alt"])
+                        dlog.LOG("DEBUG", "Take off alt: " + str(self.arm_height))
+                        # safety
+                        if self.arm_height <= 0:
+                            dlog.LOG("DEBUG", "Take off alt(init): " + str(self.arm_height))
+                            self.arm_height = 5.0
+                        self.vehicle_takeoff(self.arm_height)
 
                     # PAUSE
                     elif self.drone_command["operation"] == "MISSION_PAUSE":
@@ -292,13 +367,23 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
                     elif self.drone_command["operation"] == "MISSION_RESUME":
                         self.resume_vehicle()
 
-                    # MISSION_ABORT
-                    elif self.drone_command["operation"] == "MISSION_ABORT":
-                        self.resume_vehicle()
+                    # 回転：GUIDEDモード時のみ有効
+                    elif self.drone_command["operation"] == "ROTATE":
+                        print("ROTATE")
+                        self.drone_command["d_alt"] = float(recvData["d_alt"])
 
-                    # ROTATION
-                    elif self.drone_command["operation"] == "ROTATION":
-                        self.condition_yaw_vehicle(45, 1, True)
+                    # 特定の位置へ移動
+                    elif self.drone_command["operation"] == "MOVE":
+                        print("MOVE")
+                        self.drone_command["d_lat"] = recvData["d_lat"]
+                        self.drone_command["d_lon"] = recvData["d_lon"]
+                        self.drone_command["d_spd"] = recvData["d_spd"]
+
+                    # 高度変更
+                    elif self.drone_command["operation"] == "ALT":
+                        print("ALT")
+                        self.drone_command["d_alt"] = recvData["d_alt"]
+                        self.drone_command["d_spd"] = recvData["d_spd"]
 
                     # ---- Simple GOTO ----
                     elif self.drone_command["operation"] == "GOTO":
@@ -313,13 +398,13 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
 
                         # アームしていない場合ARMする
                         if self.vehicle.armed == False:
-                            self.arm_and_takeoff(ARM_HEIGHT)
-                            dlog.LOG("DEBUG", "ARMと離陸開始:" + str(ARM_HEIGHT) + 'm')
+                            self.arm_and_takeoff(self.arm_height)
+                            dlog.LOG("DEBUG", "ARMと離陸開始:" + str(self.arm_height) + 'm')
                         # アーム状態をチェック
                         while self.vehicle.armed == False:
                             dlog.LOG("DEBUG", "ARMと離陸をしています...")
                             time.sleep(1)
-                        dlog.LOG("INFO", "GOTO: ARMと離陸完了:" + str(ARM_HEIGHT) + 'm')
+                        dlog.LOG("INFO", "GOTO: ARMと離陸完了:" + str(self.arm_height) + 'm')
                         self.vehicle_goto(self.drone_command)
                     
                     elif self.drone_command["operation"] == "MISSION_CLEAR":
@@ -334,10 +419,17 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
                             if self.flg_MissionDoing == True:
                                 self.set_vehicle_mode("AUTO")                
                                 self.flg_wayPoint = False
+                            else:
+                                self.flg_abortMission = True
 
                         # Deone mode set: MISSION_STARTはモードでは無いため除外する
                         elif self.drone_command["operation"] != "MISSION_START":
-                            self.set_vehicle_mode(self.drone_command["operation"])                
+                            self.set_vehicle_mode(self.drone_command["operation"])
+                            self.arm_height = recvData["d_alt"]
+                            dlog.LOG("DEBUG", "Take off alt: " + str(self.arm_height))
+                            if self.arm_height <= 0:
+                                dlog.LOG("DEBUG", "Take off alt(init): " + str(self.arm_height))
+                                self.arm_height = 5.0
 
     ### =================================================================================== 
     ### Missionコマンドサブスクライバコールバック
@@ -404,3 +496,27 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
         f.close()        
         dlog.LOG("DEBUG","END")
 
+    wp1_action_list = []
+    wp2_action_list = []
+    wp3_action_list = []
+    wp4_action_list = []
+    wp5_action_list = []
+    wp6_action_list = []
+    wp7_action_list = []
+    wp8_action_list = []
+
+    ### =================================================================================== 
+    ### Init waypoint action    
+    ### =================================================================================== 
+    def clr_wp_action(self, wp_action, cnt):
+          for i in range(cnt):
+            wp_action[i].clear()
+
+    ### =================================================================================== 
+    ### Set Init waypoint action    
+    ### =================================================================================== 
+    def set_wp_action(self, wp_action, cnt):
+        for wp_num in range(cnt):
+            for ac_num in range(self.wp_action_msg["WP" + str(wp_num+1) + "_actions"]["action_num"]):
+                wp_action[wp_num].append(self.wp_action_msg["WP" + str(wp_num+1) + "_actions"]["WP" + str(wp_num+1) + "_action" + str(ac_num+1)]["action_type"])
+                wp_action[wp_num].append(self.wp_action_msg["WP" + str(wp_num+1) + "_actions"]["WP" + str(wp_num+1) + "_action" + str(ac_num+1)]["value"])

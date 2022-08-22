@@ -25,6 +25,9 @@ base_path = os.path.dirname(os.path.abspath(__file__))
 json_path = os.path.normpath(os.path.join(base_path, '../json/setting.json'))
 SETTING_JSON = json_path
 
+CW = 1
+CCW = -1
+
 ### =================================================================================== 
 ### ドローンの情報をMQTTでクライアントにパブリッシュ
 ### =================================================================================== 
@@ -33,8 +36,44 @@ def pub_drone_info():
         drnc.set_vehicle_info()
         # 辞書型をJSON型に変換
         json_message = json.dumps( drnc.drone_info )
+        # print(drnc.drone_info["position"]["altitude"])
         drnc.client.publish(drnc.topic_drone_info, json_message )
-        time.sleep(1)
+        time.sleep(0.5)
+
+### =================================================================================== 
+### ウェイポイントアクション
+### =================================================================================== 
+def waypoint_action(operation):
+    # 回転：GUIDEDモード時のみ有効
+    if operation == "ROTATE":
+        rot = float(drnc.drone_command["d_alt"])
+        if rot < 0:
+            # CCW rotation
+            dir = CCW
+        else:
+            # CW rotation
+            dir = CW
+        # Relative rotation
+        drnc.condition_yaw_vehicle(abs(rot), dir, relative=True)
+        drnc.drone_command["operation"] = ""
+
+    # 特定の位置へ移動
+    elif operation == "MOVE":
+        dlog.LOG("DEBUG", "Goto specific xy point")
+        gspx = float(drnc.drone_command["d_lat"])
+        gspy = float(drnc.drone_command["d_lon"])
+        gsps = float(drnc.drone_command["d_spd"])
+        drnc.goto_specific_pnt(gspx, gspy, 0, gsps)
+        drnc.drone_command["operation"] = ""
+
+    # 高度変更
+    elif operation == "ALT":
+        dlog.LOG("DEBUG", "Goto specific z point")
+        gspz = float(drnc.drone_command["d_alt"])
+        gsps = float(drnc.drone_command["d_spd"])
+        drnc.goto_specific_pnt(0, 0, gspz, gsps)  
+        drnc.drone_command["operation"] = ""    
+
 
 ### =================================================================================== 
 ### Main
@@ -50,6 +89,17 @@ if __name__ == '__main__':
     time.sleep(3)
 
     thread_pub_info = threading.Thread(target=pub_drone_info, daemon=True)
+
+    wp_action = [
+        drnc.wp1_action_list,
+        drnc.wp2_action_list,
+        drnc.wp3_action_list,
+        drnc.wp4_action_list,
+        drnc.wp5_action_list,
+        drnc.wp6_action_list,
+        drnc.wp7_action_list,
+        drnc.wp8_action_list
+    ]
 
     try:
 
@@ -119,7 +169,7 @@ if __name__ == '__main__':
         @drnc.vehicle.on_message('COMMAND_ACK')
         def listner( self, name, message ):
             msg = "COMMAND_ACK: " + str(message)
-            dlog.LOG("DEBUG", msg)
+            #dlog.LOG("DEBUG", msg)
             msg = "MAV:COMMAND_ACK: " + str(message.command) + ( (" is Accepted") if message.result==0 else " Error" )
             drnc.set_vehicle_cmsg(msg)
 
@@ -163,14 +213,11 @@ if __name__ == '__main__':
             dlog.LOG("DEBUG", msg)
 
             if drnc.vehicle.commands.next >= 1:
-                # ------------------------------------------------------
                 # ウェイポイント到着したらGUIDEDモードに設定
-                # ------------------------------------------------------
                 drnc.set_vehicle_mode("GUIDED")
-                # ------------------------------------------------------
                 # ウェイポイントアクションを実行
-                # ------------------------------------------------------
                 drnc.flg_wayPoint = True
+                drnc.wp_action_no = drnc.wp_action_no + 1
             drnc.mission_wp_count = drnc.mission_wp_count - 1
 
         dlog.LOG("INFO", "Vehicle初期化完了")
@@ -191,12 +238,45 @@ if __name__ == '__main__':
         # ----------------------------------------------------------------
         while True:
            
+            drnc.wp_action_no = 0
             # ----------------------------------------------------------------
             # MISSION START
             # ----------------------------------------------------------------
-            if drnc.drone_command["operation"] == "MISSION_UPLOAD":
+
+            # 回転：GUIDEDモード時のみ有効
+            if drnc.drone_command["operation"] == "ROTATE":
+                rot = float(drnc.drone_command["d_alt"])
+                if rot < 0:
+                    # CCW rotation
+                    dir = CCW
+                else:
+                    # CW rotation
+                    dir = CW
+                # Relative rotation
+                drnc.condition_yaw_vehicle(abs(rot), dir, relative=True)
+                drnc.drone_command["operation"] = ""
+
+            # 特定の位置へ移動
+            elif drnc.drone_command["operation"] == "MOVE":
+                dlog.LOG("DEBUG", "Goto specific xy point")
+                gspx = float(drnc.drone_command["d_lat"])
+                gspy = float(drnc.drone_command["d_lon"])
+                gsps = float(drnc.drone_command["d_spd"])
+                drnc.goto_specific_pnt(gspx, gspy, 0, gsps)
+                drnc.drone_command["operation"] = ""
+
+            # 高度変更
+            elif drnc.drone_command["operation"] == "ALT":
+                dlog.LOG("DEBUG", "Goto specific z point")
+                gspz = float(drnc.drone_command["d_alt"])
+                gsps = float(drnc.drone_command["d_spd"])
+                drnc.goto_specific_pnt(0, 0, gspz, gsps)  
+                drnc.drone_command["operation"] = ""
+
+            elif drnc.drone_command["operation"] == "MISSION_UPLOAD":
                 dlog.LOG("DEBUG", "MISSIONをUPLOADしました WP数: " + str(drnc.mission_wp_count))
                 drnc.flg_wayPoint = False
+            
             elif drnc.drone_command["operation"] == "MISSION_START":
                 # MISSIONファイルがアップロードされている場合にMISSIONを実行
                 if drnc.flg_MissionUploaded == True:
@@ -221,74 +301,105 @@ if __name__ == '__main__':
                     # ミッションを実行するため、モードをAUTOにする
                     drnc.set_vehicle_mode("AUTO")
 
+                    drnc.clr_wp_action(wp_action, 3)
+                    drnc.set_wp_action(wp_action, 3)
+
                     while True:
 
                         nextwaypoint = drnc.vehicle.commands.next
                         # init to MAV_CMD_NAV_WAYPOINT(16): Navigate to waypoint 
                         mav_cmd = mavutil.mavlink.MAV_CMD_NAV_WAYPOINT
 
-                        if nextwaypoint == 0:
-                            dlog.LOG("DEBUG", "ウェイポイントが設定されていないため、実行できません")
-                            drnc.flg_MissionUploaded == False
-                        else:
-                            missionitem = drnc.vehicle.commands[nextwaypoint-1] 
-                            mav_cmd = missionitem.command
-                            print(nextwaypoint-1)
-                            print(mav_cmd)
-
-                        ###############################################
-                        drnc.vehicle.groundspeed = 10 # Ground Speed is Fix (T.B.D.)
-                        ###############################################
-
-                        msg = 'Goto WP(%s) Remain [%s(m)]' % (nextwaypoint, drnc.distance_to_current_waypoint())
-                        dlog.LOG("DEBUG", msg)
-                        drnc.set_vehicle_csts(msg)
-
-                        if drnc.vehicle.commands.count == 0:
-                            dlog.LOG("DEBUG", "Count=0のためMISSION実行できません")
-                            break
-                        
-                        # MAV_CMD_NAV_RETURN_TO_LAUNCH(20): Return to launch location
-                        elif mav_cmd == mavutil.mavlink.MAV_CMD_NAV_RETURN_TO_LAUNCH:
-                            msg = "ミッションを終了して離陸地点へ戻る"
-                            dlog.LOG("DEBUG", msg)
-                            # ミッションをクリア
-                            drnc.set_vehicle_mode("RTL")
-                            break
-                        
-                        # MAV_CMD_NAV_LAND(21): Land at location.
-                        elif mav_cmd == mavutil.mavlink.MAV_CMD_NAV_LAND:
-                            msg = "ミッションを終了して現在位置へLANDする"
-                            dlog.LOG("DEBUG", msg)
-                            # ミッションをクリア
-                            drnc.set_vehicle_mode("LAND")
-                            break
-
-                        elif drnc.mission_wp_count <= 0:
-                            msg = "ミッション完了で終了"
-                            dlog.LOG("DEBUG", msg)
-                            break
-
-                        elif drnc.flg_abortMission == True:
-                            msg = "ミッション中断コマンドで終了"
-                            dlog.LOG("DEBUG", msg)
-                            drnc.flg_wayPoint = False
-                            break
-
+                        dlog.LOG("DEBUG", "["+str(drnc.wp_action_no)+"]です")
                         # -----------------------------------------------------------
                         # ウェイポイント到着時の処理
                         # 暫定処理：その場で永遠に回転する
                         # -----------------------------------------------------------
                         if drnc.flg_wayPoint == True:
-                            dlog.LOG("DEBUG", "ウェイポイントアクションを実行しています")
-                            dlog.LOG("DEBUG", "Remain WP: " + str(drnc.mission_wp_count))                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
-                            drnc.set_vehicle_csts("WP(" + str(nextwaypoint-1) + ")") 
-                            drnc.condition_yaw_vehicle(10, 1, True)
-                            time.sleep(0.5)
-                        
+                            dlog.LOG("DEBUG", "Waypoit "+str(drnc.wp_action_no)+":"+str(wp_action[drnc.wp_action_no-1])+" action , Remain WP: " + str(drnc.mission_wp_count))
+                            if wp_action[drnc.wp_action_no-1][0] == "hovering":
+                                value = int(wp_action[drnc.wp_action_no-1][1])
+                                dlog.LOG("DEBUG", "Hover time: " + str(value))
+                                time.sleep(value)
+                                dlog.LOG("DEBUG", "wp action end")
+                                drnc.set_vehicle_mode("AUTO")
+                                drnc.flg_wayPoint = False
+                            elif wp_action[drnc.wp_action_no-1][0] == "aircraft_rotate":
+                                value = float(wp_action[drnc.wp_action_no-1][1])
+                                dlog.LOG("DEBUG", "RotAngle: " + str(value))
+                                rot = float(drnc.drone_command["d_alt"])
+                                if rot < 0:
+                                    # CCW rotation
+                                    dir = CCW
+                                else:
+                                    # CW rotation
+                                    dir = CW
+                                # Relative rotation
+                                drnc.condition_yaw_vehicle(abs(rot), dir, relative=True)
+                                dlog.LOG("DEBUG", "wp action end")
+                                drnc.set_vehicle_mode("AUTO")
+                                drnc.flg_wayPoint = False
+
+                            drnc.set_vehicle_csts("WP(" + str(drnc.wp_action_no) + ")") 
+                            if drnc.mission_wp_count == 0:
+                                drnc.flg_MissionDoing = False
+                                # 最後にRTLが設定されていない場合ここで抜ける
+                                break
+
+                        else:
+
+                            if nextwaypoint == 0:
+                                dlog.LOG("DEBUG", "ウェイポイントが設定されていないため、実行できません")
+                                drnc.flg_MissionUploaded == False
+                            else:
+                                missionitem = drnc.vehicle.commands[nextwaypoint-1] 
+                                mav_cmd = missionitem.command
+                                # WP移動速度設定
+                                drnc.vehicle.groundspeed = float(missionitem.param2)
+                                msg = "Vehicle Spped: " + str(float(missionitem.param2))
+                                dlog.LOG("DEBUG", msg)
+
+                            msg = 'Goto WP(%s) Remain [%s(m)]' % (nextwaypoint, drnc.distance_to_current_waypoint())
+                            dlog.LOG("DEBUG", msg)
+                            drnc.set_vehicle_csts(msg)
+
+                            if drnc.vehicle.commands.count == 0:
+                                dlog.LOG("DEBUG", "Count=0のためMISSION実行できません")
+                                break
+                            
+                            elif drnc.flg_abortMission == True:
+                                msg = "ミッション中断コマンドで終了"
+                                dlog.LOG("DEBUG", msg)
+                                # 中断時はミッションをWPにする
+                                mav_cmd = mavutil.mavlink.MAV_CMD_NAV_WAYPOINT
+                                drnc.flg_wayPoint = False
+                                break
+
+                            # MAV_CMD_NAV_RETURN_TO_LAUNCH(20): Return to launch location
+                            elif mav_cmd == mavutil.mavlink.MAV_CMD_NAV_RETURN_TO_LAUNCH:
+                                msg = "ミッションを終了して離陸地点へ戻る"
+                                dlog.LOG("DEBUG", msg)
+                                # ミッションをクリア
+                                drnc.set_vehicle_mode("RTL")
+                                break
+                            
+                            # MAV_CMD_NAV_LAND(21): Land at location.
+                            elif mav_cmd == mavutil.mavlink.MAV_CMD_NAV_LAND:
+                                msg = "ミッションを終了して現在位置へLANDする"
+                                dlog.LOG("DEBUG", msg)
+                                # ミッションをクリア
+                                drnc.set_vehicle_mode("LAND")
+                                break
+
+                            elif drnc.mission_wp_count <= 0:
+                                msg = "ミッション完了で終了"
+                                dlog.LOG("DEBUG", msg)
+                                break
+                       
                         time.sleep(1)
                     
                     dlog.LOG("DEBUG", "ミッション動作を終了")
+                    drnc.wp_action_no = 0
                     drnc.flg_MissionDoing = False
                     drnc.set_vehicle_csts("MISSION END")
                     # ミッションをクリア
@@ -299,14 +410,14 @@ if __name__ == '__main__':
 
                 else:
                     drnc.set_vehicle_csts("Mission is not uploaded")
-                    dlog.LOG("DEBUG", "ミッションがUPLOADされていません")
+                    #dlog.LOG("DEBUG", "ミッションがUPLOADされていません")
 
             time.sleep(1)
 
     # キーボード割り込みで終了
     except KeyboardInterrupt:
-        dlog.LOG("CRITICAL","KeyBoard Exception")
         # Catch Ctrl-C
+        dlog.LOG("CRITICAL","KeyBoard Exception")
         msg = "キーボード例外処理発生"
         # スクリプトを終了する前に車両オブジェクトを閉じる
         dlog.LOG("INFO", "Close vehicle object")

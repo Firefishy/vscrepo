@@ -45,7 +45,7 @@
 ===========================================================================================
 -->
 <header>
-	<h2>Simple GCS for Inspection Drone control program development and verification 
+	<h2>ドローン機体制御検証用簡易グランドコントローラ 
     <div style="padding-left:0.2em; color:#777777" id="vehicle_current_state">Vehicle: Not connected</div>
     <div style="padding-left:0.2em; color:#777777" id="vehicle_current_msg">----------</div>
   </h2>
@@ -68,11 +68,11 @@
         <!-- 折り畳み展開ポインタ -->
         <div onclick="obj=document.getElementById('open_sgoto').style; obj.display=(obj.display=='none')?'block':'none';
           document.getElementById('open_mission').style.display='none'; javascript:setOperation(0,0);">
-          <h2><a style="cursor:pointer;" class="border_content color_gray">Simple Goto (Click open/close)</a></h2>
+          <h2><a style="cursor:pointer;" class="border_content color_gray">シンプルGOTO (クリックで開閉)</a></h2>
         </div>
         <!-- Control button -->
         <div id="open_sgoto" style="display:none;clear:both;" class="border_control">
-          <h3>-- Click the map to set flight destination --</h3>
+          <h3>-- マップ上のクリックした地点まで移動します --</h3>
           <table>
             <tbody>
               <tr>
@@ -105,22 +105,22 @@
         <div onclick="
           obj=document.getElementById('open_mission').style; obj.display=(obj.display=='none')?'block':'none';
           document.getElementById('open_sgoto').style.display='none';">
-          <h2><a style="cursor:pointer;" class="border_content color_gray">Mission (Click open/close)</a></h2>
+          <h2><a style="cursor:pointer;" class="border_content color_gray">ミッション設定 (クリックで開閉)</a></h2>
         </div>
         <!-- Control button -->
         <div id="open_mission" style="display:none;clear:both;" class="border_control">
-          <h3>-- Click the map to set each mission waypoint --</h3>
+          <h3>-- マップをクリックしてミッションのウェイポイントを設定 --</h3>
           <table>
             <thead>
               <tr>
-                <th>Idx</th>
-                <th>Cmd</th>
-                <th>Latitude</th>
-                <th>Longitude</th>
-                <th>Alt</th>
-                <th>Speed</th>
-                <th>Cnt</th>
-                <th>Apply</th>
+                <th>No</th>
+                <th>コマンド</th>
+                <th>緯度(°)</th>
+                <th>経度(°)</th>
+                <th>高度(m)</th>
+                <th>速度(m/s)</th>
+                <th>連続</th>
+                <th>適用</th>
               </tr>
             </thead>
             <tbody>
@@ -143,7 +143,7 @@
                 <td id="mwp1_lat">35.6607</td>
                 <td id="mwp1_lon">139.7538</td>
                 <td id="mwp1_alt">30</td>
-                <td id="mwp1_speed">10</td>
+                <td id=""><input type="text" class="input_style0" name="" id="mwp1_speed" value="10.0" /></td>
                 <td>1</td>
                 <td>
                   <div>
@@ -170,7 +170,7 @@
                 <td id="mwp2_lat">35.6611</td>
                 <td id="mwp2_lon">139.7593</td>
                 <td id="mwp2_alt">30</td>
-                <td id="mwp2_speed">10</td>
+                <td id=""><input type="text" class="input_style0" id="mwp2_speed" value="10.0" /></td>
                 <td>1</td>
                 <td>
                   <div>
@@ -197,7 +197,7 @@
                 <td id="mwp3_lat">35.6582</td>
                 <td id="mwp3_lon">139.7600</td>
                 <td id="mwp3_alt">30</td>
-                <td id="mwp3_speed">10</td>
+                <td id=""><input type="text" class="input_style0" id="mwp3_speed" value="10.0" /></td>
                 <td>1</td>
                 <td>
                   <div>
@@ -224,7 +224,7 @@
                 <td id="mwp4_lat">35.6577</td>
                 <td id="mwp4_lon">139.7574</td>
                 <td id="mwp4_alt">30</td>
-                <td id="mwp4_speed">10</td>
+                <td id=""><input type="text" class="input_style0" id="mwp4_speed" value="10.0" /></td>
                 <td>1</td>
                 <td>
                   <div>
@@ -251,7 +251,7 @@
                 <td id="mwp5_lat">35.6590</td>
                 <td id="mwp5_lon">139.7546</td>
                 <td id="mwp5_alt">30</td>
-                <td id="mwp5_speed">10</td>
+                <td id=""><input type="text" class="input_style0" id="mwp5_speed" value="10.0" /></td>
                 <td>1</td>
                 <td>
                   <div>
@@ -276,12 +276,12 @@
             </tbody>
           </table>                
           <div class="wrap_btn">
-            <input type="button" class="ctrlbtn button30pct color_green" id="bnt_mission_upload" value="MISSION UPLOAD" onclick="javascript:droneCtrl('MISSION_UPLOAD');"/>
-            <input type="button" class="ctrlbtn button30pct color_green" id="bnt_mission_start" value="MISSION START" onclick="javascript:droneCtrl('MISSION_START');"/><br/>
-            <input type="button" class="ctrlbtn button30pct color_yellow" id="bnt_mission_pause" value="MISSION_PAUSE"  onclick="javascript:droneCtrl('MISSION_PAUSE');"/>
-            <input type="button" class="ctrlbtn button30pct color_yellow" id="bnt_mission_resume" value="MISSION_RESUME"  onclick="javascript:droneCtrl('MISSION_RESUME');"/><br/>
-            <input type="button" class="ctrlbtn button30pct color_tomato" id="bnt_mission_abort" value="MISSION_ABORT"  onclick="javascript:droneCtrl('MISSION_ABORT');"/>
-            <input type="button" class="ctrlbtn button30pct color_red" id="bnt_mission_clear" value="MISSION_CLEAR"  onclick="javascript:droneCtrl('MISSION_CLEAR');"/>
+            <input type="button" class="ctrlbtn button30pct color_green" id="bnt_mission_upload" value="ミッションアップロード" onclick="javascript:droneCtrl('MISSION_UPLOAD');"/>
+            <input type="button" class="ctrlbtn button30pct color_green" id="bnt_mission_start" value="ミッション開始" onclick="javascript:droneCtrl('MISSION_START');"/><br/>
+            <input type="button" class="ctrlbtn button30pct color_yellow" id="bnt_mission_pause" value="ミッション一時停止"  onclick="javascript:droneCtrl('MISSION_PAUSE');"/>
+            <input type="button" class="ctrlbtn button30pct color_yellow" id="bnt_mission_resume" value="ミッション再開"  onclick="javascript:droneCtrl('MISSION_RESUME');"/><br/>
+            <input type="button" class="ctrlbtn button30pct color_tomato" id="bnt_mission_abort" value="ミッション終了"  onclick="javascript:droneCtrl('MISSION_ABORT');"/>
+            <input type="button" class="ctrlbtn button30pct color_red" id="bnt_mission_clear" value="ミッションクリア"  onclick="javascript:droneCtrl('MISSION_CLEAR');"/>
           </div>
         </div>
       </div>
@@ -292,11 +292,11 @@
         <div onclick="
           obj=document.getElementById('open_chkmsg').style; obj.display=(obj.display=='none')?'block':'none';
           document.getElementById('open_sgoto').style.display='none';">
-          <h2><a style="cursor:pointer;" class="border_content color_gray">MAVLINK message check (Click open/close) T.B.D.</a></h2>
+          <h2><a style="cursor:pointer;" class="border_content color_gray">MAVLINK message check (クリックで開く) 動作保証外</a></h2>
         </div>
         <div id="open_chkmsg" style="display:none;clear:both;" class="border_control">
           <input type="text" class="input_style3" name="" id="msgid" placeholder="" value="" />
-          <input type="button" class="ctrlbtn button15pct color_green" id="bnt_mission_upload" value="SEND" onclick="javascript:droneCtrl('MAV_MESSAGE');"/>
+          <input type="button" class="ctrlbtn button15pct color_green" id="bnt_mission_upload" value="送信" onclick="javascript:droneCtrl('MAV_MESSAGE');"/>
         </div>
       </div> 
       
@@ -306,7 +306,7 @@
         <div onclick="
           obj=document.getElementById('open_sndmcom').style; obj.display=(obj.display=='none')?'block':'none';
           document.getElementById('open_sgoto').style.display='none';">
-          <h2><a style="cursor:pointer;" class="border_content color_gray">MAVLINK command send (Click open/close) T.B.D.</a></h2>
+          <h2><a style="cursor:pointer;" class="border_content color_gray">MAVLINK command send (クリックで開く) 動作保証外</a></h2>
         </div>
         <div id="open_sndmcom" style="display:none;clear:both;" class="border_control">
 
@@ -346,13 +346,7 @@
               </tr>
             </tbody>
           </table>
-
-
-
-
-
-
-          <input type="button" class="ctrlbtn button15pct color_green" id="bnt_mission_upload" value="SEND" onclick="javascript:droneCtrl('MAV_MESSAGE');"/>
+          <input type="button" class="ctrlbtn button15pct color_green" id="bnt_mission_upload" value="送信" onclick="javascript:droneCtrl('MAV_MESSAGE');"/>
         </div>
       </div> 
       
@@ -366,7 +360,7 @@
       <div  class="wrap_0">
         <!-- Control button -->
         <div class="border_control">
-          <h3>Drone info</h3>
+          <h3>機体情報</h3>
           <table>
             <tbody>
               <tr>
@@ -421,7 +415,7 @@
       </div>
       <!-- 制御ボタン -->
       <div  class="wrap_0">
-				<h3>Control button</h3>
+				<h3>機体制御コマンド</h3>
         <!-- Control button -->
 				<div class="wrap_btn">
           <input type="button" class="ctrlbtn button30pct color_green" id="bnt_arm" value="ARM"  onclick="javascript:droneCtrl('ARM');"/>
@@ -434,12 +428,34 @@
 				</div>
 				<div class="wrap_btn">
 					<input type="button" class="ctrlbtn button30pct color_green" id="bnt_takeoff" value="TAKEOFF"  onclick="javascript:droneCtrl('TAKEOFF');"/>
-					<input type="button" class="ctrlbtn button30pct color_green" id="bnt_land" value="LAND"  onclick="javascript:droneCtrl('LAND');"/>
+          <input type="text" class="input_style0" name="takeoffalt" id="dt_tkalt" value="5.0" />&nbsp;m
+        </div>
+        <div class="wrap_btn">
+            <input type="button" class="ctrlbtn button30pct color_green" id="bnt_land" value="LAND"  onclick="javascript:droneCtrl('LAND');"/>
         </div>
         <!-- 移動停止 -->
         <div class="wrap_btn">
-          <input type="button" class="ctrlbtn button75pct color_red" id="bnt_brake" value="BRAKE!" onclick="javascript:droneCtrl('BRAKE');"/>
+          <input type="button" class="ctrlbtn button75pct color_red" id="bnt_brake" value="ブレーキ停止!" onclick="javascript:droneCtrl('BRAKE');"/>
         </div>
+      </div> 
+      <div  class="wrap_0">
+        <h3>機体動作コマンド</h3>
+        <div class="wrap_btn">
+          <input type="button" class="ctrlbtn button30pct color_yellow" id="bnt_rotate" value="YAW回転"  onclick="javascript:droneCtrl('ROTATE');"/>
+          <input type="text" class="input_style0" name="rotangle" id="dt_rotangle" value="10.0" />&nbsp;deg
+        </div>
+
+        <div class="wrap_btn">
+          <input type="button" class="ctrlbtn button30pct color_yellow" id="bnt_rotate" value="XY移動"  onclick="javascript:droneCtrl('MOVE');"/>
+          x&nbsp;<input type="text" class="input_style4" name="" id="dt_gsp_x" value="10.0" />
+          y&nbsp;<input type="text" class="input_style4" name="" id="dt_gsp_y" value="10.0" />
+        </div>
+
+        <div class="wrap_btn">
+          <input type="button" class="ctrlbtn button30pct color_yellow" id="bnt_rotate" value="高度変更"  onclick="javascript:droneCtrl('ALT');"/>
+          <input type="text" class="input_style0" name="" id="dt_altchg" value="1.0" />&nbsp;m
+        </div>
+
       </div> 
     </aside>
 </div><!-- /.news-contents -->
