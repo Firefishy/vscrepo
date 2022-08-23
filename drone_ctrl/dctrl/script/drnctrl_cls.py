@@ -57,6 +57,8 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
     topic_drone_command = "drone/dctrl"
     # Subscriber ミッション
     topic_drone_mission_test = "drone/mission"
+    # Subscriber ミッション WPアクション
+    topic_drone_wpaction = "drone/wpaction"
     # Subscriber ミッション: マップ制御画面対応用
     topic_drone_mission = "ctrl/001"
 
@@ -82,8 +84,7 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
     arm_height = 5.0
 
     wp_action_no = 0
-
-
+    
     ### =================================================================================== 
     ### MQTTで受信するドローン操作コマンド:クライアントから受信
     ###     コマンドおよび移動先の「緯度、経度、高度」情報
@@ -121,70 +122,27 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
         "d_alt":"0",
         "acnt":"0"
     }
+    
+    wp1_action_list = []
+    wp2_action_list = []
+    wp3_action_list = []
+    wp4_action_list = []
+    wp5_action_list = []
+    wp6_action_list = []
+    wp7_action_list = []
+    wp8_action_list = []
 
-    drone_wp_action = {
-        "WP1_actions" : {
-            "waypoint":1,                       # ウェイポイント番号
-            "action_num" :2,                    # ウェイポイントに紐づくアクション数
-            # 1つめのアクションの詳細
-            "WP1_action1" : {
-            "action_type" : "hovering",         # アクションタイプ（ホバリング）
-            "hovering_time" : 10,               # ホバリング秒数（アクションタイプがホバリングの場合）
-            },
-            # 2つめのアクションの詳細
-            "WP1_action2" : {
-            "action_type" : "aircraft_rotate",  # アクションタイプ（機体回転）
-            "aircraft_yaw" :90,                 # 機体回転角度（アクションタイプが機体回転の場合）
-            }
-        }
-    }
-
-    wp_action_msg = {
-        "WP1_actions" : {
-            "waypoint":1,                           # ウェイポイント番号
-            "action_num" :2,                        # ウェイポイントに紐づくアクション数
-            # 1つめのアクションの詳細
-            "WP1_action1" : {
-            "action_type" : "hovering",           # アクションタイプ（ホバリング）
-            "value" : 5,                 # ホバリング秒数（アクションタイプがホバリングの場合）
-            },
-            # 2つめのアクションの詳細
-            "WP1_action2" : {
-            "action_type" : "aircraft_rotate",    # アクションタイプ（機体回転）
-            "value" :90,                   # 機体回転角度（アクションタイプが機体回転の場合）
-            }
-        },
-        "WP2_actions" : {
-            "waypoint" : 2,
-            "action_num" : 1,
-            "WP2_action1" : {
-            "action_type" : "aircraft_rotate",
-            "value" : 90,
-            }
-        },
-        "WP3_actions" : {
-            "waypoint" : 3,
-            "action_num" : 4,
-            "WP3_action1" : {
-            "action_type" : "hovering",
-            "value" : 10,
-            },
-            "WP3_action2" : {
-            "action_type" : "aircraft_rotate",
-            "value" : 360,
-            },
-            "WP3_action3" : {
-            "action_type" : "aircraft_rotate",
-            "value" : -10,
-            },
-            "WP3_action4" : {
-            "action_type" : "hovering",
-            "value" : 10,
-            }
-        },
-    }
-
-
+    wp_action = [
+        wp1_action_list,
+        wp2_action_list,
+        wp3_action_list,
+        wp4_action_list,
+        wp5_action_list,
+        wp6_action_list,
+        wp7_action_list,
+        wp8_action_list
+    ]
+    
     ### =================================================================================== 
     ### コンストラクタ
     ### =================================================================================== 
@@ -196,40 +154,48 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
         self.client = mqtt.Client() 
         self.client_mission_test = mqtt.Client() 
         self.client_mission = mqtt.Client()
+        self.client_wpaction = mqtt.Client()
 
         # 接続時のコールバック関数を登録
         self.client.on_connect = self.on_connect              
         self.client_mission_test.on_connect = self.on_connect_mission_test           
         self.client_mission.on_connect = self.on_connect_mission
+        self.client_wpaction.on_connect = self.on_connect_wpaction
 
         # 切断時のコールバックを登録
         self.client.on_disconnect = self.on_disconnect        
         self.client_mission_test.on_disconnect = self.on_disconnect_mission_test       
         self.client_mission.on_disconnect = self.on_disconnect_mission
+        self.client_wpaction.on_disconnect = self.on_disconnect_wpaction
 
         #self.client.on_publish = self.on_publish              
         #self.client_mission_test.on_publish = self.on_publish_m              
         #self.client_mission.on_publish = self.on_publish_m
+        #self.client_wpaction.on_publish = self.on_publish_m
         #           
         # 接続先は自分自身
         self.client.connect(self.host, self.port, 60)     
         self.client_mission_test.connect(self.host, self.port, 60)     
         self.client_mission.connect(self.host, self.port, 60)
+        self.client_wpaction.connect(self.host, self.port, 60)
 
         # メッセージ到着時のコールバック        
         self.client.on_message = self.on_message
         self.client_mission_test.on_message = self.on_message_mission_test
         self.client_mission.on_message = self.on_message_mission
+        self.client_wpaction.on_message = self.on_message_wpaction
 
         # subはloop_forever()だが，pubはloop_start()で起動だけさせる
         self.client.loop_start()                                   
         self.client_mission_test.loop_start()                                   
         self.client_mission.loop_start()
+        self.client_wpaction.loop_start()
 
         # 永久ループして待ち続ける
-        #mqttClass.client.loop_forever()
-        #mqttClass.client_mission_test.loop_forever()
-        #mqttClass.client_mission.loop_forever()
+        # mqttClass.client.loop_forever()
+        # mqttClass.client_mission_test.loop_forever()
+        # mqttClass.client_mission.loop_forever()
+        # mqttClass.client_wpaction.loop_forever()
 
         wp_action_no = 0
 
@@ -251,6 +217,11 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
         # subscribeトピックを設定
         client_mission.subscribe(self.topic_drone_mission)  
 
+    def on_connect_wpaction(self, client_wpaction, userdata, flag, rc):
+        dlog.LOG("DEBUG", "Connected with result code " + str(rc))  
+        # subscribeトピックを設定
+        client_wpaction.subscribe(self.topic_drone_wpaction)  
+
     ### =================================================================================== 
     ### ブローカーから切断されたときの処理：コールバック
     ### =================================================================================== 
@@ -263,6 +234,10 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
             dlog.LOG("DEBUG", "Unexpected disconnection.")
 
     def on_disconnect_mission(self, client_mission, userdata, rc):
+        if rc != 0:
+            dlog.LOG("DEBUG", "Unexpected disconnection.")
+
+    def on_disconnect_wpaction(self, client_wpaction, userdata, rc):
         if rc != 0:
             dlog.LOG("DEBUG", "Unexpected disconnection.")
 
@@ -326,7 +301,6 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
                 self.set_vehicle_cmsg(str(msg))
                 self.flg_abortMission = True
                 self.flg_wayPoint = False
-
 
             elif self.drone_command["operation"] == "ARM":
                 self.drone_info["status"]["dinfo"] = self.drone_command["operation"]
@@ -423,7 +397,7 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
                                 self.flg_abortMission = True
 
                         # Deone mode set: MISSION_STARTはモードでは無いため除外する
-                        elif self.drone_command["operation"] != "MISSION_START":
+                        elif self.drone_command["operation"] != "MISSION_START" and self.drone_command["operation"] != "WPACTION_UPLOAD":
                             self.set_vehicle_mode(self.drone_command["operation"])
                             self.arm_height = recvData["d_alt"]
                             dlog.LOG("DEBUG", "Take off alt: " + str(self.arm_height))
@@ -448,10 +422,10 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
         
         # ミッションデータをファイルに保存
         if msg.topic==self.topic_drone_mission_test:
-          for num in range(len(recvData)):
-            print(str(recvData[num]))
-            #dlog.LOG("DEBUG", str(num) + "MissionData: " + str(recvData[num]))
-            f.write(recvData[num])
+            for num in range(len(recvData)):
+                print(str(recvData[num]))
+                #dlog.LOG("DEBUG", str(num) + "MissionData: " + str(recvData[num]))
+                f.write(recvData[num])
         # MISSIONのWP数を保存（WP0はカウントしない）    
         self.mission_wp_count = len(recvData)
         f.close()        
@@ -496,15 +470,6 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
         f.close()        
         dlog.LOG("DEBUG","END")
 
-    wp1_action_list = []
-    wp2_action_list = []
-    wp3_action_list = []
-    wp4_action_list = []
-    wp5_action_list = []
-    wp6_action_list = []
-    wp7_action_list = []
-    wp8_action_list = []
-
     ### =================================================================================== 
     ### Init waypoint action    
     ### =================================================================================== 
@@ -520,3 +485,26 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
             for ac_num in range(self.wp_action_msg["WP" + str(wp_num+1) + "_actions"]["action_num"]):
                 wp_action[wp_num].append(self.wp_action_msg["WP" + str(wp_num+1) + "_actions"]["WP" + str(wp_num+1) + "_action" + str(ac_num+1)]["action_type"])
                 wp_action[wp_num].append(self.wp_action_msg["WP" + str(wp_num+1) + "_actions"]["WP" + str(wp_num+1) + "_action" + str(ac_num+1)]["value"])
+
+    ### =================================================================================== 
+    ### Set Init waypoint action    
+    ### =================================================================================== 
+    def set_wp_action_item(self, wp_action, wp_action_msg):
+        for wp_num in range(8):
+            for ac_num in range(wp_action_msg["WP" + str(wp_num+1) + "_actions"]["action_num"]):
+                wp_action[wp_num].append(wp_action_msg["WP" + str(wp_num+1) + "_actions"]["WP" + str(wp_num+1) + "_action" + str(ac_num+1)]["action_type"])
+                wp_action[wp_num].append(wp_action_msg["WP" + str(wp_num+1) + "_actions"]["WP" + str(wp_num+1) + "_action" + str(ac_num+1)]["value"])
+
+    ### =================================================================================== 
+    ### Missionウェイポイントサブスクライバコールバック
+    ### =================================================================================== 
+    def on_message_wpaction(self, client, userdata, msg):
+        dlog.LOG("DEBUG","START")
+        self.clr_wp_action(self.wp_action, 8)
+        # msg.topicにトピック名が，msg.payloadに届いたデータ本体が入っている
+        recvData = json.loads(msg.payload)
+        if msg.topic==self.topic_drone_wpaction:
+            cnt = int(recvData["WP1_actions"]["action_num"])
+            self.set_wp_action_item( self.wp_action, recvData)
+        print(self.wp_action)
+        dlog.LOG("DEBUG","END")

@@ -56,7 +56,7 @@ class ArdCtrlClsC2(ardctrl.ArdCtrlClsC1):
     ### 指定した「original_location」からの 「LocationGlobal」を応答する。
     ### (高度はoriginal_locationと同じ)
     ### ---------------------------------------------------------------------------------------------
-    ### この関数は、現在の車両位置から相対的な位置を指定して車両を移動させたい場合に便利です。
+    ### この関数は、現在の機体位置から相対的な位置を指定して機体を移動させたい場合に便利です。
     ### このアルゴリズムは、電柱の近くを除けば、小さな距離 (1km 以内なら 10m) で比較的正確です。
     ### 詳細は以下を参照。
     ### http://gis.stackexchange.com/questions/2951/algorithm-for-offsetting-a-latitude-longitude-by-some-amount-of-meters
@@ -121,7 +121,7 @@ class ArdCtrlClsC2(ardctrl.ArdCtrlClsC1):
     ### 現在のミッションに離陸コマンドと4つのウェイポイントコマンドを追加する。
     ###        ウェイポイントは、指定されたLocationGlobal (aLocation)を中心に、辺の長さ2*aSizeの正方形を
     ###    形成するように配置される。
-    ###    この関数は、vehicle.commandsが車両のミッションの状態と一致すると仮定しています。
+    ###    この関数は、vehicle.commandsが機体のミッションの状態と一致すると仮定しています。
     ###    (セッション中、ミッションをクリアした後に少なくとも一度はdownloadを呼び出す必要があります)    
     ### =============================================================================================
     def adds_square_mission(self, aLocation, aSize):

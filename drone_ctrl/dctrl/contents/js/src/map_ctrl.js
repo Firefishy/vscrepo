@@ -10,6 +10,7 @@ let sub = mqtt.connect('ws://127.0.0.1:15675');
 // Topic definition
 let topic_pub = "drone/dctrl";        // 操作コマンド、Simple Goto
 let topic_mission = "drone/mission";  // ミッションデータ
+let topic_wpaction = "drone/wpaction";  // ミッションデータ
 let topic_sub = "drone/dinfo";        // 座標等のドローン情報
 
 let dlat = 35.6566324;
@@ -23,28 +24,181 @@ var markers = new Array();  // マーカーハンドラを保存する連想配�
 ////////////////////////////////////////////////////////////////////////
 // ドローン操作用送信コマンド
 let drone_command = {
-  "operation":"None",
-  "subcode":"None",
-  "d_lat":"0",
-  "d_lon":"0",
-  "d_alt":"0",
-  "d_spd":"5"
+    "operation":"None",
+    "subcode":"None",
+    "d_lat":"0",
+    "d_lon":"0",
+    "d_alt":"0",
+    "d_spd":"5"
 }
 // ドローンミッション用送信コマンド
 let drone_mission = {
-  "operation":"None",
-  "index":"0",
-  "cntwp":"0",
-  "frame":"0",
-  "command":"0",
-  "para1":"0",
-  "para2":"0",
-  "para3":"0",
-  "para4":"0",
-  "d_lat":"0",
-  "d_lon":"0",
-  "d_alt":"0",
-  "acnt":"0"
+    "operation":"None",
+    "index":"0",
+    "cntwp":"0",
+    "frame":"0",
+    "command":"0",
+    "para1":"0",
+    "para2":"0",
+    "para3":"0",
+    "para4":"0",
+    "d_lat":"0",
+    "d_lon":"0",
+    "d_alt":"0",
+    "acnt":"0"
+}
+
+// ウェイポイントアクションデータ
+let wp_action = {
+  "WP1_actions" : {
+        "waypoint":1,                   // ウェイポイント番号
+        "action_num" :2,                // ウェイポイントに紐づくアクション数
+        // 1つめのアクションの詳細
+        "WP1_action1" : {
+            "action_type" : "hovering",   // アクションタイプ（ホバリング）
+            "value" : 5,                 // ホバリング秒数（アクションタイプがホバリングの場合）
+        },
+        // 2つめのアクションの詳細
+        "WP1_action2" : {
+            "action_type" : "rotate",     // アクションタイプ（機体回転）
+            "value" :90,                  // 機体回転角度（アクションタイプが機体回転の場合）
+        },
+
+        "WP1_action3" : {
+            "action_type" : "rotate",     // アクションタイプ（機体回転）
+            "value" :90,                  // 機体回転角度（アクションタイプが機体回転の場合）
+        },
+        "WP1_action4" : {
+            "action_type" : "rotate",     // アクションタイプ（機体回転）
+            "value" :90,                  // 機体回転角度（アクションタイプが機体回転の場合）
+        },
+        "WP1_action5" : {
+            "action_type" : "rotate",     // アクションタイプ（機体回転）
+            "value" :90,                  // 機体回転角度（アクションタイプが機体回転の場合）
+        },
+        "WP1_action6" : {
+            "action_type" : "rotate",     // アクションタイプ（機体回転）
+            "value" :90,                  // 機体回転角度（アクションタイプが機体回転の場合）
+        },
+        "WP1_action7" : {
+            "action_type" : "rotate",     // アクションタイプ（機体回転）
+            "value" :90,                  // 機体回転角度（アクションタイプが機体回転の場合）
+        }
+
+
+    },
+    "WP2_actions" : {
+        "waypoint" : 2,
+        "action_num" : 1,
+        "WP2_action1" : {
+            "action_type" : "hovering",
+            "value" : 5,
+        }
+    },
+    "WP3_actions" : {
+        "waypoint" : 3,
+        "action_num" : 4,
+        "WP3_action1" : {
+            "action_type" : "hovering",
+            "value" : 5,
+        },
+        "WP3_action2" : {
+            "action_type" : "rotate",
+            "value" : 90,
+        },
+        "WP3_action3" : {
+            "action_type" : "hovering",
+            "value" : 5,
+        },
+        "WP3_action4" : {
+            "action_type" : "rotate",
+            "value" : -90,
+        },
+        "WP3_action5" : {
+            "action_type" : "hovering",
+            "value" : 5,
+        }
+    },
+    "WP4_actions" : {
+        "waypoint" : 4,
+        "action_num" : 3,
+        "WP4_action1" : {
+            "action_type" : "hovering",
+            "value" : 5,
+        },
+        "WP4_action2" : {
+            "action_type" : "rotate",
+            "value" : -135,
+        },
+        "WP4_action3" : {
+            "action_type" : "hovering",
+            "value" : 5,
+        }
+    },
+    "WP5_actions" : {
+        "waypoint" : 5,
+        "action_num" : 3,
+        "WP5_action1" : {
+            "action_type" : "hovering",
+            "value" : 5,
+        },
+        "WP5_action2" : {
+            "action_type" : "rotate",
+            "value" : -135,
+        },
+        "WP5_action3" : {
+            "action_type" : "hovering",
+            "value" : 5,
+        }
+    },
+    "WP6_actions" : {
+        "waypoint" : 6,
+        "action_num" : 3,
+        "WP6_action1" : {
+            "action_type" : "hovering",
+            "value" : 5,
+        },
+        "WP6_action2" : {
+            "action_type" : "rotate",
+            "value" : -275,
+        },
+        "WP6_action3" : {
+            "action_type" : "hovering",
+            "value" : 5,
+        }
+    },
+    "WP7_actions" : {
+        "waypoint" : 7,
+        "action_num" : 3,
+        "WP7_action1" : {
+            "action_type" : "hovering",
+            "value" : 5,
+        },
+        "WP7_action2" : {
+            "action_type" : "rotate",
+            "value" : 45,
+        },
+        "WP7_action3" : {
+            "action_type" : "hovering",
+            "value" : 5,
+        }
+    },
+    "WP8_actions" : {
+        "waypoint" : 8,
+        "action_num" : 3,
+        "WP8_action1" : {
+            "action_type" : "hovering",
+            "value" : 5,
+        },
+        "WP8_action2" : {
+            "action_type" : "rotate",
+            "value" : 75,
+        },
+        "WP8_action3" : {
+            "action_type" : "hovering",
+            "value" : 5,
+        }
+    }    
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -284,6 +438,94 @@ const droneCtrl = (ope) => {
         pubCommand(topic_pub,drone_command);
     }
 
+    // Mission: WPアクションデータを送信
+    else if (ope == "WPACTION_UPLOAD"){
+
+        wp_action["WP1_actions"]["waypoint"] = 1;
+        wp_action["WP1_actions"]["action_num"] = 7;
+        wp_action["WP1_actions"]["WP1_action1"]["action_type"] = "hovering";
+        wp_action["WP1_actions"]["WP1_action1"]["value"] = 5;
+        wp_action["WP1_actions"]["WP1_action2"]["action_type"] = "rotate";
+        wp_action["WP1_actions"]["WP1_action2"]["value"] = 90;
+        wp_action["WP1_actions"]["WP1_action3"]["action_type"] = "hovering";
+        wp_action["WP1_actions"]["WP1_action3"]["value"] = 5;
+        wp_action["WP1_actions"]["WP1_action4"]["action_type"] = "rotate";
+        wp_action["WP1_actions"]["WP1_action4"]["value"] = 135;
+        wp_action["WP1_actions"]["WP1_action5"]["action_type"] = "hovering";
+        wp_action["WP1_actions"]["WP1_action5"]["value"] = 5;
+        wp_action["WP1_actions"]["WP1_action6"]["action_type"] = "rotate";
+        wp_action["WP1_actions"]["WP1_action6"]["value"] = -180;
+        wp_action["WP1_actions"]["WP1_action7"]["action_type"] = "hovering";
+        wp_action["WP1_actions"]["WP1_action7"]["value"] = 5;
+
+        wp_action["WP2_actions"]["waypoint"] = 2;
+        wp_action["WP2_actions"]["action_num"] = 1;
+        wp_action["WP2_actions"]["WP2_action1"]["action_type"] = "hovering";
+        wp_action["WP2_actions"]["WP2_action1"]["value"] = 5;
+
+        wp_action["WP3_actions"]["waypoint"] = 3;
+        wp_action["WP3_actions"]["action_num"] = 5;
+        wp_action["WP3_actions"]["WP3_action1"]["action_type"] = "hovering";
+        wp_action["WP3_actions"]["WP3_action1"]["value"] = 5;
+        wp_action["WP3_actions"]["WP3_action2"]["action_type"] = "rotate";
+        wp_action["WP3_actions"]["WP3_action2"]["value"] = -90;
+        wp_action["WP3_actions"]["WP3_action3"]["action_type"] = "hovering";
+        wp_action["WP3_actions"]["WP3_action3"]["value"] = 5;
+        wp_action["WP3_actions"]["WP3_action4"]["action_type"] = "rotate";
+        wp_action["WP3_actions"]["WP3_action4"]["value"] = 90;
+        wp_action["WP3_actions"]["WP3_action5"]["action_type"] = "hovering";
+        wp_action["WP3_actions"]["WP3_action5"]["value"] = 5;
+
+        wp_action["WP4_actions"]["waypoint"] = 4;
+        wp_action["WP4_actions"]["action_num"] = 3;
+        wp_action["WP4_actions"]["WP4_action1"]["action_type"] = "hovering";
+        wp_action["WP4_actions"]["WP4_action1"]["value"] = 5;
+        wp_action["WP4_actions"]["WP4_action2"]["action_type"] = "rotate";
+        wp_action["WP4_actions"]["WP4_action2"]["value"] = -45;
+        wp_action["WP4_actions"]["WP4_action3"]["action_type"] = "hovering";
+        wp_action["WP4_actions"]["WP4_action3"]["value"] = 5;
+
+        wp_action["WP5_actions"]["waypoint"] = 5;
+        wp_action["WP5_actions"]["action_num"] = 3;
+        wp_action["WP5_actions"]["WP5_action1"]["action_type"] = "hovering";
+        wp_action["WP5_actions"]["WP5_action1"]["value"] = 5;
+        wp_action["WP5_actions"]["WP5_action2"]["action_type"] = "rotate";
+        wp_action["WP5_actions"]["WP5_action2"]["value"] = 30;
+        wp_action["WP5_actions"]["WP5_action3"]["action_type"] = "hovering";
+        wp_action["WP5_actions"]["WP5_action3"]["value"] = 5;
+
+        wp_action["WP6_actions"]["waypoint"] = 6;
+        wp_action["WP6_actions"]["action_num"] = 3;
+        wp_action["WP6_actions"]["WP6_action1"]["action_type"] = "hovering";
+        wp_action["WP6_actions"]["WP6_action1"]["value"] = 5;
+        wp_action["WP6_actions"]["WP6_action2"]["action_type"] = "rotate";
+        wp_action["WP6_actions"]["WP6_action2"]["value"] = -30;
+        wp_action["WP6_actions"]["WP6_action3"]["action_type"] = "hovering";
+        wp_action["WP6_actions"]["WP6_action3"]["value"] = 5;
+
+        wp_action["WP7_actions"]["waypoint"] = 7;
+        wp_action["WP7_actions"]["action_num"] = 3;
+        wp_action["WP7_actions"]["WP7_action1"]["action_type"] = "hovering";
+        wp_action["WP7_actions"]["WP7_action1"]["value"] = 5;
+        wp_action["WP7_actions"]["WP7_action2"]["action_type"] = "rotate";
+        wp_action["WP7_actions"]["WP7_action2"]["value"] = 180;
+        wp_action["WP7_actions"]["WP7_action3"]["action_type"] = "hovering";
+        wp_action["WP7_actions"]["WP7_action3"]["value"] = 5;
+
+        wp_action["WP8_actions"]["waypoint"] = 8;
+        wp_action["WP8_actions"]["action_num"] = 3;
+        wp_action["WP8_actions"]["WP8_action1"]["action_type"] = "hovering";
+        wp_action["WP8_actions"]["WP8_action1"]["value"] = 5;
+        wp_action["WP8_actions"]["WP8_action2"]["action_type"] = "rotate";
+        wp_action["WP8_actions"]["WP8_action2"]["value"] = -180;
+        wp_action["WP8_actions"]["WP8_action3"]["action_type"] = "hovering";
+        wp_action["WP8_actions"]["WP8_action3"]["value"] = 5;
+
+        // MQTTでパブリッシュする
+        pubCommand(topic_wpaction, wp_action);
+
+    }
+
     // Mission: ミッションポイントを取得してドローンへ送信
     else if(ope == "MISSION_UPLOAD"){
         let cmdAry = [];
@@ -313,28 +555,29 @@ const droneCtrl = (ope) => {
 
         // ミッションウェイポイントの設定
         for (let i = 1; i < 6; i++){
-        if( document.getElementById("achk" + i.toString()).checked == true ){
-            latData = document.getElementById('mwp' + i.toString() + '_lat').innerHTML;
-            lonData = document.getElementById('mwp' + i.toString() + '_lon').innerHTML;
-            altData = document.getElementById('mwp' + i.toString() + '_alt').innerHTML;
-            mission_cmd = makeMissionCmdWithTab(
-                            idx++,
-                            0, 
-                            3,
-                            document.getElementById('mwp' + i.toString() + '_cmd').value, 
-                            latData, lonData, altData, 
-                            document.getElementById('mwp' + i.toString() + '_speed').value,
-                            1
-            );
-            console.log(mission_cmd);
-            cmdAry.push(mission_cmd);
-        }       
+            // チェックされているミッションポイントデータのみ送信する
+            if( document.getElementById("achk" + i.toString()).checked == true ){
+                latData = document.getElementById('mwp' + i.toString() + '_lat').innerHTML;
+                lonData = document.getElementById('mwp' + i.toString() + '_lon').innerHTML;
+                altData = document.getElementById('mwp' + i.toString() + '_alt').innerHTML;
+                mission_cmd = makeMissionCmdWithTab(
+                                idx++,
+                                0, 
+                                3,
+                                document.getElementById('mwp' + i.toString() + '_cmd').value, 
+                                latData, lonData, altData, 
+                                document.getElementById('mwp' + i.toString() + '_speed').value,
+                                1
+                );
+                console.log(mission_cmd);
+                cmdAry.push(mission_cmd);
+            }       
         }
 
         // RTL
         if(document.getElementById("achke").checked == true){
-        mission_cmd = makeMissionCmdWithTab(idx, 0, 3, 20, 0, 0, 0, 10, 1); 
-        cmdAry.push(mission_cmd)  
+            mission_cmd = makeMissionCmdWithTab(idx, 0, 3, 20, 0, 0, 0, 10, 1); 
+            cmdAry.push(mission_cmd)  
         }
 
         // MISSIONをパブリッシュ
