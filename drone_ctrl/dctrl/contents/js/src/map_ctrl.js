@@ -315,8 +315,26 @@ sub.on('message', function (topic_sub, message) {
     let bvolt = parseFloat( drone_data.battery.voltage ).toFixed(2);
     // バッテリ電流
     let bcrnt = parseFloat( drone_data.battery.current ).toFixed(2);
+
+    // GPS FIX
+    let gpsfixNo = parseFloat( drone_data.gps.fixtype );
+    let gpsfix = "NO_GPS";
+    switch (gpsfixNo){
+        case 0: gpsfix = "NO_GPS(0)"; break;
+        case 1: gpsfix = "NO_FIX(1)"; break;
+        case 2: gpsfix = "2D_FIX(2)"; break;
+        case 3: gpsfix = "3D_FIX(3)"; break;
+        case 4: gpsfix = "DGPS(4)"; break;
+        case 5: gpsfix = "RTK_FLOAT(5)"; break;
+        case 6: gpsfix = "RTK_FIXED(6)"; break;
+        case 7: gpsfix = "STATIC(7)"; break;
+        case 8: gpsfix = "PPP(8)"; break;
+        default: gpsfix = "Unknown"; break;
+    }
+
     // GPS数
     let gpscnt = parseFloat( drone_data.gps.count );
+    
 
     // ロール
     let droll = parseFloat( drone_data.attitude.roll );
@@ -359,6 +377,7 @@ sub.on('message', function (topic_sub, message) {
 
     document.getElementById('cvlt').innerHTML = bvolt.toString();
     document.getElementById('ccnt').innerHTML = bcrnt.toString();
+    document.getElementById('cgpsfix').innerHTML = gpsfix.toString();
     document.getElementById('cgps').innerHTML = gpscnt.toString();
     document.getElementById('cspd').innerHTML = spd.toFixed(4).toString();
 
@@ -574,7 +593,7 @@ const droneCtrl = (ope) => {
             }       
         }
 
-        // RTL
+        // RTLにチェックが入っていた場合、最後にRTL用ミッションデータを送る
         if(document.getElementById("achke").checked == true){
             mission_cmd = makeMissionCmdWithTab(idx, 0, 3, 20, 0, 0, 0, 10, 1); 
             cmdAry.push(mission_cmd)  

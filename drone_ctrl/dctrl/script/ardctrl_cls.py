@@ -3,9 +3,6 @@
 
 """
 ^----^
- *  * ^----^
- *  * ^----^
- *  * ^----^
  *  * 
 This program is ...
 Drone control program for specific drone.
@@ -38,6 +35,15 @@ class ArdCtrlCls():
     
     vehicle = ""
     dinfo = ""
+    gps_fix = 0
+
+    # ミッションでWayPointに到着した場合にTrue
+    flg_wayPointReached = False
+
+    # ミッションでWPアクション一時停止用フラグ
+    flg_wayPointActionPause = False
+    # ミッションでWPアクション再開用フラグ
+    flg_wayPointActionResume = False
 
     ### =================================================================================== 
     ### MQTTで送信するドローンの情報:クライアントへ送信
@@ -56,6 +62,7 @@ class ArdCtrlCls():
             "current":"0.0"
         },
         "gps":{
+            "fixtype":"",
             "count":"0"
         },
         "position":{ 
@@ -178,12 +185,12 @@ class ArdCtrlCls():
         # Get all vehicle attributes (state)
         dlog.LOG("INFO","\n---- Vehicle attributes ----------------------------------------------------")
         dlog.LOG("INFO","Ardupilot Firmware version: " + str(self.vehicle.version))
-        # dlog.LOG("INFO","  Major version number: " + str(self.vehicle.version.major))
-        # dlog.LOG("INFO","  Minor version number: " + str(self.vehicle.version.minor))
-        # dlog.LOG("INFO","  Patch version number: " + str(self.vehicle.version.patch))
-        # dlog.LOG("INFO","  Release type: " + self.vehicle.version.release_type())
-        # dlog.LOG("INFO","  Release version: " + str(self.vehicle.version.release_version()))
-        # dlog.LOG("INFO","  Stable release?: " + str(self.vehicle.version.is_stable()))
+        dlog.LOG("INFO","  Major version number: " + str(self.vehicle.version.major))
+        dlog.LOG("INFO","  Minor version number: " + str(self.vehicle.version.minor))
+        dlog.LOG("INFO","  Patch version number: " + str(self.vehicle.version.patch))
+        dlog.LOG("INFO","  Release type: " + self.vehicle.version.release_type())
+        dlog.LOG("INFO","  Release version: " + str(self.vehicle.version.release_version()))
+        dlog.LOG("INFO","  Stable release?: " + str(self.vehicle.version.is_stable()))
         # dlog.LOG("INFO","Autopilot capabilities")
         # dlog.LOG("INFO","  Supports MISSION_FLOAT message type: " + str(self.vehicle.capabilities.mission_float))
         # dlog.LOG("INFO","  Supports PARAM_FLOAT message type: " + str(self.vehicle.capabilities.param_float))
@@ -199,7 +206,7 @@ class ArdCtrlCls():
         # dlog.LOG("INFO","  Supports the flight termination command: " + str(self.vehicle.capabilities.flight_termination))
         # dlog.LOG("INFO","  Supports mission_float message type: " + str(self.vehicle.capabilities.mission_float))
         # dlog.LOG("INFO","  Supports onboard compass calibration: " + str(self.vehicle.capabilities.compass_calibration))
-        # dlog.LOG("INFO","Global Location: " + str(self.vehicle.location.global_frame))
+        dlog.LOG("INFO","Global Location: " + str(self.vehicle.location.global_frame))
         dlog.LOG("INFO", str(self.vehicle.location.global_relative_frame))
         dlog.LOG("INFO", str(self.vehicle.location.local_frame))
         dlog.LOG("INFO", str(self.vehicle.attitude))

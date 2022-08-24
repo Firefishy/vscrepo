@@ -64,8 +64,7 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
 
     # ミッションファイルをアップロードした場合にTrue、ミッション実行後False
     flg_MissionUploaded = False
-    # ミッションでWayPointに到着した場合にTrue
-    flg_wayPoint = False
+
     # ミッション実行中にTrue
     flg_MissionDoing = False
 
@@ -267,9 +266,9 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
             if self.drone_command["operation"] == "MISSION_UPLOAD":
                 self.drone_info["status"]["dinfo"] = self.drone_command["operation"]
                 # # MISSION実行中のミッションファイルのアップロードは禁止
-                # if self.flg_MissionUploaded == False:
+                # if not self.flg_MissionUploaded:
                 # # MISSIONのUPLOAD
-                #     if self.flg_MissionUploaded == False:
+                #     if not self.flg_MissionUploaded:
                 # # 最初の（0）ウェイポイントに設定されたミッションをリセット
 
                 self.vehicle.commands.next = 0
@@ -300,21 +299,27 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
                 self.drone_info["status"]["dmsg"] = self.drone_command["operation"]
                 self.set_vehicle_cmsg(str(msg))
                 self.flg_abortMission = True
-                self.flg_wayPoint = False
+                self.flg_wayPointReached = False
 
             elif self.drone_command["operation"] == "ARM":
                 self.drone_info["status"]["dinfo"] = self.drone_command["operation"]
                 # ARMしていない場合
-                if self.vehicle.armed == False:
+                if not self.vehicle.armed:
                     # ARMの場合GUIDEDにしてARMする
                     dlog.LOG("DEBUG", "GUided and Arm the drone")
                     self.set_vehicle_mode("GUIDED")
                     self.vehicle_arming()
                     self.drone_command["operation"] = "NONE"
 
+            #######################################################
+            elif self.drone_command["operation"] == "TEST":
+                print("-------- TEST --------")
+                self.set_vehicle_testmode(self.drone_command["operation"])
+            #######################################################
+
             else:
                 # ARMしている場合
-                if self.vehicle.armed == True:
+                if self.vehicle.armed:
 
                     dlog.LOG("DEBUG", self.drone_command["operation"])
                     if self.drone_command["operation"] == "MAV_MESSAGE":
@@ -371,11 +376,11 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
                         self.set_vehicle_mode("GUIDED")
 
                         # アームしていない場合ARMする
-                        if self.vehicle.armed == False:
+                        if not self.vehicle.armed:
                             self.arm_and_takeoff(self.arm_height)
                             dlog.LOG("DEBUG", "ARMと離陸開始:" + str(self.arm_height) + 'm')
                         # アーム状態をチェック
-                        while self.vehicle.armed == False:
+                        while not self.vehicle.armed:
                             dlog.LOG("DEBUG", "ARMと離陸をしています...")
                             time.sleep(1)
                         dlog.LOG("INFO", "GOTO: ARMと離陸完了:" + str(self.arm_height) + 'm')
@@ -383,16 +388,16 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
                     
                     elif self.drone_command["operation"] == "MISSION_CLEAR":
                         self.drone_info["status"]["dinfo"] = "MISSION CLEAR ALL"
-                        self.flg_wayPoint = False
+                        self.flg_wayPointReached = False
                         self.clear_mission_all()
 
                     # Drone mode set / MISSION start
                     else:
                         # AUTOモードに設定した場合はウェイポイントフラグをクリアする
                         if self.drone_command["operation"] == "AUTO":
-                            if self.flg_MissionDoing == True:
+                            if self.flg_MissionDoing:
                                 self.set_vehicle_mode("AUTO")                
-                                self.flg_wayPoint = False
+                                self.flg_wayPointReached = False
                             else:
                                 self.flg_abortMission = True
 

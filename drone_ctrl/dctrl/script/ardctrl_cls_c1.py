@@ -41,6 +41,13 @@ class ArdCtrlClsC1(ardctrl.ArdCtrlCls):
         dlog.LOG("INFO", "ard_control_class(1) init")
         self.vehicle = ardctrl.ArdCtrlCls.vehicle
 
+
+    ### =================================================================================== 
+    ### Test operation
+    ### =================================================================================== 
+    def set_vehicle_testmode(self, mode):
+        print(mode)
+
     ### =================================================================================== 
     ### Mode set
     ### =================================================================================== 
@@ -164,36 +171,44 @@ class ArdCtrlClsC1(ardctrl.ArdCtrlCls):
     ### =================================================================================== 
     def pause_vehicle(self):
         dlog.LOG("DEBUG", "START")
-        mavmsg = self.vehicle.message_factory.command_long_encode(
-            0, 0,    # target system, target component
-            mavutil.mavlink.MAV_CMD_DO_PAUSE_CONTINUE,  # command
-            0,    # confirmation
-            0,    # 0:Pause current mission
-            0,    # Reserved
-            0,    # Reserved
-            0,    # Reserved
-            0, 0, 0)    # param 5 ~ 7 not used
-        # send command to vehicle
-        self.vehicle.send_mavlink(mavmsg)
-        self.set_vehicle_csts("Flt Pause")
+        if self.flg_wayPointReached:
+            dlog.LOG("DEBUG", "WP ACTION PAUSING")
+            self.flg_wayPointActionPause = True
+        else:
+            mavmsg = self.vehicle.message_factory.command_long_encode(
+                0, 0,    # target system, target component
+                mavutil.mavlink.MAV_CMD_DO_PAUSE_CONTINUE,  # command
+                0,    # confirmation
+                0,    # 0:Pause current mission
+                0,    # Reserved
+                0,    # Reserved
+                0,    # Reserved
+                0, 0, 0)    # param 5 ~ 7 not used
+            # send command to vehicle
+            self.vehicle.send_mavlink(mavmsg)
+            self.set_vehicle_csts("Flt Pause")
 
     ### =================================================================================== 
     ### Resume
     ### =================================================================================== 
     def resume_vehicle(self):
         dlog.LOG("DEBUG", "START")
-        mavmsg = self.vehicle.message_factory.command_long_encode(
-            0, 0,    # target system, target component
-            mavutil.mavlink.MAV_CMD_DO_PAUSE_CONTINUE,  # command
-            0,    # confirmation
-            1,    # 1:Continue mission
-            0,    # Reserved
-            0,    # Reserved
-            0,    # Reserved
-            0, 0, 0)    # param 5 ~ 7 not used
-        # send command to vehicle
-        self.vehicle.send_mavlink(mavmsg)
-        self.set_vehicle_csts("Flt Resume")
+        if self.flg_wayPointReached:
+            dlog.LOG("DEBUG", "WP ACTION RESUMING")
+            self.flg_wayPointActionResume = True
+        else:
+            mavmsg = self.vehicle.message_factory.command_long_encode(
+                0, 0,    # target system, target component
+                mavutil.mavlink.MAV_CMD_DO_PAUSE_CONTINUE,  # command
+                0,    # confirmation
+                1,    # 1:Continue mission
+                0,    # Reserved
+                0,    # Reserved
+                0,    # Reserved
+                0, 0, 0)    # param 5 ~ 7 not used
+            # send command to vehicle
+            self.vehicle.send_mavlink(mavmsg)
+            self.set_vehicle_csts("Flt Resume")
 
     ### =================================================================================== 
     ### Brake
