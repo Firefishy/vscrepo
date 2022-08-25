@@ -312,9 +312,11 @@ sub.on('message', function (topic_sub, message) {
     // 速度
     let spd  = parseFloat( drone_data.position.speed );
     // バッテリ電圧
-    let bvolt = parseFloat( drone_data.battery.voltage ).toFixed(2);
+    let bvolt = parseFloat( drone_data.battery.voltage ).toFixed(3);
     // バッテリ電流
-    let bcrnt = parseFloat( drone_data.battery.current ).toFixed(2);
+    let bcrnt = parseFloat( drone_data.battery.current ).toFixed(3);
+    // バッテリ電流
+    let brmn = parseFloat( drone_data.battery.remain ).toFixed(1);
 
     // GPS FIX
     let gpsfixNo = parseFloat( drone_data.gps.fixtype );
@@ -377,6 +379,7 @@ sub.on('message', function (topic_sub, message) {
 
     document.getElementById('cvlt').innerHTML = bvolt.toString();
     document.getElementById('ccnt').innerHTML = bcrnt.toString();
+    document.getElementById('crmn').innerHTML = brmn.toString();
     document.getElementById('cgpsfix').innerHTML = gpsfix.toString();
     document.getElementById('cgps').innerHTML = gpscnt.toString();
     document.getElementById('cspd').innerHTML = spd.toFixed(4).toString();

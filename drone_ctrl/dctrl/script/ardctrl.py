@@ -18,10 +18,11 @@ import signal
 import dlogger as dlog
 import drnctrl_cls as drnCtrl
 from pymavlink import mavutil
+from pymavlink.dialects.v10 import ardupilotmega
 
 import tloganalysis as tloga
 
-VERSION = "0.5_220823"
+VERSION = "0.6_220824"
 
 # 接続設定をJSONファイルから取得する
 base_path = os.path.dirname(os.path.abspath(__file__))
@@ -119,6 +120,41 @@ def main():
     # ------------------------------------------------
     # MAVLINK MESSAGE取得
     # ------------------------------------------------
+
+    @drnc.vehicle.on_message('EKF_STATUS_REPORT')
+    def listener(self, name, message):
+        # boolean: EKFの水平位置（絶対値）推定=good
+        ekf_poshorizabs = (message.flags & ardupilotmega.EKF_POS_HORIZ_ABS) > 0
+        #print(ekf_poshorizabs)
+        # boolean: EKFは定位置モードで、絶対位置も相対位置も分からない。
+        ekf_constposmode = (message.flags & ardupilotmega.EKF_CONST_POS_MODE) > 0
+        #print(ekf_constposmode)
+        # boolean: EKFの水平位置（絶対値）の予測値=good
+        ekf_predposhorizabs = (message.flags & ardupilotmega.EKF_PRED_POS_HORIZ_ABS) > 0
+        #print(ekf_predposhorizabs)
+        #self.notify_attribute_listeners('ekf_ok', self.ekf_ok, cache=True)
+
+    @drnc.vehicle.on_message('WIND')
+    def listener(self,name, message):
+        """ WIND {direction : -180.0, speed : 0.0, speed_z : 0.0} """
+        drnc.drone_alart_info["wind"]["direction"] = message.direction           
+        drnc.drone_alart_info["wind"]["speed"] = message.speed            
+        drnc.drone_alart_info["wind"]["speed_z"] = message.speed_z           
+        # msg = "WIND: " + str(message)
+        # dlog.LOG("DEBUG", msg)
+
+    # 一般的なシステムステータス
+    @drnc.vehicle.on_message('SYS_STATUS')
+    def listener(self, name, message):
+        # Battery voltage
+        drnc.drone_info["battery"]["voltage"] = message.voltage_battery / 1000       
+        drnc.drone_alart_info["battery"]["voltage"] = message.voltage_battery / 1000            
+        # Battery current
+        drnc.drone_info["battery"]["current"] = message.current_battery / 1000
+        drnc.drone_alart_info["battery"]["current"] = message.current_battery / 1000
+        # Battery remain
+        drnc.drone_info["battery"]["remain"] = message.battery_remaining
+        drnc.drone_alart_info["battery"]["remain"] = message.battery_remaining
 
     # GPS情報を取得するデコレータ
     @drnc.vehicle.on_message('GPS_RAW_INT')
@@ -397,6 +433,9 @@ def main():
                                     dlog.LOG("DEBUG", msg)
                                     drnc.set_vehicle_csts(msg)
                                     # ミッションをクリア
+                                    #########################################
+                                    #drnc.set_vehicle_mode("SMART_RTL")
+                                    #########################################
                                     drnc.set_vehicle_mode("RTL")
                                     break
                                 

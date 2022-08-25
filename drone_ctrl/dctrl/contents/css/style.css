@@ -229,6 +229,9 @@ th {
 td {
   border: 1px solid rgb(73, 73, 73);
 }
+.twide {
+  width:40%;
+}
 
 .e080 {
   width: 80px;

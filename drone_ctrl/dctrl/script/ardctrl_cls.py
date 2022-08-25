@@ -59,7 +59,8 @@ class ArdCtrlCls():
         },
         "battery":{
             "voltage":"0.0",
-            "current":"0.0"
+            "current":"0.0",
+            "remain":"0.0"
         },
         "gps":{
             "fixtype":"",
@@ -83,7 +84,20 @@ class ArdCtrlCls():
             "3":"0.0",
             "4":"0.0"
         }
-    } 
+    }
+
+    drone_alart_info = {
+        "battery":{
+            "voltage":"0.0",
+            "current":"0.0",
+            "remain":"0.0"
+        },
+        "wind":{
+            "direction":"0.0",
+            "speed":"0.0",
+            "speed_z":"0.0"
+        }
+    }
     
     def __init__(self):
         dlog.LOG("INFO", "ard_control_class init")
@@ -160,10 +174,10 @@ class ArdCtrlCls():
         self.drone_info["status"]["Arm"] = str(self.vehicle.armed)                 
         # Flight mode
         self.drone_info["status"]["FlightMode"] = str(self.vehicle.mode.name)                 
-        # Battery voltage
-        self.drone_info["battery"]["voltage"] = str(self.vehicle.battery.voltage)             
-        # Battery current
-        self.drone_info["battery"]["current"] = str(self.vehicle.battery.current)             
+        # # Battery voltage
+        # self.drone_info["battery"]["voltage"] = str(self.vehicle.battery.voltage)             
+        # # Battery current
+        # self.drone_info["battery"]["current"] = str(self.vehicle.battery.current)             
         # latitude
         self.drone_info["position"]["latitude"] = str(self.vehicle.location.global_frame.lat) 
         # longitude
@@ -213,8 +227,26 @@ class ArdCtrlCls():
         dlog.LOG("INFO","Velocity: " + str(self.vehicle.velocity))
         dlog.LOG("INFO", str(self.vehicle.gps_0))
         dlog.LOG("INFO", str(self.vehicle.gimbal))
-        dlog.LOG("INFO", str(self.vehicle.battery))
+
+        
+        # Wind
+        dlog.LOG("INFO", "Battery:" + str(self.vehicle.battery))
+        dlog.LOG("INFO", "Battery:" + str(self.vehicle.battery))
+        dlog.LOG("INFO", "Battery:" + str(self.vehicle.battery))
+        
+        
+        
+        # Battery info
+        dlog.LOG("INFO", "Battery:" + str(self.vehicle.battery))
+        dlog.LOG("INFO", "Battery voltage:" + str(self.vehicle.battery.voltage))
+        dlog.LOG("INFO", "Battery current:" + str(self.vehicle.battery.current))
+        dlog.LOG("INFO", "Battery remain(level):" + str(self.vehicle.battery.level))
+
+
+
+        # EKF:拡張カルマンフィルタ
         dlog.LOG("INFO","EKF OK?: " + str(self.vehicle.ekf_ok))
+
         dlog.LOG("INFO","Last Heartbeat: " + str(self.vehicle.last_heartbeat))
         # dlog.LOG("INFO","Rangefinder: " + str(self.vehicle.rangefinder))
         # dlog.LOG("INFO","Rangefinder distance: " + str(self.vehicle.rangefinder.distance))
