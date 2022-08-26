@@ -82,10 +82,10 @@ class ArdCtrlClsC2(ardctrl.ArdCtrlClsC1):
     ###    https://github.com/diydrones/ardupilot/blob/master/Tools/autotest/common.py
     ### =============================================================================================
     def get_distance_metres(self, aLocation1, aLocation2):
-        dlog.LOG("DEBUG","START")
+        #dlog.LOG("DEBUG","START")
         dlat = aLocation2.lat - aLocation1.lat
         dlong = aLocation2.lon - aLocation1.lon
-        dlog.LOG("DEBUG","END")
+        #dlog.LOG("DEBUG","END")
         return math.sqrt((dlat*dlat) + (dlong*dlong)) * 1.113195e5
 
     ### =============================================================================================
@@ -409,6 +409,143 @@ class ArdCtrlClsC2(ardctrl.ArdCtrlClsC1):
         #self.vehicle.commands.upload()
         cmds.upload_fence()
         dlog.LOG("DEBUG","END")
+
+
+
+
+
+
+    ### =============================================================================================
+    ### tlogからポジションメッセージを取得して解析する
+    ### =============================================================================================
+    def position_messages_from_tlog(self, filename):
+        """
+        Given telemetry log, get a series of wpts approximating the previous flight
+        """
+        # Pull out just the global position msgs
+        messages = []
+        mlog = mavutil.mavlink_connection(filename)
+        while True:
+            try:
+                m = mlog.recv_match(type=['GLOBAL_POSITION_INT'])
+                if m is None:
+                    break
+            except Exception:
+                break
+            # ignore we get where there is no fix:
+            if m.lat == 0:
+                continue
+            messages.append(m)
+
+        # 読みやすさとオートパイロットのメモリ制限内に収まるように、ポイント数を縮小する。
+        # コーディングを簡単にするため、以下のようにします。
+        # - 直前に保持されていたポイントから3メートル以内にあるポイントのみを保持する。
+        # - 上記の条件を満たす、最初の100点のみを保持します。
+
+        num_points = len(messages)
+        keep_point_distance=3 #metres
+        kept_messages = []
+        kept_messages.append(messages[0]) #Keep the first message
+        pt1num=0
+        pt2num=1
+        while True:
+            # 最後の1点を残す。99点だけ記録する
+            if pt2num==num_points-1 or len(kept_messages)==99:
+                kept_messages.append(messages[pt2num])
+                break
+            pt1 = LocationGlobalRelative(messages[pt1num].lat/1.0e7,messages[pt1num].lon/1.0e7,0)
+            pt2 = LocationGlobalRelative(messages[pt2num].lat/1.0e7,messages[pt2num].lon/1.0e7,0)
+            distance_between_points = self.get_distance_metres(pt1,pt2)
+            if distance_between_points > keep_point_distance:
+                kept_messages.append(messages[pt2num])
+                pt1num=pt2num
+            pt2num=pt2num+1
+
+        return kept_messages
+
+    ### =============================================================================================
+    ### tlogからポジションメッセージを取得して解析する
+    ### =============================================================================================
+    def flight_log_analysis(self):
+        dlog.LOG("DEBUG", "START")
+
+        print("Generating waypoints from tlog...")
+        messages = self.position_messages_from_tlog("/home/sayz/__mav.tlog")
+        msg = "Generated" + str(len(messages)) + "waypoints from tlog" 
+        dlog.LOG("DEBUG", msg)
+
+        # if len(messages) == 0:
+        #     print("No position messages found in log")
+        #     exit(0)
+
+        # # Now download the vehicle waypoints
+        # cmds = self.vehicle.commands
+        # cmds.wait_ready()
+
+        # cmds = self.vehicle.commands
+        # cmds.clear()
+        # for pt in messages:
+        #     msg = "Point: " + str(pt.lat) + " " + str(pt.lon)
+        #     dlog.LOG("DEBUG", msg)
+        #     lat = pt.lat
+        #     lon = pt.lon
+        #     # To prevent accidents we don't trust the altitude in the original flight, instead
+        #     # we just put in a conservative cruising altitude.
+        #     altitude = 30.0
+        #     cmd = Command( 0,
+        #                 0,
+        #                 0,
+        #                 mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT,
+        #                 mavutil.mavlink.MAV_CMD_NAV_WAYPOINT,
+        #                 0, 0, 0, 0, 0, 0,
+        #                 lat/1.0e7, lon/1.0e7, altitude)
+        #     dlog.LOG("DEBUG", str(cmd))
+        #     cmds.add(cmd)
+
+        # #Upload clear message and command messages to vehicle.
+        # print("Uploading %d waypoints to vehicle..." % len(messages))
+        # cmds.upload()
+
+        #print("Arm and Takeoff")
+        #self.arm_and_takeoff(30)
+
+
+        print("Starting mission")
+
+        # Reset mission set to first (0) waypoint
+        self.vehicle.commands.next=0
+
+        # # Set mode to AUTO to start mission:
+        # while (self.vehicle.mode.name != "AUTO"):
+        #     self.vehicle.mode = VehicleMode("AUTO")
+        #     time.sleep(0.1)
+
+        # # Monitor mission for 60 seconds then RTL and quit:
+        # time_start = time.time()
+        # while time.time() - time_start < 60:
+        #     nextwaypoint=self.vehicle.commands.next
+        #     print('Distance to waypoint (%s): %s' % (nextwaypoint, self.distance_to_current_waypoint()))
+
+        #     if nextwaypoint==len(messages):
+        #         print("Exit 'standard' mission when start heading to final waypoint")
+        #         break
+        #     time.sleep(1)
+
+        # print('Return to launch')
+        # while (self.vehicle.mode.name != "RTL"):
+        #     self.vehicle.mode = VehicleMode("RTL")
+        #     time.sleep(0.1)
+
+        # #Close vehicle object before exiting script
+        # print("Close vehicle object")
+        # self.vehicle.close()
+
+        # # Shut down simulator if it was started.
+        # if self.sitl is not None:
+        #     self.sitl.stop()
+
+        dlog.LOG("DEBUG", "END")
+
 
     ### =============================================================================================
     ### End of file

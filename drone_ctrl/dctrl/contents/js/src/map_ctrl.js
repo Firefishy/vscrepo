@@ -429,8 +429,9 @@ setTimeout(function() {
     sub.end();
 }, 100000); // stop after 100sec
 
-////////////////////////////////////////////////////////////////////////////////////////////////
+//===============================================================================================
 // イベントハンドラ（HTML上のボタンが押下）
+//===============================================================================================
 const droneCtrl = (ope) => {
   let latData, lonData, altData, speed;
 
@@ -439,8 +440,16 @@ const droneCtrl = (ope) => {
     drone_command["d_lon"] = 0;
     drone_command["d_alt"] = 0; 
   
+
+    if(ope == "FTP_CONNECT") {
+    
+        // MQTTでパブリッシュする
+        pubCommand(topic_pub,drone_command);
+            
+    }
+
     // Simple GOTO: 緯度/経度/高度を取得してコマンドをドローンに送信
-    if(ope == "GOTO") {
+    else if(ope == "GOTO") {
         // 操作画面から目的地の座標を取得して設定する
         drone_command["subcode"] = document.getElementById('msgid').innerHTML;
         latData = document.getElementById('lat').value;

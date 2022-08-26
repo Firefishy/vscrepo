@@ -216,18 +216,42 @@ main {
 }
 
 table {
-  border-collapse: collapse;
   font-size: 16px;
-  width:100%;
-  border-collapse: collapse;
   margin: 10px 0px 10px 0px;
+}
+.table_w100{
+  border-collapse: collapse;
+  width:100%;
+}
+.table_w80{
+  border: 0px solid rgb(73, 73, 73);
+  width:80%;
+  margin-left: 70px;
+}
+.table_w50{
+  border-collapse: collapse;
+  width:50%;
+  margin-left: 170px;
+}
+.table_w50-1{
+  width:50%;
+  margin-left: 100px;
 }
 th {
   color:#fff;
   border: 1px solid rgb(73, 73, 73);
 }
-td {
+.td_c1{
   border: 1px solid rgb(73, 73, 73);
+  width: 150px;
+}
+.td_c2{
+  border: 1px solid rgb(73, 73, 73);
+  width: 50px;
+}
+.td_c3{
+  border: 0px solid rgb(73, 73, 73);
+  width: 80px;
 }
 .twide {
   width:40%;
@@ -241,6 +265,7 @@ td {
   width: 100px;
 }
 .e150 {
+  border: 1px solid rgb(73, 73, 73);
   width: 150px;
 }
 .e200 {
@@ -249,7 +274,6 @@ td {
 .e350 {
   width: 350px;
 }
-
 
 .mainMap {
   display: block;
@@ -275,6 +299,9 @@ td {
 }
 .button75pct {
   width: 78%;
+}
+.button100pct {
+  width: 100%;
 }
 
 .explain0 {
@@ -410,17 +437,6 @@ img {
   padding: 0 0.4em 0 0em;
 }
 
-.input_style4{
-  width:40px;
-  height:26px;
-  font-size:14px;
-  text-align: right;
-  color: black;
-  border: solid 1px rgb(49, 49, 49);
-  background: white;
-  padding: 0 0.4em 0 0em;
-}
-
 .input_style1{
   width:200px;
   height:14px;
@@ -434,15 +450,15 @@ img {
 }
 
 .input_style2{
-  width:100px;
-  height:25px;
+  width:150px;
+  height:10px;
   font-size:16px;
   text-align: right;
   color: black;
   border: solid 1px black;
-  background: rgba(255,255,255,0.4);
+  background: rgba(255, 255, 255);
   padding: 0.3em;
-  margin: 1.0em 0.4em 1.0em 3.0em;
+  margin: 0.2em 0.4em 0.2em 0em;
 }
 
 .input_style3{
@@ -455,6 +471,19 @@ img {
   background: rgba(255,255,255,1);
   padding: 0em;
 }
+
+.input_style4{
+  width:250px;
+  height:30px;
+  font-size:14px;
+  text-align: center;
+  color: black;
+  border: solid 1px black;
+  background: rgb(255, 255, 255);
+  padding: 0em;
+  margin: 0 0 0 0;
+}
+
 
 input[type="range"] {
   -webkit-appearance: none; /* 🚩これ無しだとスタイルがほぼ全く反映されないので注意 */
@@ -616,3 +645,4 @@ input[type="checkbox"]:checked {
   font-size: 16px;
   font-weight: bold;
 }
+

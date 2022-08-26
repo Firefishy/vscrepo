@@ -30,6 +30,8 @@ import json
 import os
 import ardctrl_cls_c2 as ardctrl
 
+import ftp_client
+
 ##################################################################
 ### Class as singleton
 ##################################################################
@@ -83,7 +85,8 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
     arm_height = 5.0
 
     wp_action_no = 0
-    
+    ftp = ""
+
     ### =================================================================================== 
     ### MQTTで受信するドローン操作コマンド:クライアントから受信
     ###     コマンドおよび移動先の「緯度、経度、高度」情報
@@ -141,6 +144,11 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
         wp7_action_list,
         wp8_action_list
     ]
+
+    log_list = {
+        "count": 0,
+        "list":""
+    }
     
     ### =================================================================================== 
     ### コンストラクタ
@@ -197,6 +205,9 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
         # mqttClass.client_wpaction.loop_forever()
 
         wp_action_no = 0
+
+        # FTP class instance
+        self.ftp = ftp_client.FtpClientCls()
 
     ### =================================================================================== 
     ### ブローカーに接続できたときの処理：コールバック
@@ -262,6 +273,21 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
             # 受信メッセージをコマンド辞書にコピー、その際に変更フラグを付加
             # 届いた際にtrueにし，コマンドを処理したらfalseにする
             self.drone_command["operation"] = recvData["operation"]
+
+            if self.drone_command["operation"] == "FTP_GETLIST":
+                self.ftp.connect()
+                self.ftp.get_file_list("/home/sayz/logs")
+                self.ftp.close()
+
+            if self.drone_command["operation"] == "FTP_GETFILE":
+                self.ftp.connect()
+                self.ftp.upload_bin(
+                    "/home/sayz/logs",
+                    "00000042.BIN",
+                    "/home/sayz/tmp2")
+                self.ftp.close()
+
+                self.drone_command["operation"] = "NONE"
 
             if self.drone_command["operation"] == "MISSION_UPLOAD":
                 self.drone_info["status"]["dinfo"] = self.drone_command["operation"]
@@ -391,7 +417,11 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
                         self.flg_wayPointReached = False
                         self.clear_mission_all()
 
-                    # Drone mode set / MISSION start
+                    elif self.drone_command["operation"] == "FLY_LOG_ANA":
+                        dlog.LOG("DEBUG", "Flight log analysis")
+                        self.flight_log_analysis()
+
+                    # Drone mode set / MISSION start 
                     else:
                         # AUTOモードに設定した場合はウェイポイントフラグをクリアする
                         if self.drone_command["operation"] == "AUTO":

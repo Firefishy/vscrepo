@@ -145,9 +145,9 @@ if len(messages) == 0:
     print("No position messages found in log")
     exit(0)
 
-#Start SITL if no connection string specified
+print("Start SITL if no connection string specified")
 if args.connect:
-    connection_string = args.connect
+    #connection_string = args.connect
     connection_string = "127.0.0.1:14551" # added for individual simulation
     sitl = None
 else:
@@ -158,12 +158,13 @@ else:
     sitl = dronekit_sitl.start_default(lat=start_lat,lon=start_lon)
     connection_string = sitl.connection_string()
 
-# Connect to the Vehicle
-print('Connecting to vehicle on: %s' % connection_string)
+print("Connect to the Vehicle")
+print('Connecting to vehicle on!!!: %s' % connection_string)
+connection_string = "127.0.0.1:14551" 
 vehicle = connect(connection_string, wait_ready=True)
 
 
-# Now download the vehicle waypoints
+print("Now download the vehicle waypoints")
 cmds = vehicle.commands
 cmds.wait_ready()
 
