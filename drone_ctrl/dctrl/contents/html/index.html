@@ -302,18 +302,29 @@
           <table class="table_w80">
             <tbody>
               <tr>
-                <td class="td_c3" colspan="2"><input type="button" class="ctrlbtn button75pct color_green" id="bnt_ftp_getlist" value="ログファイルリスト取得" onclick="javascript:droneCtrl('FTP_GETLIST');"/></td>
+                <td class="td_c3" colspan="3"><input type="button" class="ctrlbtn button75pct color_green" id="bnt_ftp_getlist" value="ログファイルリスト取得" onclick="javascript:droneCtrl('FTP_GETLIST');"/></td>
               </tr>
               <tr>
-                <td class="td_c3"><input type="text" class="input_style4" name="log_fileName" id="log_fileName" placeholder="" value="" ></td>
-                <td class="td_c3"><input type="button" class="ctrlbtn button100pct color_green" id="bnt_ftp_getfile" value="ログファイル取得" onclick="javascript:droneCtrl('FTP_GETFILE');"/></td>
+                <td class="td_c3">機体のログファイルパス</td>
+                <td class="td_c3" colspan="2"><input type="text" class="input_style4" name="log_filePath" id="log_filePath" placeholder="" value="/home" ></td>
               </tr>
 
-                <!-- <td class="td_c2"><input type="file" class=""></td> -->
+              <tr>
+                <td class="td_c3">保存先</td>
+                <td class="td_c3"><input type="text" class="" name="log_storeDir" id="log_filePath" placeholder="" value="/home" ></td>
+                <td class="td_c2"><input type="file" class=""></td>
+              </tr>
+
+
+
 
               </tr>
             </tbody>
           </table>
+
+          <table class="table_w80" id="logfile_table"></table>
+
+
 
         </div>
       </div> 

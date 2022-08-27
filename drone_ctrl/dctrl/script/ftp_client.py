@@ -78,7 +78,7 @@ class FtpClientCls():
         dlog.LOG("DEBUG", "START")
         dlog.LOG("DEBUG", dir_name)
         self.ftp.mkd(dir_name)
-        dlog.LOG("DEBUG", "START")
+        dlog.LOG("DEBUG", "END")
     
     ### =================================================================================== 
     ### ファイルの一覧の取得
@@ -87,9 +87,8 @@ class FtpClientCls():
         dlog.LOG("DEBUG", "START")
         dlog.LOG("DEBUG", dir_name)
         file_list = self.ftp.nlst(dir_name)
-        print(len(file_list))
-        dlog.LOG("DEBUG", str(file_list))
-        dlog.LOG("DEBUG", "START")
+        dlog.LOG("DEBUG", "END")
+        return file_list
         
     ### =================================================================================== 
     ### クローズ
@@ -97,6 +96,6 @@ class FtpClientCls():
     def close(self):
         dlog.LOG("DEBUG", "START")
         self.ftp.close()
-        dlog.LOG("DEBUG", "START")
+        dlog.LOG("DEBUG", "END")
 
     

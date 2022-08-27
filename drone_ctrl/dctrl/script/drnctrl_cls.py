@@ -63,6 +63,8 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
     topic_drone_wpaction = "drone/wpaction"
     # Subscriber ミッション: マップ制御画面対応用
     topic_drone_mission = "ctrl/001"
+    # logfile list topic
+    topic_log = "drone/log"
 
     # ミッションファイルをアップロードした場合にTrue、ミッション実行後False
     flg_MissionUploaded = False
@@ -230,7 +232,7 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
     def on_connect_wpaction(self, client_wpaction, userdata, flag, rc):
         dlog.LOG("DEBUG", "Connected with result code " + str(rc))  
         # subscribeトピックを設定
-        client_wpaction.subscribe(self.topic_drone_wpaction)  
+        client_wpaction.subscribe(self.topic_drone_wpaction) 
 
     ### =================================================================================== 
     ### ブローカーから切断されたときの処理：コールバック
@@ -274,12 +276,18 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
             # 届いた際にtrueにし，コマンドを処理したらfalseにする
             self.drone_command["operation"] = recvData["operation"]
 
+            # FTP: ファイルリストの取得
             if self.drone_command["operation"] == "FTP_GETLIST":
                 self.ftp.connect()
-                self.ftp.get_file_list("/home/sayz/logs")
+                file_list = self.ftp.get_file_list("/home/sayz/logs")
+
+                json_message = json.dumps(file_list)
+                self.client.publish(self.topic_log, json_message )
+                print(json_message)
                 self.ftp.close()
 
-            if self.drone_command["operation"] == "FTP_GETFILE":
+            # FTP: ファイルをサーバにアップロード
+            elif self.drone_command["operation"] == "FTP_GETFILE":
                 self.ftp.connect()
                 self.ftp.upload_bin(
                     "/home/sayz/logs",
@@ -289,7 +297,8 @@ class DrnCtrl(ardctrl.ArdCtrlClsC2):
 
                 self.drone_command["operation"] = "NONE"
 
-            if self.drone_command["operation"] == "MISSION_UPLOAD":
+            # ミッションアップロード
+            elif self.drone_command["operation"] == "MISSION_UPLOAD":
                 self.drone_info["status"]["dinfo"] = self.drone_command["operation"]
                 # # MISSION実行中のミッションファイルのアップロードは禁止
                 # if not self.flg_MissionUploaded:

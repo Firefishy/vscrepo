@@ -6,12 +6,14 @@
 
 // WebSocket connection
 let sub = mqtt.connect('ws://127.0.0.1:15675');
+let sub2 = mqtt.connect('ws://127.0.0.1:15675');
 
 // Topic definition
 let topic_pub = "drone/dctrl";        // 操作コマンド、Simple Goto
 let topic_mission = "drone/mission";  // ミッションデータ
 let topic_wpaction = "drone/wpaction";  // ミッションデータ
 let topic_sub = "drone/dinfo";        // 座標等のドローン情報
+let topic_log = "drone/log";        // ログファイルリスト
 
 let dlat = 35.6566324;
 let dlon = 139.7586453;
@@ -272,24 +274,108 @@ let quad_x_Icon = L.icon({ iconUrl: '../img/quad_x-90.png', iconRetinaUrl: 'img/
 //   //console.log(metric.toString());
 // }, 1000);
 
-////////////////////////////////////////////////////////////////////////////////////////////////
+//===============================================================================================
 // MQTT over WebSocketの初期化
 // MQTTブローカーは自分自身
+//===============================================================================================
 //var wsbroker = location.hostname;   
 var wsbroker = "127.0.0.1";   
 // MQTTの標準ポート番号は1883だが，WebSocketは15675とした(RabbitMQと同じ仕様)
 var wsport = 15675; 
 
-////////////////////////////////////////////////////////////////////////////////////////////////
+//===============================================================================================
 // MQTTのクライアントを作成する クライアントID名はランダムに作る
+//===============================================================================================
 var client = new Paho.MQTT.Client(
   wsbroker, 
   wsport, 
   "/ws", "myclientid_" + parseInt(Math.random() * 100, 10)
 );
 
-////////////////////////////////////////////////////////////////////////////////////////////////
+//===============================================================================================
 // ドローンの情報を取得するMQTTサブスクライバ
+//===============================================================================================
+let btnid = ""
+sub2.subscribe(topic_log);
+// サブスクライバのCallback
+sub2.on('message', function (topic_log, message) {
+    // ドローンのデータを連想配列にして格納
+    let drone_data2 = JSON.parse( message ); 
+    
+    let cnt = drone_data2.length;
+    console.log(cnt)
+    for( i = 0; i < cnt; i++){
+        console.log(drone_data2[i])
+    }
+
+    // https://qiita.com/solarsoyo/items/677f1aa70ae2cd04014e
+
+    var header = ['ログファイル名','操作'];
+    var table = document.getElementById("logfile_table");
+
+    //ヘッダー（TH）
+    var row = table.insertRow(-1);
+    var th0 = document.createElement("th");
+    row.appendChild(th0);
+    th0.innerHTML = "No";
+    // th0.width = 30;
+    for(var i=0; i<header.length; i++){
+        var th = document.createElement("th");
+        row.appendChild(th);
+        th.innerHTML = header[i];
+        // th.width = 150;
+    }
+    table.width = 30 + 100 * header.length;
+
+    //データ行（TR）
+    for(var no = 1; no <= cnt; no++){
+        var row = table.insertRow(-1);
+        var cell1 = row.insertCell(-1);
+        cell1.className = 'item';
+        cell1.innerHTML = no; // 1〜のシリアル番号
+
+        // ヘッダ要素数：ここでは１
+        for(head_item = 1; head_item <= header.length; head_item++){
+            var cell = row.insertCell(-1);
+            cell.className = 'value';   
+            cell.className = 'item';  
+            if(head_item == 1){
+                cell.innerHTML = drone_data2[no-1];
+            }
+            else if (head_item == 2){
+                cell.setAttribute('id','R'+no+'C'+head_item);
+                console.log('R'+no+'C'+head_item)
+
+                var button = document.createElement('input');
+                button.type = 'button';
+                button.id = drone_data2[no-1];
+                button.value = 'ファイル取得';
+                button.className = 'btn';                
+
+                var container = document.getElementById('R'+no+'C'+head_item);
+                container.appendChild(button);
+                container.onclick = butotnClick;
+            }
+        }
+     } 
+});
+
+function butotnClick(){
+    //alert("xxx");
+    //document.getElementById('log_fileName').innerHTML = "xxxx";
+    var e = e || window.event;
+    var elem = e.target;
+    var elemId = elem.id;
+
+    //let idid = document.getElementById()
+    console.log(elemId)
+    //droneCtrl('FTP_GETFILE')
+}
+
+
+//===============================================================================================
+// ドローンの情報を取得するMQTTサブスクライバ
+//===============================================================================================
 sub.subscribe(topic_sub);
 // サブスクライバのCallback
 sub.on('message', function (topic_sub, message) {
@@ -302,7 +388,7 @@ sub.on('message', function (topic_sub, message) {
     // フライトモード
     let mode = drone_data.status.FlightMode;                  
     // 緯度
-    dlat  = parseFloat( drone_data.position.latitude ).toFixed(4);       
+    dlat  = parseFloat( drone_data.position.latitude ).toFixed(4);   
     // 経度
     dlon  = parseFloat( drone_data.position.longitude ).toFixed(4);      
     // 高度
@@ -337,7 +423,6 @@ sub.on('message', function (topic_sub, message) {
     // GPS数
     let gpscnt = parseFloat( drone_data.gps.count );
     
-
     // ロール
     let droll = parseFloat( drone_data.attitude.roll );
     droll = (180/Math.PI*droll).toFixed(3);
@@ -440,7 +525,6 @@ const droneCtrl = (ope) => {
     drone_command["d_lon"] = 0;
     drone_command["d_alt"] = 0; 
   
-
     if(ope == "FTP_CONNECT") {
     
         // MQTTでパブリッシュする
