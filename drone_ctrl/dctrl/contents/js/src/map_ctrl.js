@@ -209,7 +209,7 @@ let mymap = L.map('mapid').setView([dlat,dlon],dzoom);
     
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // OpenStreetMapのタイルレイヤーを作る
-let tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+let tileLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{
     attribution: '© <a href="http://osm.org/copyright">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
     maxZoom: 20
 });
